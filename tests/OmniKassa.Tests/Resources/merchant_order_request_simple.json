@@ -1,0 +1,12 @@
+{
+  "timestamp": "2017-08-07T16:28:51.504+02:00",
+  "amount": {
+    "amount": "495",
+    "currency": "EUR"
+  },
+  "description": "An example description",
+  "language": "NL",
+  "orderItems": [],
+  "merchantOrderId": "ORDID123",
+  "merchantReturnURL": "http://localhost/"
+}

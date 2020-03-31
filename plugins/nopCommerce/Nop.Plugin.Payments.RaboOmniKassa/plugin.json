@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Payment methods",
+  "FriendlyName": "Rabo OmniKassa",
+  "SystemName": "Payments.RaboOmniKassa",
+  "Version": "1.1.0",
+  "SupportedVersions": [ "4.00" ],
+  "Author": "Move4Mobile.com",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Payments.RaboOmniKassa.dll",
+  "Description": "This plugin allows paying with Rabo OmniKassa"
+}

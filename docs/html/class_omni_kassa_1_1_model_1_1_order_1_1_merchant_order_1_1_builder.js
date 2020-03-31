@@ -1,0 +1,28 @@
+var class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder =
+[
+    [ "Build", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a82762a020527383589571a7960bb3fc8", null ],
+    [ "WithAmount", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a65c496de540b72d33a8242fb896158ec", null ],
+    [ "WithBillingDetail", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#ae2eeb87536dda306d3302a4e4be254b4", null ],
+    [ "WithCustomerInformation", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a0cd107d28c3b48e807bc0d9353587e7d", null ],
+    [ "WithDescription", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#ab3fc2b1e1cc9c161a2442e2236be7d01", null ],
+    [ "WithInitiatingParty", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a5717eca9f1523d1a5a34e8263555c006", null ],
+    [ "WithLanguage", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a49cae3f00ef8ef69fe12868f55b3d317", null ],
+    [ "WithMerchantOrderId", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a3027fb8f9814782735595bfa02b9c78a", null ],
+    [ "WithMerchantReturnURL", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a4074ce024ceccd4eebf94ecbd7f20622", null ],
+    [ "WithOrderItems", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a70856e58b60b7e2b213b94d3218cf082", null ],
+    [ "WithPaymentBrand", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a77d0822dd5224fbb63077946a944be46", null ],
+    [ "WithPaymentBrandForce", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a28ad0407516504f73ee2d3fa6dcfaed8", null ],
+    [ "WithShippingDetail", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#af86fa332e204bcf9b269e9f6af664aec", null ],
+    [ "Amount", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a8714d47e25b939d982addfb58acd5c66", null ],
+    [ "BillingDetails", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a697a679a3f815cf826f8b5e8258b5c7e", null ],
+    [ "CustomerInformation", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a503800f30da64a5c63740f9bde9671fd", null ],
+    [ "Description", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a839b50eeb0b8557a3dbb80c77bf5ac41", null ],
+    [ "InitiatingParty", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#aef77b52570d70d099ae2fe6b1e27a79a", null ],
+    [ "Language", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#aa6df747f02cffaeca43b32a26b3d4c72", null ],
+    [ "MerchantOrderId", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a878767599ea9f1634179a11f081cdfa5", null ],
+    [ "MerchantReturnURL", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a7ef81a0436b738f11e01107324b726e8", null ],
+    [ "OrderItems", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#ae99622ffcc022da8d4263302606e6ca7", null ],
+    [ "PaymentBrand", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a2b51377a2983933002a590d6c90bc095", null ],
+    [ "PaymentBrandForce", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#a87c7a25910244cad718996ffcd7f5d80", null ],
+    [ "ShippingDetails", "class_omni_kassa_1_1_model_1_1_order_1_1_merchant_order_1_1_builder.html#ab19f5ac91cd17d447902b7b78b97b5ac", null ]
+];

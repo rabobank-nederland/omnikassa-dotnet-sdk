@@ -1,0 +1,10 @@
+{
+  "amount": {
+    "amount": "1000",
+    "currency": "EUR"
+  },
+  "category": "PHYSICAL",
+  "description": "Description",
+  "name": "Test product",
+  "quantity": 1
+}

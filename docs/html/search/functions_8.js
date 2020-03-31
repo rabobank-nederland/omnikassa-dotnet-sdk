@@ -1,0 +1,9 @@
+var searchData=
+[
+  ['illegalapiresponseexception',['IllegalApiResponseException',['../class_omni_kassa_1_1_exceptions_1_1_illegal_api_response_exception.html#ab2003559267a0ca00e2d0567d81b47c1',1,'OmniKassa.Exceptions.IllegalApiResponseException.IllegalApiResponseException(int errorCode, String errorMessage)'],['../class_omni_kassa_1_1_exceptions_1_1_illegal_api_response_exception.html#ae82f1a4d6b87fd57baa7b5d6db1628a3',1,'OmniKassa.Exceptions.IllegalApiResponseException.IllegalApiResponseException(int errorCode)']]],
+  ['illegalsignatureexception',['IllegalSignatureException',['../class_omni_kassa_1_1_exceptions_1_1_illegal_signature_exception.html#aff0cca3b1966f2f571f9115d0c0c2d84',1,'OmniKassa.Exceptions.IllegalSignatureException.IllegalSignatureException()'],['../class_omni_kassa_1_1_exceptions_1_1_illegal_signature_exception.html#ac373934cd4d457604599415ad06373cd',1,'OmniKassa.Exceptions.IllegalSignatureException.IllegalSignatureException(int errorCode, String errorMessage)']]],
+  ['inmemorytokenprovider',['InMemoryTokenProvider',['../class_omni_kassa_1_1_in_memory_token_provider.html#a026cddd8f607639dda48bfa84d33fbbc',1,'OmniKassa::InMemoryTokenProvider']]],
+  ['invalidaccesstokenexception',['InvalidAccessTokenException',['../class_omni_kassa_1_1_exceptions_1_1_invalid_access_token_exception.html#a0cc7b308c54765e2c5477e71cd355d84',1,'OmniKassa.Exceptions.InvalidAccessTokenException.InvalidAccessTokenException(String message)'],['../class_omni_kassa_1_1_exceptions_1_1_invalid_access_token_exception.html#ae7e6aa030200453f554ae75475243169',1,'OmniKassa.Exceptions.InvalidAccessTokenException.InvalidAccessTokenException()']]],
+  ['isexpired',['IsExpired',['../class_omni_kassa_1_1_model_1_1_access_token.html#ac335bcf602a92676e4b3c304aa7cb9e2',1,'OmniKassa::Model::AccessToken']]],
+  ['isnotexpired',['IsNotExpired',['../class_omni_kassa_1_1_model_1_1_access_token.html#ab60573d6530fd47f5b1d20cef76f6a4d',1,'OmniKassa::Model::AccessToken']]]
+];

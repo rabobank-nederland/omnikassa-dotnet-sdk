@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29311.281
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNetCore11", "samples\OmniKassa.Samples.DotNetCore11\OmniKassa.Samples.DotNetCore11.csproj", "{7D702AB2-5F3B-42C7-AD54-C4F88B7B1E90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNetCore20", "samples\OmniKassa.Samples.DotNetCore20\OmniKassa.Samples.DotNetCore20.csproj", "{9432BB07-A3CC-4BC0-9E46-DD1C2D8257B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa", "src\OmniKassa\OmniKassa.csproj", "{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniKassa.Samples.DotNet461", "samples\OmniKassa.Samples.DotNet461\OmniKassa.Samples.DotNet461.csproj", "{13D50ADA-D2C3-43F0-9483-E5EA895C442A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNetCore30", "samples\OmniKassa.Samples.DotNetCore30\OmniKassa.Samples.DotNetCore30.csproj", "{C9F5B734-F781-4344-A50A-911691ED1D25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D702AB2-5F3B-42C7-AD54-C4F88B7B1E90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D702AB2-5F3B-42C7-AD54-C4F88B7B1E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D702AB2-5F3B-42C7-AD54-C4F88B7B1E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D702AB2-5F3B-42C7-AD54-C4F88B7B1E90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9432BB07-A3CC-4BC0-9E46-DD1C2D8257B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9432BB07-A3CC-4BC0-9E46-DD1C2D8257B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9432BB07-A3CC-4BC0-9E46-DD1C2D8257B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9432BB07-A3CC-4BC0-9E46-DD1C2D8257B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9F5B734-F781-4344-A50A-911691ED1D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F5B734-F781-4344-A50A-911691ED1D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9F5B734-F781-4344-A50A-911691ED1D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9F5B734-F781-4344-A50A-911691ED1D25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {647E20F4-174E-45AA-B4F7-23298751903D}
+	EndGlobalSection
+EndGlobal

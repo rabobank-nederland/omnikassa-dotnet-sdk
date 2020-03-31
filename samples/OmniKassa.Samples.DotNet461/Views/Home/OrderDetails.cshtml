@@ -1,0 +1,115 @@
+﻿@using OmniKassa.Model.Enums;
+
+@{
+    Layout = null;
+
+    var initials = "";
+    var dateOfBirth = "";
+    var telNumber = "";
+    var email = "";
+    Gender? gender = null;
+    PaymentBrand? paymentBrand = null;
+    PaymentBrandForce? paymentBrandForce = null;
+
+    if(Model != null)
+    {
+        initials = Model.Order.CustomerInformation.Initials;
+        dateOfBirth = Model.Order.CustomerInformation.DateOfBirth;
+        telNumber = Model.Order.CustomerInformation.TelephoneNumber;
+        email = Model.Order.CustomerInformation.EmailAddress;
+        gender = Model.Order.CustomerInformation.Gender;
+        paymentBrand = Model.Order.PaymentBrand;
+        paymentBrandForce = Model.Order.PaymentBrandForce;
+    }
+
+}
+
+<form method="post" action="/Home/PlaceOrder" name="order">
+    <br />
+    <h4>Customer information</h4>
+    <table class="order">
+        <tr>
+            <td>
+                <label for="customer_information_initials">Initials:</label>
+                <input type="text" name="initials" id="customer_information_initials" value="@initials">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="customer_information_birth_date">Birth date:</label>
+                <input type="text" name="birthDate" id="customer_information_birth_date" placeholder="DD-MM-YYYY" value="@dateOfBirth">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="customer_information_phone_number">Phone number:</label>
+                <input type="text" name="phoneNumber" id="customer_information_phone_number" value="@telNumber">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="customer_information_email">E-mail address:</label>
+                <input type="text" name="email" id="customer_information_email" value="@email">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="customer_information_gender">Gender:</label>
+                <select name="gender" id="customer_information_gender">
+                    <option value=""></option>
+                    <option value="F" @if (gender == Gender.F) { @Html.Raw("selected='selected'") ; }>Female</option>
+                    <option value="M" @if (gender == Gender.M) { @Html.Raw("selected='selected'") ; }>Male</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table>
+        <tr>
+            <td><h4>Shipping address</h4></td>
+            <td><h4>Billing address</h4></td>
+        </tr>
+        <tr>
+            <td>@{Html.RenderPartial("ShippingAddress");}</td>
+            <td>@{Html.RenderPartial("BillingAddress");}</td>
+        </tr>
+    </table>
+    <br />
+    <table>
+        <tr>
+            <td>
+                <label for="payment_brand">Payment brand:</label>
+                <select name="paymentBrand" id="payment_brand">
+                    <option value="ANY">Any</option>
+                    @{
+                        foreach (PaymentBrand item in typeof(PaymentBrand).GetEnumValues())
+                        {
+                            var name = Enum.GetName(typeof(PaymentBrand), item);
+                            <option value="@item" @if (item == paymentBrand) { @Html.Raw("selected='selected'") ; }>@item</option>
+                        }
+                    }
+                    </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="payment_brand_force">Payment brand force:</label>
+                <select name="paymentBrandForce" id="payment_brand_force">
+                    <option value="" selected="selected"></option>
+                    @{
+                        foreach (PaymentBrandForce item in typeof(PaymentBrandForce).GetEnumValues())
+                        {
+                            var name = Enum.GetName(typeof(PaymentBrandForce), item);
+                            <option value="@item" @if (item == paymentBrandForce) { @Html.Raw("selected='selected'") ; }>@item</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Place order" id="place_order">
+            </td>
+        </tr>
+    </table>
+</form>

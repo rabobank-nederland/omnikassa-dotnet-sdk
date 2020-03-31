@@ -1,0 +1,11 @@
+{
+  "middleName": "van",
+  "lastName": "Doe",
+  "postalCode": "1234AB",
+  "street": "DeveloperStreet",
+  "houseNumber": "1",
+  "houseNumberAddition": "a",
+  "countryCode": "NL",
+  "firstName": "Developer",
+  "city": "Utrecht"
+}

@@ -1,0 +1,14 @@
+{
+  "amount": {
+    "amount": "-1000",
+    "currency": "EUR"
+  },
+  "category": "PHYSICAL",
+  "tax": {
+    "amount": "-100",
+    "currency": "EUR"
+  },
+  "description": "Description",
+  "name": "Test product",
+  "quantity": 1
+}
