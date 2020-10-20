@@ -8,15 +8,17 @@ namespace OmniKassa.Tests.Model
 {
     public class AccessTokenTest
     {
-        [Fact(Skip = "Fix timezone problem first")]
+        [Fact]
         public void AccessToken()
         {
             AccessToken accessToken = new AccessTokenBuilder().Build();
+            DateTime validUntilInUtc = ((DateTime) accessToken.ValidUntil).ToUniversalTime();
+            String validUntilInUtcAsString = DateTimeUtils.DateToString(validUntilInUtc);
 
             Assert.Equal("token", accessToken.Token);
             Assert.Equal(28800000, accessToken.DurationInMillis);
-            string expected = "2016-09-22T10:10:04.848+" + TestHelper.GetLocalTimeZone("\\:");
-            Assert.Equal(expected, DateTimeUtils.DateToString((DateTime)accessToken.ValidUntil));
+            Assert.StartsWith("2016-09-22T08:10:04.848+", validUntilInUtcAsString);
+            Assert.Matches("\\d\\d:\\d\\d", validUntilInUtcAsString.Substring(validUntilInUtcAsString.Length - 5));
 
             Assert.False(accessToken.IsNotExpired());
         }
