@@ -24,13 +24,14 @@ namespace OmniKassa.Tests.Model.Utils
 
         private void AssertDateTime(DateTime dateTime)
         {
-            Assert.Equal(2016,  dateTime.Year);
-            Assert.Equal(7,     dateTime.Month);
-            Assert.Equal(28,    dateTime.Day);
-            Assert.Equal(12,    dateTime.Hour);
-            Assert.Equal(58,    dateTime.Minute);
-            Assert.Equal(50,    dateTime.Second);
-            Assert.Equal(205,   dateTime.Millisecond);
+            DateTime dateTimeInUtc = dateTime.ToUniversalTime();
+            Assert.Equal(2016, dateTimeInUtc.Year);
+            Assert.Equal(7, dateTimeInUtc.Month);
+            Assert.Equal(28, dateTimeInUtc.Day);
+            Assert.Equal(10, dateTimeInUtc.Hour);
+            Assert.Equal(58, dateTimeInUtc.Minute);
+            Assert.Equal(50, dateTimeInUtc.Second);
+            Assert.Equal(205, dateTimeInUtc.Millisecond);
         }
 
         [Fact]
@@ -43,15 +44,22 @@ namespace OmniKassa.Tests.Model.Utils
         public void DateToString_Should_ReturnStringWithRightDate_When_DateObjectIsValid()
         {
             DateTime dateTime = new DateTime(2016, 7, 28, 12, 58, 50, 205);
-            Assert.Equal(DATETIME_STRING, DateTimeUtils.DateToString(dateTime));
+            String actual = DateTimeUtils.DateToString(dateTime);
+            AssertDateTime("2016-07-28T12:58:50.205+", actual);
         }
 
         [Fact]
         public void StringToDateThenDateToString_Should_ReturnOriginalString_When_Always()
         {
-            DateTime dateTime = DateTimeUtils.StringToDate(DATETIME_STRING);
+            DateTime dateTime = DateTimeUtils.StringToDate(DATETIME_STRING).ToUniversalTime();
             String calendarString = DateTimeUtils.DateToString(dateTime);
-            Assert.Equal(DATETIME_STRING, calendarString);
+            AssertDateTime("2016-07-28T10:58:50.205+", calendarString);
+        }
+
+        private void AssertDateTime(String expectedPrefix, String actual)
+        {
+            Assert.StartsWith(expectedPrefix, actual);
+            Assert.Matches("\\d\\d:\\d\\d", actual.Substring(actual.Length - 5));
         }
 
     }
