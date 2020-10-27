@@ -21,8 +21,9 @@ namespace example_dotnetcore11.Controllers
 {
     public class HomeController : Controller
     {
-        private static readonly string SIGNING_KEY = "J+seXdXvw9SMuZu2sphZjRX+3p1gJfmZMenIjeQy+m0=";
-        private static readonly string TOKEN = "eyJraWQiOiIvKzdpVE5PL0FmSEhKN05kYmFWVGcyZTR6eXFjN3dYV3pFT08wcktoU0NJPSIsImFsZyI6IlJTMjU2In0.eyJta2lkIjoyNDI2NSwiZW52IjoiUyIsImV4cCI6NzI1ODAyODQwMH0.KnwaMEQSsAmF6Z1K7O6D8JMAPr6PgI16KYGUMv6jTO7BseX35N8C79jb8TjxVz27pX4d4jba1DpCPRE27zY70Y2OjDZOsiW9LZiTABe69ST8CchfrVXBQFtyiGLJis3L-fC21efntUiEfkM1m83UyDew5TIMADqMJOIV1G_lQ_rrzje5J35aVtLgIBUHi80cGqAyNoqBaZMspUhLK27pdybbIrFAPuS0rd_1K1tUhEB5MVnkF_N6KIlNotAdQdypT3WeUhfJtfEhn4SI9eFZ5dcz1ag6sdh_vZz174qkLOiLDvOOIuSXOXuLiM_dAS1pZepOJiREFqizNDkedpH48Q";
+        // Specify your signing key and the refresh token in the static properties below
+        private static readonly string SIGNING_KEY = "";
+        private static readonly string TOKEN = "";
         private static readonly string RETURN_URL = "http://localhost:56769/Home/Callback/";
 
         private static Endpoint omniKassa;

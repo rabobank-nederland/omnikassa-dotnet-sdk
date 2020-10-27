@@ -8,7 +8,7 @@ namespace OmniKassa.Tests
     {
         public static T GetObjectFromJsonFile<T>(String file)
         {
-            String fullName = TestConfig.RESOURCE_PREFIX + file;
+            String fullName = "omnikassa_dotnet_test.Resources." + file;
             var assembly = typeof(TestHelper).Assembly;
             string[] names = assembly.GetManifestResourceNames();
             Stream stream = assembly.GetManifestResourceStream(fullName);
