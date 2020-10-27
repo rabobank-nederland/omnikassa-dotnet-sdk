@@ -94,23 +94,23 @@ namespace OmniKassa.Model.Order
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
-        /// <param name="o">The object to compare with the current object.</param>
+        /// <param name="obj">The object to compare with the current object.</param>
         /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-        public override Boolean Equals(object o)
+        public override Boolean Equals(object obj)
         {
-            if (this == o)
+            if (this == obj)
             {
                 return true;
             }
-            if (o == null)
+            if (obj == null)
             {
                 return false;
             }
-            if (!(o is Address))
+            if (!(obj is Address))
             {
                 return false;
             }
-            Address address = (Address)o;
+            Address address = (Address)obj;
             return Equals(FirstName, address.FirstName) &&
                    Equals(MiddleName, address.MiddleName) &&
                    Equals(LastName, address.LastName) &&
