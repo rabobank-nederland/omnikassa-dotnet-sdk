@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Newtonsoft.Json;
 using OmniKassa.Model.Enums;
 using OmniKassa.Utils;
@@ -144,9 +143,7 @@ namespace OmniKassa.Model.Response
                 hash = (hash * -1521134295) + PointOfInteractionId.GetHashCode();
                 hash = (hash * -1521134295) + (MerchantOrderId == null ? 0 : MerchantOrderId.GetHashCode());
                 hash = (hash * -1521134295) + (OmnikassaOrderId == null ? 0 : OmnikassaOrderId.GetHashCode());
-                hash = (hash * -1521134295) + (orderStatus == null ? 0 : orderStatus.GetHashCode());
                 hash = (hash * -1521134295) + (ErrorCode == null ? 0 : ErrorCode.GetHashCode());
-                hash = (hash * -1521134295) + (orderStatusDateTime == null ? 0 : orderStatusDateTime.GetHashCode());
                 hash = (hash * -1521134295) + (PaidAmount == null ? 0 : PaidAmount.GetHashCode());
                 hash = (hash * -1521134295) + (TotalAmount == null ? 0 : TotalAmount.GetHashCode());
                 return hash;
