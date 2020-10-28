@@ -45,11 +45,11 @@
             foreach (var item in response.OrderResults)
             {
                 <tr>
-                    <td>@response.MerchantOrderId</td>
-                    <td>@response.OmniKassaOrderId</td>
-                    <td>@response.OrderStatus</td>
-                    <td>@response.PaidAmount.Amount</td>
-                    <td>@response.TotalAmount.Amount</td>
+                    <td>@item.MerchantOrderId</td>
+                    <td>@item.OmnikassaOrderId</td>
+                    <td>@item.OrderStatus</td>
+                    <td>@item.PaidAmount.Amount</td>
+                    <td>@item.TotalAmount.Amount</td>
                 </tr>
             }
         }
