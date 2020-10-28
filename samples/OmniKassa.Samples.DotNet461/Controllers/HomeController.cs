@@ -16,8 +16,8 @@ namespace OmniKassa.Samples.DotNet461.Controllers
     public class HomeController : Controller
     {
         // Specify your signing key and the refresh token in the static properties below
-        private static readonly string SIGNING_KEY = "";
-        private static readonly string TOKEN = "";
+        private static readonly string SIGNING_KEY = "c2VjcmV0";
+        private static readonly string TOKEN = "eyJraWQiOiIrcUNTdzlvL2dGcUMxeVlHWVhHZFBReGFVVTVLYlpPYWVCZjNiOHFrYWxvPSIsImFsZyI6IkVTMjU2In0.eyJta2lkIjoxMDI0LCJleHAiOjE2MzUzNDg5Nzd9._65ibDc4hkdeaaagSZwRC0qZZOl-L3swZ1klBTZJ4BTjhkqDc0ajEJQdo9TC8uBy-qzZZ7BDBRa_K2HuXi4VmA";
 
         private static readonly string RETURN_URL = "http://localhost:52000/Home/Callback/";
 
@@ -25,7 +25,7 @@ namespace OmniKassa.Samples.DotNet461.Controllers
 
         private static Endpoint omniKassa;
 
-        private int orderId = 0;
+        private long orderId = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         private WebShopModel webShopModel;
         private int orderItemId = 0;
 
@@ -35,7 +35,7 @@ namespace OmniKassa.Samples.DotNet461.Controllers
         {
             if (omniKassa == null)
             {
-                omniKassa = Endpoint.Create(Environment.SANDBOX, SIGNING_KEY, TOKEN);
+                omniKassa = Endpoint.Create("http://localhost:8081/", SIGNING_KEY, TOKEN);
             }
             webShopModel = SessionVar.Get<WebShopModel>(SESSION_ORDER);
             if(webShopModel != null)

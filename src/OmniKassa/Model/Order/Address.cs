@@ -64,7 +64,7 @@ namespace OmniKassa.Model.Order
         /// </summary>
         [JsonProperty(PropertyName = "countryCode")]
         [JsonConverter(typeof(EnumJsonConverter<CountryCode>))]
-        public CountryCode CountryCode;
+        public CountryCode CountryCode { get; private set; }
 
         /// <summary>
         /// Initializes an empty Address
