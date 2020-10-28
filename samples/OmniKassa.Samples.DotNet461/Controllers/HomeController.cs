@@ -1,5 +1,4 @@
-﻿using OmniKassa;
-using OmniKassa.Samples.DotNet461.Models;
+﻿using OmniKassa.Samples.DotNet461.Models;
 using OmniKassa.Samples.DotNet461.Helpers;
 using OmniKassa.Exceptions;
 using OmniKassa.Model.Enums;
@@ -35,7 +34,7 @@ namespace OmniKassa.Samples.DotNet461.Controllers
         {
             if (omniKassa == null)
             {
-                omniKassa = Endpoint.Create("http://localhost:8081/", SIGNING_KEY, TOKEN);
+                omniKassa = Endpoint.Create(Environment.SANDBOX, SIGNING_KEY, TOKEN);
             }
             webShopModel = SessionVar.Get<WebShopModel>(SESSION_ORDER);
             if(webShopModel != null)
