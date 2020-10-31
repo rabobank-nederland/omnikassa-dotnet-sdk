@@ -63,15 +63,6 @@ namespace OmniKassa.Model.Order
             TelephoneNumber = builder.TelephoneNumber;
         }
 
-        private String GetNullSafe(Enum value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-            return value.ToString();
-        }
-
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
