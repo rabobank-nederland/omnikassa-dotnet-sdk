@@ -4,6 +4,7 @@ namespace OmniKassa.Exceptions
     /// <summary>
     /// Represents errors that occur during OmniKassa SDK execution.
     /// </summary>
+    [Serializable]
     public class RabobankSdkException : Exception
     {
         /// <summary>

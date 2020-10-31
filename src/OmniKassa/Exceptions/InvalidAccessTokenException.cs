@@ -4,6 +4,7 @@ namespace OmniKassa.Exceptions
     /// <summary>
     /// Exception thrown when the access token is invalid
     /// </summary>
+    [Serializable]
     public class InvalidAccessTokenException : IllegalApiResponseException
     {
         /// <summary>
