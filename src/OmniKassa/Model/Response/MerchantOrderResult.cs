@@ -126,7 +126,7 @@ namespace OmniKassa.Model.Response
                 Equals(OmnikassaOrderId, order.OmnikassaOrderId) &&
                 Equals(OrderStatus, order.OrderStatus) &&
                 Equals(ErrorCode, order.ErrorCode) &&
-                Equals(orderStatusDateTime, order.orderStatusDateTime) &&
+                Equals(OrderStatusDateTime, order.OrderStatusDateTime) &&
                 Equals(PaidAmount, order.PaidAmount) &&
                 Equals(TotalAmount, order.TotalAmount);
         }
@@ -143,7 +143,9 @@ namespace OmniKassa.Model.Response
                 hash = (hash * -1521134295) + PointOfInteractionId.GetHashCode();
                 hash = (hash * -1521134295) + (MerchantOrderId == null ? 0 : MerchantOrderId.GetHashCode());
                 hash = (hash * -1521134295) + (OmnikassaOrderId == null ? 0 : OmnikassaOrderId.GetHashCode());
+                hash = (hash * -1521134295) + (OrderStatus == null ? 0 : OrderStatus.GetHashCode());
                 hash = (hash * -1521134295) + (ErrorCode == null ? 0 : ErrorCode.GetHashCode());
+                hash = (hash * -1521134295) + (OrderStatusDateTime == null ? 0 : OrderStatusDateTime.GetHashCode());
                 hash = (hash * -1521134295) + (PaidAmount == null ? 0 : PaidAmount.GetHashCode());
                 hash = (hash * -1521134295) + (TotalAmount == null ? 0 : TotalAmount.GetHashCode());
                 return hash;
