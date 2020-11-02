@@ -3,11 +3,9 @@ using Newtonsoft.Json.Linq;
 using OmniKassa.Exceptions;
 using OmniKassa.Model.Response;
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
+
 using System.Text;
 
 namespace OmniKassa.Http
@@ -15,7 +13,7 @@ namespace OmniKassa.Http
     /// <summary>
     /// OmniKassa API client functions
     /// </summary>
-    public sealed partial class OmniKassaHttpClient
+    public sealed partial class OmniKassaHttpClient : IDisposable
     {
         private static readonly string PATH_ANNOUNCE_ORDER = "order/server/api/v2/order";
         private static readonly string PATH_GET_ORDER_STATUS = "order/server/api/events/results/";
@@ -88,6 +86,14 @@ namespace OmniKassa.Http
             {
                 throw IllegalApiResponseException.Of(json);
             }
+        }
+
+        /// <summary>
+        /// Disposes the HttpClient.
+        /// </summary>
+        public void Dispose()
+        {
+            mClient.Dispose();
         }
     }
 }

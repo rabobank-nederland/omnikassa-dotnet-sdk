@@ -1,5 +1,4 @@
-﻿using OmniKassa;
-using OmniKassa.Samples.DotNet461.Models;
+﻿using OmniKassa.Samples.DotNet461.Models;
 using OmniKassa.Samples.DotNet461.Helpers;
 using OmniKassa.Exceptions;
 using OmniKassa.Model.Enums;

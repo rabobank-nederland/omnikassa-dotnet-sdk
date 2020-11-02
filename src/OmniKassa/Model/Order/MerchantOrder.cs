@@ -125,23 +125,23 @@ namespace OmniKassa.Model.Order
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
-        /// <param name="o">The object to compare with the current object.</param>
+        /// <param name="obj">The object to compare with the current object.</param>
         /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-        public override Boolean Equals(object o)
+        public override Boolean Equals(object obj)
         {
-            if (this == o)
+            if (this == obj)
             {
                 return true;
             }
-            if (o == null)
+            if (obj == null)
             {
                 return false;
             }
-            if (!(o is MerchantOrder))
+            if (!(obj is MerchantOrder))
             {
                 return false;
             }
-            MerchantOrder order = (MerchantOrder)o;
+            MerchantOrder order = (MerchantOrder)obj;
             return Equals(MerchantOrderId, order.MerchantOrderId) &&
                 Equals(Amount, order.Amount) &&
                 Equals(Language, order.Language) &&

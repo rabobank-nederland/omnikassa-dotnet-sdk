@@ -141,19 +141,19 @@ namespace OmniKassa.Model
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
-        /// <param name="o">The object to compare with the current object.</param>
+        /// <param name="obj">The object to compare with the current object.</param>
         /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-        public override Boolean Equals(Object o)
+        public override Boolean Equals(Object obj)
         {
-            if (this == o)
+            if (this == obj)
             {
                 return true;
             }
-            if (!(o is Money))
+            if (!(obj is Money))
             {
                 return false;
             }
-            Money that = (Money)o;
+            Money that = (Money)obj;
             return Equals(Currency, that.Currency) &&
                    Equals(Amount, that.Amount) &&
                    Equals(AmountInCents, that.AmountInCents);
