@@ -7,6 +7,7 @@ namespace OmniKassa.Exceptions
     /// <summary>
     /// The response returned when an error occurred while executing an OmniKassa API request
     /// </summary>
+    [Serializable]
     public class IllegalApiResponseException : RabobankSdkException
     {
         /// <summary>

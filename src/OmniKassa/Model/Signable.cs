@@ -45,11 +45,13 @@ namespace OmniKassa.Model
             String payload = String.Join(",", parts);
             try
             {
-                HMACSHA512 hmac = new HMACSHA512(signingKey);
-                hmac.Initialize();
-                byte[] bytes = Encoding.UTF8.GetBytes(payload);
-                byte[] rawHmac = hmac.ComputeHash(bytes);
-                return ByteArrayToString(rawHmac);
+                using (HMACSHA512 hmac = new HMACSHA512(signingKey))
+                {
+                    hmac.Initialize();
+                    byte[] bytes = Encoding.UTF8.GetBytes(payload);
+                    byte[] rawHmac = hmac.ComputeHash(bytes);
+                    return ByteArrayToString(rawHmac);
+                }
             }
             catch (Exception anyException)
             {
