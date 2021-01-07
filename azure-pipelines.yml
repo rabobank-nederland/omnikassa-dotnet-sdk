@@ -99,7 +99,6 @@ jobs:
         inputs:
           PathtoPublish: $(build.artifactstagingdirectory)
           ArtifactName: $(BuildParameters.ArtifactName)
-          TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
   - job: "security_gate"
     displayName: "Security gate"
     pool:
