@@ -41,7 +41,7 @@ jobs:
       - task: SonarQubePrepare@4
         displayName: Prepare analysis on SonarQube
         inputs:
-          SonarQube: 1d70f66a-3a69-4f69-92bd-c4499862de0b
+          SonarQube: $(sonarQubeServiceConnection)
           projectKey: nl.rabobank.gict.payments_savings.omnikassa_frontend.sdk:dotnet
           projectName: Rabobank OmniKassa - .NET SDK
           extraProperties: sonar.exclusions=samples/**
@@ -76,7 +76,7 @@ jobs:
       - task: NexusIqPipelineTask@1
         displayName: Nexus IQ policy evaluation
         inputs:
-          nexusIqService: 69af253f-faf5-4412-95ae-d4cd5300eac6
+          nexusIqService: $(nexusServiceConnection)
           applicationId: omnikassa-frontend-sdk-net
           stage: Develop
           scanTargets: src/**/*.dll
@@ -120,6 +120,6 @@ jobs:
           buildToolOptions: -dotnet-version 2.1
           fortifyBuildId: rofe
           runFortifyUpload: true
-          fortifyServerName: a19e78a6-1cac-43ef-8dec-6e30e9136511
+          fortifyServerName: $(fortifyServiceConnection)
           fortifyApplicationName: ps_omnikassa-dotnet-sdk_fortify
           fortifyApplicationVersion: 1.0
