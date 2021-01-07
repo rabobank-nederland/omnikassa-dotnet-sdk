@@ -1,8 +1,3 @@
-variables:
-  - name: BuildParameters.solution
-    value: '**\*.sln'
-  - name: BuildParameters.ArtifactName
-    value: omnikassa-dotnet-sdk
 trigger:
   branches:
     include:
