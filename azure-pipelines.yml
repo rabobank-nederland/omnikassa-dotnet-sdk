@@ -7,7 +7,7 @@ schedules:
   - cron: 0 22 * * 0
     branches:
       include:
-        - develop
+        - master
     always: true
 name: $(date:yyyyMMdd)$(rev:.r)
 resources:
