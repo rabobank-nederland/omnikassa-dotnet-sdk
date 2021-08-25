@@ -73,7 +73,7 @@ jobs:
         inputs:
           nexusIqService: $(nexusServiceConnection)
           applicationId: omnikassa-frontend-sdk-net
-          stage: Develop
+          stage: release
           scanTargets: src/**/*.dll
       - task: VSBuild@1
         displayName: Build Omnikassa SDK Samples
