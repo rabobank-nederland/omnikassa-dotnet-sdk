@@ -70,10 +70,11 @@ jobs:
             echo "##vso[task.setvariable variable=PATH]$(JAVA_HOME_11_X64)\bin;$(PATH)"
       - task: NexusIqPipelineTask@1
         displayName: Nexus IQ policy evaluation
+        continueOnError: true
         inputs:
           nexusIqService: $(nexusServiceConnection)
           applicationId: omnikassa-frontend-sdk-net
-          stage: Develop
+          stage: release
           scanTargets: src/**/*.dll
       - task: VSBuild@1
         displayName: Build Omnikassa SDK Samples
