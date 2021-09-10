@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OmniKassa.Model;
 using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
@@ -23,7 +24,17 @@ namespace OmniKassa.Tests.Model
                     .WithPaymentBrand(PaymentBrand.IDEAL)
                     .WithPaymentBrandForce(PaymentBrandForce.FORCE_ALWAYS)
                     .WithInitiatingParty("LIGHTSPEED")
+                    .WithSkipHppResultPage(true)
+                    .WithPaymentBrandMetaData(GetPaymentBrandMetaData())
                     .Build();
+        }
+
+        private static Dictionary<string, string> GetPaymentBrandMetaData()
+        {
+            return new Dictionary<string, string>()
+            {
+                { "issuerId", "RABONL2U" }
+            };
         }
 
         private static MerchantOrder.Builder DefaultBuilder()

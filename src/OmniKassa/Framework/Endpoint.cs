@@ -79,6 +79,27 @@ namespace OmniKassa
         }
 
         /// <summary>
+        /// Retrieves the available iDEAL issuers
+        /// </summary>
+        /// <returns>iDEAL issuers</returns>
+        public IdealIssuersResponse RetrieveIdealIssuers()
+        {
+            ValidateAccessToken();
+
+            try
+            {
+                return httpClient.RetrieveIdealIssuers(tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                // We might have mistakenly assumed the token was still valid
+                RetrieveNewToken();
+
+                return httpClient.RetrieveIdealIssuers(tokenProvider.GetAccessToken());
+            }
+        }
+
+        /// <summary>
         /// Retrieves a new access token
         /// </summary>
         public void RetrieveNewToken()

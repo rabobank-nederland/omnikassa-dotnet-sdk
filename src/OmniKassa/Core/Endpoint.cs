@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD1_3 || NETSTANDARD2_0 || NETSTANDARD2_1
+﻿#if NETSTANDARD1_3 || NETSTANDARD2_0 || NETSTANDARD2_1 || NET5_0_OR_GREATER
 
 using OmniKassa.Exceptions;
 using OmniKassa.Model;
@@ -74,6 +74,27 @@ namespace OmniKassa
                 await RetrieveNewToken();
 
                 return await httpClient.RetrievePaymentBrands(tokenProvider.GetAccessToken());
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the available iDEAL issuers
+        /// </summary>
+        /// <returns>iDEAL issuers</returns>
+        public async Task<IdealIssuersResponse> RetrieveIdealIssuers()
+        {
+            await ValidateAccessToken();
+
+            try
+            {
+                return await httpClient.RetrieveIdealIssuers(tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                // We might have mistakenly assumed the token was still valid
+                await RetrieveNewToken();
+
+                return await httpClient.RetrieveIdealIssuers(tokenProvider.GetAccessToken());
             }
         }
 

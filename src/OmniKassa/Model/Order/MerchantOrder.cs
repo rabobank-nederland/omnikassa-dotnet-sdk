@@ -83,6 +83,18 @@ namespace OmniKassa.Model.Order
         public PaymentBrandForce? PaymentBrandForce { get; private set; }
 
         /// <summary>
+        /// Extra information about the payment brand
+        /// </summary>
+        [JsonProperty(PropertyName = "paymentBrandMetaData", NullValueHandling = NullValueHandling.Ignore)]
+        public IReadOnlyDictionary<string, string> PaymentBrandMetaData { get; private set; }
+
+        /// <summary>
+        /// Skip result page
+        /// </summary>
+        [JsonProperty(PropertyName = "skipHppResultPage")]
+        public bool SkipHppResultPage { get; private set; }
+
+        /// <summary>
         /// Timestamp of the order
         /// </summary>
         [JsonProperty(PropertyName = "timestamp")]
@@ -119,6 +131,8 @@ namespace OmniKassa.Model.Order
             this.CustomerInformation = builder.CustomerInformation;
             this.PaymentBrand = builder.PaymentBrand;
             this.PaymentBrandForce = builder.PaymentBrandForce;
+            this.PaymentBrandMetaData = builder.PaymentBrandMetaData;
+            this.SkipHppResultPage = builder.SkipHppResultPage;
             this.InitiatingParty = builder.InitiatingParty;
         }
 
@@ -153,8 +167,33 @@ namespace OmniKassa.Model.Order
                 Equals(CustomerInformation, order.CustomerInformation) &&
                 Equals(PaymentBrand, order.PaymentBrand) &&
                 Equals(PaymentBrandForce, order.PaymentBrandForce) &&
+                EqualsPaymentBrandMetaData(PaymentBrandMetaData, order.PaymentBrandMetaData) &&
+                Equals(SkipHppResultPage, order.SkipHppResultPage) &&
                 Equals(Timestamp, order.Timestamp) &&
                 Equals(InitiatingParty, order.InitiatingParty);
+        }
+
+        private bool EqualsPaymentBrandMetaData(
+            IReadOnlyDictionary<string, string> one,
+            IReadOnlyDictionary<string, string> two)
+        {
+            // Handle empty dictionaries as null
+            var tmpOne = one != null && one.Count > 0 ? one : null;
+            var tmpTwo = two != null && two.Count > 0 ? two : null;
+
+            // When both are null, items are the same.
+            if (tmpOne == null && tmpTwo == null)
+            {
+                return true;
+            }
+            // If only one is null, items are not the same.
+            if (tmpOne == null || tmpTwo == null)
+            {
+                return false;
+            }
+            // Order both dictionaries and compare their items.
+            return tmpOne.OrderBy(kvp => kvp.Key, StringComparer.Ordinal)
+                    .SequenceEqual(tmpTwo.OrderBy(kvp => kvp.Key, StringComparer.Ordinal));
         }
 
         /// <summary>
@@ -180,6 +219,16 @@ namespace OmniKassa.Model.Order
                 hash = (hash * -1521134295) + (CustomerInformation == null ? 0 : CustomerInformation.GetHashCode());
                 hash = (hash * -1521134295) + (PaymentBrand == null ? 0 : PaymentBrand.GetHashCode());
                 hash = (hash * -1521134295) + (PaymentBrandForce == null ? 0 : PaymentBrandForce.GetHashCode());
+                if (PaymentBrandMetaData != null)
+                {
+                    var orderedMetaData = PaymentBrandMetaData.OrderBy(kvp => kvp.Key, StringComparer.Ordinal);
+                    foreach (KeyValuePair<string, string> result in orderedMetaData)
+                    {
+                        hash = (hash * -1521134295) + result.Key.GetHashCode();
+                        hash = (hash * -1521134295) + result.Value.GetHashCode();
+                    }
+                }
+                hash = (hash * -1521134295) + SkipHppResultPage.GetHashCode();
                 hash = (hash * -1521134295) + (Timestamp == null ? 0 : Timestamp.GetHashCode());
                 hash = (hash * -1521134295) + (InitiatingParty == null ? 0 : InitiatingParty.GetHashCode());
                 return hash;
@@ -203,6 +252,8 @@ namespace OmniKassa.Model.Order
             public CustomerInformation CustomerInformation { get; private set; }
             public PaymentBrand? PaymentBrand { get; private set; }
             public PaymentBrandForce? PaymentBrandForce { get; private set; }
+            public Dictionary<string, string> PaymentBrandMetaData { get; private set; } = new Dictionary<string, string>();
+            public bool SkipHppResultPage { get; private set; }
             public String InitiatingParty { get; private set; }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -331,6 +382,28 @@ namespace OmniKassa.Model.Order
             public Builder WithPaymentBrandForce(PaymentBrandForce? paymentBrandForce)
             {
                 this.PaymentBrandForce = paymentBrandForce;
+                return this;
+            }
+
+            /// <summary>
+            /// Can be used for supplying extra information about the payment brand.
+            /// </summary>
+            /// <param name="paymentBrandMetaData">Optional</param>
+            /// <returns>Builder</returns>
+            public Builder WithPaymentBrandMetaData(Dictionary<string, string> paymentBrandMetaData)
+            {
+                this.PaymentBrandMetaData = paymentBrandMetaData;
+                return this;
+            }
+
+            /// <summary>
+            /// Set to true if you want the customer to be immediately redirected to your webshop after the payment has concluded.
+            /// </summary>
+            /// <param name="skipHppResultPage">Optional</param>
+            /// <returns>Builder</returns>
+            public Builder WithSkipHppResultPage(bool skipHppResultPage)
+            {
+                this.SkipHppResultPage = skipHppResultPage;
                 return this;
             }
 

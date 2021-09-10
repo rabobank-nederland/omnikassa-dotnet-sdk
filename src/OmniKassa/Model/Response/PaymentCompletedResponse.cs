@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using OmniKassa.Exceptions;
 using OmniKassa.Model.Enums;
@@ -13,6 +14,10 @@ namespace OmniKassa.Model.Response
     [JsonObject(MemberSerialization.OptIn)]
     public class PaymentCompletedResponse : SignedResponse
     {
+        private static Regex ORDER_ID_PATTERN = new Regex("^[a-zA-Z0-9]{1,24}$");
+        private static Regex STATUS_PATTERN = new Regex("^[A-Z_]{1,20}$");
+        private static Regex SIGNATURE_PATTERN = new Regex("^[0-9a-f]{128}$");
+
         /// <summary>
         /// Order ID parameter key
         /// </summary>
@@ -90,6 +95,7 @@ namespace OmniKassa.Model.Response
         private PaymentCompletedResponse(String orderId, String status, String signature) :
             base(signature)
         {
+            ValidateParameters(orderId, status, signature);
             this.orderId = orderId;
             this.status = status;
         }
@@ -215,6 +221,20 @@ namespace OmniKassa.Model.Response
             return new List<String>(new String[] {
                 orderId, status
             });
+        }
+
+        private static void ValidateParameters(String orderId, String status, String signature)
+        {
+            if (orderId == null || !ORDER_ID_PATTERN.IsMatch(orderId)) {
+                throw new IllegalParameterException("Invalid value for orderId");
+            }
+            if (status == null || !STATUS_PATTERN.IsMatch(status)) {
+                throw new IllegalParameterException("Invalid value for status");
+            }
+            if (signature == null || !SIGNATURE_PATTERN.IsMatch(signature))
+            {
+                throw new IllegalParameterException("Invalid value for signature");
+            }
         }
     }
 }

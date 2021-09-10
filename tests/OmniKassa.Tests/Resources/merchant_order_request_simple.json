@@ -8,5 +8,6 @@
   "language": "NL",
   "orderItems": [],
   "merchantOrderId": "ORDID123",
-  "merchantReturnURL": "http://localhost/"
+  "merchantReturnURL": "http://localhost/",
+  "skipHppResultPage": false
 }

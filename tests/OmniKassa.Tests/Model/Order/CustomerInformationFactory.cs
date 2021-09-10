@@ -14,6 +14,7 @@ namespace OmniKassa.Tests.Model.Order
                     .WithEmailAddress("developer@example.com")
                     .WithInitials("d.")
                     .WithTelephoneNumber("0031204111111")
+                    .WithFullName("Jan de Ruiter")
                     .Build();
         }
 

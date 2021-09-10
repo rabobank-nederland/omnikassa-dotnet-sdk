@@ -83,6 +83,40 @@
 </table>
 
 <form method="post" action="/Home/RetrievePaymentBrands" name="payment_brands">
-    <input type="submit" value="Retrieve payment brands" id="retrieve_paymnent_brands">
+    <input type="submit" value="Retrieve payment brands" id="retrieve_payment_brands">
+</form>
+<br />
+
+<table>
+    <colgroup width="100" />
+    <colgroup width="160" />
+    <colgroup width="80" />
+    <colgroup width="80" />
+    <colgroup width="200" />
+    <tr>
+        <td><b>Id</b></td>
+        <td><b>Name</b></td>
+        <td><b>Logo</b></td>
+        <td><b>Mime-type</b></td>
+        <td><b>Country names</b></td>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var issuer in Model.GetIdealIssuers())
+        {
+            <tr>
+                <td>@issuer.Id</td>
+                <td>@issuer.Name</td>
+                <td><img src=@issuer.Logos[0].Url alt=@issuer.Name width="50" height="50" /></td>
+                <td>@issuer.Logos[0].MimeType</td>
+                <td>@issuer.CountryNames</td>
+            </tr>
+        }
+    }
+
+</table>
+
+<form method="post" action="/Home/RetrieveIdealIssuers" name="ideal_issuers">
+    <input type="submit" value="Retrieve iDEAL issuers" id="retrieve_ideal_issuers">
 </form>
 <br />

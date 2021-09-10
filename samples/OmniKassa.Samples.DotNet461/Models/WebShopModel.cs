@@ -20,6 +20,8 @@ namespace OmniKassa.Samples.DotNet461.Models
 
         public PaymentBrandsResponse PaymentBrandsResponse { get; set; }
 
+        public IdealIssuersResponse IdealIssuersResponse { get; set; }
+
         public string Error { get; set; }
 
         public WebShopModel(MerchantOrder.Builder order)
@@ -63,7 +65,10 @@ namespace OmniKassa.Samples.DotNet461.Models
                                                   Address shippingDetails,
                                                   Address billingDetails,
                                                   PaymentBrand? paymentBrand,
-                                                  PaymentBrandForce? paymentBrandForce)
+                                                  PaymentBrandForce? paymentBrandForce,
+                                                  Dictionary<string, string> paymentBrandMetaData,
+                                                  string initiatingParty,
+                                                  bool skipHppResultPage)
         {
             MerchantOrderBuilder.WithAmount(Money.FromDecimal(Currency.EUR, totalPrice))
                     .WithLanguage(Language.NL)
@@ -73,6 +78,9 @@ namespace OmniKassa.Samples.DotNet461.Models
                     .WithCustomerInformation(customerInformation)
                     .WithPaymentBrand(paymentBrand)
                     .WithPaymentBrandForce(paymentBrandForce)
+                    .WithPaymentBrandMetaData(paymentBrandMetaData)
+                    .WithInitiatingParty(initiatingParty)
+                    .WithSkipHppResultPage(skipHppResultPage)
                     .Build();
 
             return MerchantOrderBuilder.Build();
@@ -97,6 +105,15 @@ namespace OmniKassa.Samples.DotNet461.Models
                 return Convert.ToInt32(items[items.Count - 1].Id);
             }
             return 0;
+        }
+
+        public List<IdealIssuer> GetIdealIssuers()
+        {
+            if (IdealIssuersResponse != null && IdealIssuersResponse.IdealIssuers != null)
+            {
+                return IdealIssuersResponse.IdealIssuers;
+            }
+            return new List<IdealIssuer>();
         }
     }
 }

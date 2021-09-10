@@ -29,6 +29,7 @@ namespace OmniKassa.Tests.Model.Order
             Assert.Equal(Gender.M, customerInformationFull.Gender);
             Assert.Equal("d.", customerInformationFull.Initials);
             Assert.Equal("0031204111111", customerInformationFull.TelephoneNumber);
+            Assert.Equal("Jan de Ruiter", customerInformationFull.FullName);
         }
 
         [Fact]
@@ -51,7 +52,7 @@ namespace OmniKassa.Tests.Model.Order
         public void Json_Should_ReturnCorrectJsonObject()
         {
             String actualJson = JsonConvert.SerializeObject(customerInformation);
-            String expectedJson = "{\"emailAddress\":null,\"dateOfBirth\":null,\"initials\":null,\"telephoneNumber\":null,\"gender\":null}";
+            String expectedJson = "{\"emailAddress\":null,\"dateOfBirth\":null,\"initials\":null,\"telephoneNumber\":null,\"gender\":null,\"fullName\":null}";
 
             Assert.Equal(expectedJson, actualJson, true);
         }

@@ -189,6 +189,20 @@ namespace OmniKassa.Samples.DotNet461.Controllers
             return View("Index", webShopModel);
         }
 
+        [HttpPost]
+        public ActionResult RetrieveIdealIssuers()
+        {
+            try
+            {
+                webShopModel.IdealIssuersResponse = omniKassa.RetrieveIdealIssuers();
+            }
+            catch (RabobankSdkException ex)
+            {
+                webShopModel.Error = ex.Message;
+            }
+            return View("Index", webShopModel);
+        }
+
         public MerchantOrder.Builder GetOrder(int orderId)
         {
             CustomerInformation customerInformation = new CustomerInformation.Builder()
@@ -197,6 +211,7 @@ namespace OmniKassa.Samples.DotNet461.Controllers
                     .WithGender(Gender.M)
                     .WithEmailAddress("johndoe@rabobank.com")
                     .WithDateOfBirth("20-03-1987")
+                    .WithFullName("Jan de Ruiter")
                     .Build();
 
             Address shippingDetails = new Address.Builder()

@@ -79,6 +79,16 @@ namespace OmniKassa.Http
         }
 
         /// <summary>
+        /// Retrieves the available iDEAL issuers
+        /// </summary>
+        /// <param name="token">Access token</param>
+        /// <returns>iDEAL issuers</returns>
+        public IdealIssuersResponse RetrieveIdealIssuers(String token)
+        {
+            return GetAsync<IdealIssuersResponse>(mClient, PATH_GET_IDEAL_ISSUERS, token);
+        }
+
+        /// <summary>
         /// Retrieves a new token.
         /// </summary>
         /// <returns>New access token</returns>

@@ -43,6 +43,12 @@ namespace OmniKassa.Model.Order
         public Gender? Gender { get; private set; }
 
         /// <summary>
+        /// Full name
+        /// </summary>
+        [JsonProperty(PropertyName = "fullName")]
+        public String FullName { get; private set; }
+
+        /// <summary>
         /// Initializes an empty CustomerInformation
         /// </summary>
         public CustomerInformation()
@@ -61,6 +67,7 @@ namespace OmniKassa.Model.Order
             Gender = builder.Gender;
             Initials = builder.Initials;
             TelephoneNumber = builder.TelephoneNumber;
+            FullName = builder.FullName;
         }
 
         /// <summary>
@@ -82,7 +89,8 @@ namespace OmniKassa.Model.Order
                    Equals(DateOfBirth, that.DateOfBirth) &&
                    Equals(Initials, that.Initials) &&
                    Equals(TelephoneNumber, that.TelephoneNumber) &&
-                   Gender == that.Gender;
+                   Gender == that.Gender &&
+                   Equals(FullName, that.FullName);
         }
 
         /// <summary>
@@ -99,6 +107,7 @@ namespace OmniKassa.Model.Order
                 hash = (hash * -1521134295) + (Initials == null ? 0 : Initials.GetHashCode());
                 hash = (hash * -1521134295) + (TelephoneNumber == null ? 0 : TelephoneNumber.GetHashCode());
                 hash = (hash * -1521134295) + (Gender == null ? 0 : Gender.GetHashCode());
+                hash = (hash * -1521134295) + (FullName == null ? 0 : FullName.GetHashCode());
                 return hash;
             }
         }
@@ -114,6 +123,7 @@ namespace OmniKassa.Model.Order
             public String Initials { get; private set; }
             public String TelephoneNumber { get; private set; }
             public String DateOfBirth { get; private set; }
+            public String FullName { get; private set; }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
             /// <summary>
@@ -178,6 +188,18 @@ namespace OmniKassa.Model.Order
             public Builder WithDateOfBirth(String dateOfBirth)
             {
                 this.DateOfBirth = dateOfBirth;
+                return this;
+            }
+
+            /// <summary>
+            /// - Optional
+            /// - Maximum length of '128' characters
+            /// </summary>
+            /// <param name="fullName">Full name</param>
+            /// <returns>Builder</returns>
+            public Builder WithFullName(String fullName)
+            {
+                this.FullName = fullName;
                 return this;
             }
 
