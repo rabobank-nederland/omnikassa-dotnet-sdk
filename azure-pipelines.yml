@@ -26,9 +26,9 @@ jobs:
       - task: CredScan@2
         displayName: Run Credential Scanner
       - task: NuGetToolInstaller@0
-        displayName: Use NuGet 5.11.0.10
+        displayName: Use NuGet 5.11.0
         inputs:
-          versionSpec: 5.11.0.10
+          versionSpec: 5.11.0
       - task: NuGetCommand@2
         displayName: NuGet restore
         inputs:
