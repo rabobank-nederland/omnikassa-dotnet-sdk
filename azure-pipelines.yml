@@ -40,7 +40,7 @@ jobs:
           projectKey: nl.rabobank.gict.payments_savings.omnikassa_frontend.sdk:dotnet
           projectName: Rabobank OmniKassa - .NET SDK
           extraProperties: sonar.exclusions=samples/**
-      - task: VSBuild@1
+      - task: DotNetCoreCLI@2
         displayName: Build Omnikassa SDK
         inputs:
           solution: OmniKassa.sln
