@@ -73,10 +73,6 @@ jobs:
           applicationId: omnikassa-frontend-sdk-net
           stage: release
           scanTargets: src/**/*.dll
-      - task: DotNetCoreCLI@2
-        displayName: Build Omnikassa SDK Samples
-        inputs:
-          projects: OmniKassa.Samples.sln
       - task: PostAnalysis@1
         displayName: Post Analysis
         inputs:
