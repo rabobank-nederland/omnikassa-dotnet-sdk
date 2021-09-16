@@ -46,6 +46,7 @@ jobs:
         displayName: Build Omnikassa SDK
         inputs:
           projects: OmniKassa.sln
+          arguments: '--configuration $(buildConfiguration)'
       - task: DotNetCoreCLI@2
         displayName: Test Assemblies
         inputs:
