@@ -44,7 +44,6 @@ jobs:
         displayName: Build Omnikassa SDK
         inputs:
           projects: OmniKassa.sln
-          buildProperties: DeployOnBuild=true;WebPublishMethod=Package;PackageAsSingleFile=true;SkipInvalidConfigurations=true;DesktopBuildPackageLocation="$(build.artifactstagingdirectory)\WebApp.zip";DeployIisAppPath="Default Web Site"
       - task: VSTest@2
         displayName: Test Assemblies
         inputs:
@@ -74,13 +73,10 @@ jobs:
           applicationId: omnikassa-frontend-sdk-net
           stage: release
           scanTargets: src/**/*.dll
-      - task: VSBuild@1
+      - task: DotNetCoreCLI@2
         displayName: Build Omnikassa SDK Samples
         inputs:
-          solution: OmniKassa.Samples.sln
-          msbuildArgs: /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactstagingdirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"
-          platform: $(BuildPlatform)
-          configuration: $(BuildConfiguration)
+          projects: OmniKassa.Samples.sln
       - task: PostAnalysis@1
         displayName: Post Analysis
         inputs:
