@@ -1,0 +1,15 @@
+{
+  "issuers": [
+    {
+      "id": "ASNBNL21",
+      "name": "ASN Bank",
+      "logos": [
+        {
+          "url": "http://rabobank.nl/static/issuers/ASNBNL21.png",
+          "mimeType": "image/png"
+        }
+      ],
+      "countryNames": "Nederland"
+    }
+  ]
+} 

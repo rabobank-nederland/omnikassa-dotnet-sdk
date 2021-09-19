@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD1_3 || NETSTANDARD2_0 || NETSTANDARD2_1
+﻿#if NETSTANDARD1_3 || NETSTANDARD2_0 || NETSTANDARD2_1 || NET5_0_OR_GREATER
 
 using System;
 using System.Net.Http;
@@ -53,6 +53,16 @@ namespace OmniKassa.Http
         public Task<PaymentBrandsResponse> RetrievePaymentBrands(String token)
         {
             return GetAsync<PaymentBrandsResponse>(mClient, PATH_GET_PAYMENT_BRANDS, token);
+        }
+
+        /// <summary>
+        /// Retrieves the available iDEAL issuers
+        /// </summary>
+        /// <param name="token">Access token</param>
+        /// <returns>iDEAL issuers</returns>
+        public Task<IdealIssuersResponse> RetrieveIdealIssuers(String token)
+        {
+            return GetAsync<IdealIssuersResponse>(mClient, PATH_GET_IDEAL_ISSUERS, token);
         }
 
         /// <summary>

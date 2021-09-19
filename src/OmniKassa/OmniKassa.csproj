@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;netstandard2.0;netstandard2.1;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;netstandard2.0;netstandard2.1;net452;net5.0</TargetFrameworks>
     <Version>1.1.0</Version>
   </PropertyGroup>
 
@@ -11,17 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="Model\Enums\" />
     <Folder Include="Model\Order\" />
-    <Folder Include="Model\Response\" />
     <Folder Include="Model\Response\Notification\" />
     <Folder Include="Model\Converter\" />
     <Folder Include="Utils\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Web.WebPages;
 using OmniKassa.Model;
 using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
@@ -9,6 +11,8 @@ namespace OmniKassa.Samples.DotNet461.Helpers
 {
     public static class OrderHelper
     {
+        public static string ISSUER_ID = "issuerId";
+
         public static OrderItem CreateOrderItem(NameValueCollection collection, int orderItemId)
         {
             String quantity = collection.Get("quantity");
@@ -60,7 +64,21 @@ namespace OmniKassa.Samples.DotNet461.Helpers
                 CustomerInformation customerInformation = CreateCustomerInformation(collection);
                 PaymentBrand? paymentBrand = CreatePaymentBrand(collection);
                 PaymentBrandForce? paymentBrandForce = CreatePaymentBrandForce(collection);
-                return model.PrepareMerchantOrder(totalPrice, customerInformation, shippingDetails, billingDetails, paymentBrand, paymentBrandForce);
+                Dictionary<string, string> paymentBrandMetaData = CreatePaymentBrandMetaData(collection);
+                string initiatingParty = GetInitiatingParty(collection);
+                bool skipHppResultPage = GetSkipHppResultPage(collection);
+
+                return model.PrepareMerchantOrder(
+                    totalPrice,
+                    customerInformation,
+                    shippingDetails,
+                    billingDetails,
+                    paymentBrand,
+                    paymentBrandForce,
+                    paymentBrandMetaData,
+                    initiatingParty,
+                    skipHppResultPage
+                );
             }
             else
             {
@@ -77,6 +95,7 @@ namespace OmniKassa.Samples.DotNet461.Helpers
                         .WithGender(GetEnum<Gender>(collection.Get("gender")))
                         .WithEmailAddress(collection.Get("email"))
                         .WithDateOfBirth(collection.Get("birthDate"))
+                        .WithFullName(collection.Get("fullName"))
                         .Build();
         }
 
@@ -122,6 +141,26 @@ namespace OmniKassa.Samples.DotNet461.Helpers
             if (String.IsNullOrEmpty(paymentBrandForce))
                 return null;
             return GetEnum<PaymentBrandForce>(paymentBrandForce);
+        }
+
+        private static Dictionary<string, string> CreatePaymentBrandMetaData(NameValueCollection collection)
+        {
+            String idealIssuer = collection.Get("idealIssuer");
+            if (String.IsNullOrEmpty(idealIssuer))
+                return null;
+            return new Dictionary<string, string>() {
+                { ISSUER_ID, idealIssuer }
+            };
+        }
+
+        private static string GetInitiatingParty(NameValueCollection collection)
+        {
+            return collection.Get("initiatingParty");
+        }
+
+        private static bool GetSkipHppResultPage(NameValueCollection collection)
+        {
+            return collection.Get("skipHppResultPage") == "on";
         }
 
         public static T GetEnum<T>(String value)
