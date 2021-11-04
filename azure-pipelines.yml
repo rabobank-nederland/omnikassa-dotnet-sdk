@@ -88,12 +88,11 @@ jobs:
           SearchPattern: '**\bin\**\*.pdb'
           PublishSymbols: false
           SymbolServerType: TeamServices
-      - task: PublishBuildArtifacts@1
+      - task: PublishPipelineArtifact@1
         displayName: Publish Artifact
         condition: succeededOrFailed()
         inputs:
-          PathtoPublish: $(build.artifactstagingdirectory)
-          ArtifactName: $(BuildParameters.ArtifactName)
+          targetPath: $(System.DefaultWorkingDirectory)/src/OmniKassa/bin/Release/
   - job: "security_gate"
     displayName: "Security gate"
     pool:
