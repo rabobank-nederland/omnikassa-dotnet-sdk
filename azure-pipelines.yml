@@ -111,3 +111,5 @@ jobs:
           fortifyServerName: $(fortifyServiceConnection)
           fortifyApplicationName: ps_omnikassa-dotnet-sdk_fortify
           fortifyApplicationVersion: 1.0
+          additionalScanParams: '-exclude $(System.DefaultWorkingDirectory)/samples/**/* -exclude $(System.DefaultWorkingDirectory)/tests/**/*'
+          buildAnalyzerParams: '-exclude $(System.DefaultWorkingDirectory)/samples/**/* -exclude $(System.DefaultWorkingDirectory)/tests/**/*'
