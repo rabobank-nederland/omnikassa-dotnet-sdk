@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD1_3 || NETSTANDARD2_0 || NETSTANDARD2_1 || NET5_0_OR_GREATER
+﻿#if NETCOREAPP3_1  || NET5_0_OR_GREATER
 
 using System;
 using System.Net.Http;
