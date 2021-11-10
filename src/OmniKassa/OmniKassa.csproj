@@ -33,9 +33,9 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
   </ItemGroup>
-  
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
   </ItemGroup>
-  
+
 </Project>
