@@ -17,5 +17,4 @@ Detailed developer documentation on how to use the .NET SDK as well as contact i
 * Extended SDK to allow the iDEAL issuer to be passed in the order announcement.
 * Extended SDK to allow the payment result page (also known as the 'thank-you' oage) to be skipped in the payment process.
 * Extended SDK to allow the name of the customer to be passed in the order announcement.
-* Added support for PHP 8.0.
-* Updated some dependencies to recent versions.
+* Added support for .NET 5.
