@@ -73,6 +73,19 @@ jobs:
           applicationId: omnikassa-frontend-sdk-net
           stage: release
           scanTargets: src/**/*.dll
+      - task: FortifySCA@5
+        displayName: Run Fortify
+        inputs:
+          applicationType: other
+          fortifyProjects: OmniKassa.sln
+          buildToolOptions: -dotnet-version 2.1
+          fortifyBuildId: rofe
+          runFortifyUpload: true
+          fortifyServerName: $(fortifyServiceConnection)
+          fortifyApplicationName: ps_omnikassa-dotnet-sdk_fortify
+          fortifyApplicationVersion: 1.0
+          additionalScanParams: '-exclude $(System.DefaultWorkingDirectory)/samples/**/* -exclude $(System.DefaultWorkingDirectory)/tests/**/*'
+          buildAnalyzerParams: '-exclude $(System.DefaultWorkingDirectory)/samples/**/* -exclude $(System.DefaultWorkingDirectory)/tests/**/*'
       - task: PostAnalysis@1
         displayName: Post Analysis
         inputs:
@@ -89,23 +102,3 @@ jobs:
         condition: succeededOrFailed()
         inputs:
           targetPath: $(System.DefaultWorkingDirectory)/src/OmniKassa/bin/Release/
-  - job: "security_gate"
-    displayName: "Security gate"
-    pool:
-      name: Rabo-Linux-Production
-    steps:
-      - checkout: self
-        persistCredentials: True
-      - task: FortifySCA@5
-        displayName: Run Fortify
-        inputs:
-          applicationType: other
-          fortifyProjects: OmniKassa.sln
-          buildToolOptions: -dotnet-version 2.1
-          fortifyBuildId: rofe
-          runFortifyUpload: true
-          fortifyServerName: $(fortifyServiceConnection)
-          fortifyApplicationName: ps_omnikassa-dotnet-sdk_fortify
-          fortifyApplicationVersion: 1.0
-          additionalScanParams: '-exclude $(System.DefaultWorkingDirectory)/samples/**/* -exclude $(System.DefaultWorkingDirectory)/tests/**/*'
-          buildAnalyzerParams: '-exclude $(System.DefaultWorkingDirectory)/samples/**/* -exclude $(System.DefaultWorkingDirectory)/tests/**/*'
