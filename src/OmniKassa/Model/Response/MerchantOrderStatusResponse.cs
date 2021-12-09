@@ -61,19 +61,19 @@ namespace OmniKassa.Model.Response
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
-        /// <param name="o">The object to compare with the current object.</param>
+        /// <param name="obj">The object to compare with the current object.</param>
         /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-        public override Boolean Equals(Object o)
+        public override Boolean Equals(Object obj)
         {
-            if (this == o)
+            if (this == obj)
             {
                 return true;
             }
-            if (!(o is MerchantOrderStatusResponse))
+            if (!(obj is MerchantOrderStatusResponse))
             {
                 return false;
             }
-            MerchantOrderStatusResponse that = (MerchantOrderStatusResponse)o;
+            MerchantOrderStatusResponse that = (MerchantOrderStatusResponse)obj;
             return Equals(Signature, that.Signature) &&
                    Equals(MoreOrderResultsAvailable, that.MoreOrderResultsAvailable) &&
                    Enumerable.SequenceEqual(OrderResults, that.OrderResults);
