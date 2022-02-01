@@ -51,6 +51,11 @@ namespace OmniKassa.Model.Enums
         V_PAY,
 
         /// <summary>
+        /// SOFORT
+        /// </summary>
+        SOFORT,
+
+        /// <summary>
         /// Comprises MASTERCARD, VISA, BANCONTACT, MAESTRO and V_PAY.
         /// </summary>
         CARDS
