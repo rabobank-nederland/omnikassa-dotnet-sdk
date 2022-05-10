@@ -12,6 +12,9 @@ Detailed developer documentation on how to use the .NET SDK as well as contact i
 
 ## Release notes
 
+### Version 1.3.1
+* Removed support for EOL versions 1.3, 2.0 & 2.1
+
 ### Version 1.3.0
 * Extended SDK to support SOFORT as payment brand.
 
