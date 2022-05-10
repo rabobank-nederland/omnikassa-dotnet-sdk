@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;netstandard2.0;netstandard2.1;net452;net5.0</TargetFrameworks>
-    <Version>1.3.0</Version>
+    <TargetFrameworks>net452;net5.0</TargetFrameworks>
+    <Version>1.3.1</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageId>OmniKassa_Rabobank</PackageId>
     <Company>Rabobank</Company>
     <PackageTags>Omnikassa, Rabobank</PackageTags>
     <Copyright>Rabobank 2022</Copyright>
-    <Description>The C# library for Rabobank OmniKassa</Description>
-    <PackageLicenseFile>G:\git\ximedes\omnikassa-dotnet-sdk\LICENSE.md</PackageLicenseFile>
+    <Description>The .NET library for Rabobank OmniKassa</Description>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
@@ -17,6 +17,13 @@
     <DocumentationFile>bin\Debug\netstandard1.3\OmniKassa.xml</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
   <ItemGroup>
     <Folder Include="Model\Enums\" />
