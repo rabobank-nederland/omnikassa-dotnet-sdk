@@ -49,11 +49,11 @@ jobs:
           packDirectory: '$(Build.ArtifactStagingDirectory)'
           nobuild: true
           versioningScheme: 'off'
-      - task: DotNetCoreCLI@2
+      - task: NuGetCommand@2
         displayName: 'Sign nuget package'
         inputs:
           command: 'custom'
-          custom: sign $(Build.ArtifactStagingDirectory)/*.nupkg -CertificatePath $(OmniKassaPFX.secureFilePath) -CertificatePassword $(certPassword) -TimeStamper http://timestamp.digicert.com
+          arguments: sign $(Build.ArtifactStagingDirectory)/*.nupkg -CertificatePath $(OmniKassaPFX.secureFilePath) -CertificatePassword $(certPassword) -TimeStamper http://timestamp.digicert.com
       - task: NuGetCommand@2
         displayName: 'NuGet push'
         inputs:
