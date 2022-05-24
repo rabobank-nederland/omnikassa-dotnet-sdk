@@ -53,7 +53,7 @@ jobs:
         displayName: 'Sign nuget package'
         inputs:
           command: 'custom'
-          arguments: sign OmniKassa_Rabobank.*.nupkg -CertificatePath $(OmniKassaPFX.secureFilePath) -CertificatePassword ${certPassword} -TimeStamper http://timestamp.digicert.com
+          custom: sign OmniKassa_Rabobank.*.nupkg -CertificatePath $(OmniKassaPFX.secureFilePath) -CertificatePassword ${certPassword} -TimeStamper http://timestamp.digicert.com
       - task: NuGetCommand@2
         displayName: 'NuGet push'
         inputs:
