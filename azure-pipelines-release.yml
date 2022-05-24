@@ -52,7 +52,7 @@ jobs:
       - task: DotNetCoreCLI@2
         displayName: 'Sign nuget package'
         inputs:
-          command: 'scustomign'
+          command: 'custom'
           arguments: sign OmniKassa_Rabobank.*.nupkg -CertificatePath $(OmniKassaPFX.secureFilePath) -CertificatePassword ${certPassword} -TimeStamper http://timestamp.digicert.com
       - task: NuGetCommand@2
         displayName: 'NuGet push'
