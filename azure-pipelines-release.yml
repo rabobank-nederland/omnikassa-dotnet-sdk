@@ -6,8 +6,9 @@ resources:
       type: git
       ref: master
 variables:
-  group: omnikassa-net-sdk-release
-  buildConfiguration: 'Release'
+  - group: omnikassa-net-sdk-release
+  - name: buildConfiguration
+    value: Release
 jobs:
   - job: NETSDK_Release
     displayName: .NET SDK Release
