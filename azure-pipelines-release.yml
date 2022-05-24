@@ -6,6 +6,7 @@ resources:
       type: git
       ref: master
 variables:
+  group: omnikassa-net-sdk-release
   buildConfiguration: 'Release'
 jobs:
   - job: NETSDK_Release
@@ -41,13 +42,18 @@ jobs:
           publishTestResults: true
           arguments: '--collect "Code coverage"'
       - task: DotNetCoreCLI@2
-        displayName: 'Create nuget packages'
+        displayName: 'Create nuget package'
         inputs:
           command: 'pack'
           packagesToPack: 'src/OmniKassa/OmniKassa.csproj'
           packDirectory: '$(Build.ArtifactStagingDirectory)'
           nobuild: true
-          versioningScheme: 'off' 
+          versioningScheme: 'off'
+      - task: DotNetCoreCLI@2
+        displayName: 'Sign nuget package'
+        inputs:
+          command: 'scustomign'
+          arguments: sign OmniKassa_Rabobank.*.nupkg -CertificatePath $(OmniKassaPFX.secureFilePath) -CertificatePassword ${certPassword} -TimeStamper http://timestamp.digicert.com
       - task: NuGetCommand@2
         displayName: 'NuGet push'
         inputs:
