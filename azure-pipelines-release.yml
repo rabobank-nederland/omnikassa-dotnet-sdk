@@ -46,7 +46,7 @@ jobs:
           packagesToPack: 'src/OmniKassa/OmniKassa.csproj'
           packDirectory: '$(Build.ArtifactStagingDirectory)'
           nobuild: true
-          versioningScheme: 'byBuildNumber' 
+          versioningScheme: 'off' 
       - task: NuGetCommand@2
         displayName: 'NuGet push'
         inputs:
