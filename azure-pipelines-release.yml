@@ -1,0 +1,56 @@
+name: $(date:yyyyMMdd)$(rev:.r)
+resources:
+  repositories:
+    - repository: self
+      type: git
+      ref: master
+variables:
+  buildConfiguration: 'Release'
+jobs:
+  - job: NETSDK_Release
+    displayName: .NET SDK Release
+    pool:
+      name: Rabo-Windows-Production
+    steps:
+      - checkout: self
+        persistCredentials: True
+      - task: NuGetToolInstaller@0
+        displayName: Use NuGet 5.11.0
+        inputs:
+          versionSpec: 5.11.0
+      - task: DownloadSecureFile@1
+        name: OmniKassaPFX
+        displayName: 'Download CA certificate'
+        inputs:
+          secureFile: 'omnikassa.netsdk.rabobank.nl.pfx'
+      - task: NuGetCommand@2
+        displayName: NuGet restore
+        inputs:
+          solution: $(BuildParameters.solution)
+      - task: DotNetCoreCLI@2
+        displayName: Build Omnikassa SDK
+        inputs:
+          projects: OmniKassa.sln
+          arguments: '--configuration $(buildConfiguration)'
+      - task: DotNetCoreCLI@2
+        displayName: Test Assemblies
+        inputs:
+          command: test
+          projects: OmniKassa.sln
+          publishTestResults: true
+          arguments: '--collect "Code coverage"'
+      - task: DotNetCoreCLI@2
+        displayName: 'Create nuget packages'
+        inputs:
+          command: 'pack'
+          packagesToPack: 'src/OmniKassa/OmniKassa.csproj'
+          packDirectory: '$(Build.ArtifactStagingDirectory)'
+          nobuild: true
+          versioningScheme: 'byBuildNumber' 
+      - task: NuGetCommand@2
+        displayName: 'NuGet push'
+        inputs:
+          command: push
+          packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+          nuGetFeedType: external
+          publishFeedCredentials: 'nuget-omnikassa-net-sdk-connection'     
