@@ -26,6 +26,7 @@ jobs:
         displayName: 'Download CA certificate'
         inputs:
           secureFile: 'omnikassa.netsdk.rabobank.nl.pfx'
+
       - task: PowerShell@2
         displayName: Add certificates
         inputs:
@@ -77,6 +78,16 @@ jobs:
         inputs:
           command: 'custom'
           arguments: 'trusted-signers add -Name omnikassa.netsdk.rabobank.nl -CertificateFingerprint $(cert.fingerprint) -AllowUntrustedRoot'
+      - task: NuGetCommand@2
+          displayName: 'add trusted signers1'
+          inputs:
+            command: 'custom'
+            arguments: 'trusted-signers add -Name ds1 -CertificateFingerprint $(cert-chain1.fingerprint) -AllowUntrustedRoot'
+      - task: NuGetCommand@2
+          displayName: 'add trusted signers2'
+          inputs:
+            command: 'custom'
+            arguments: 'trusted-signers add -Name dsroot -CertificateFingerprint $(cert-root.fingerprint) -AllowUntrustedRoot'
       - task: NuGetCommand@2
         displayName: 'check trusted signersw'
         inputs:
