@@ -73,6 +73,16 @@ jobs:
           command: 'custom'
           arguments: 'trusted-signers'
       - task: NuGetCommand@2
+        displayName: 'add trusted signers'
+        inputs:
+          command: 'custom'
+          arguments: 'trusted-signers add -Name Digicert -CertificateFingerprint $(cert.fingerprint)'
+      - task: NuGetCommand@2
+        displayName: 'check trusted signersw'
+        inputs:
+          command: 'custom'
+          arguments: 'trusted-signers'
+      - task: NuGetCommand@2
         displayName: 'Sign nuget package'
         inputs:
           command: 'custom'
