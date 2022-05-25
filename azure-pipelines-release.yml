@@ -68,6 +68,11 @@ jobs:
           nobuild: true
           versioningScheme: 'off'
       - task: NuGetCommand@2
+        displayName: 'check trusted signers'
+        inputs:
+          command: 'custom'
+          arguments: 'trusted-signers'
+      - task: NuGetCommand@2
         displayName: 'Sign nuget package'
         inputs:
           command: 'custom'
