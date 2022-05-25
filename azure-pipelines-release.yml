@@ -79,7 +79,7 @@ jobs:
           command: 'custom'
           arguments: 'trusted-signers add -Name omnikassa.netsdk.rabobank.nl -CertificateFingerprint $(cert.fingerprint) -AllowUntrustedRoot'
       - task: NuGetCommand@2
-          displayName: 'add trusted signers two'
+          displayName: 'add trusted signers chain'
           inputs:
             command: 'custom'
             arguments: 'trusted-signers add -Name ds1 -CertificateFingerprint $(cert-chain1.fingerprint) -AllowUntrustedRoot'
