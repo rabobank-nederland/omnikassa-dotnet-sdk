@@ -76,7 +76,7 @@ jobs:
         displayName: 'add trusted signers'
         inputs:
           command: 'custom'
-          arguments: 'trusted-signers add -Name Digicert -CertificateFingerprint $(cert.fingerprint) -AllowUntrustedRoot'
+          arguments: 'trusted-signers add -Name omnikassa.netsdk.rabobank.nl -CertificateFingerprint $(cert.fingerprint) -AllowUntrustedRoot'
       - task: NuGetCommand@2
         displayName: 'check trusted signersw'
         inputs:
