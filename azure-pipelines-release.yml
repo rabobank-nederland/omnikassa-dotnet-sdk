@@ -26,6 +26,23 @@ jobs:
         displayName: 'Download CA certificate'
         inputs:
           secureFile: 'omnikassa.netsdk.rabobank.nl.pfx'
+      - task: PowerShell@2
+        displayName: Add certificates
+        inputs:
+          targetType: 'inline'
+          script: |
+            Write-Host "Start adding the PFX file to the certificate store."
+
+            $pfxpath = '$(OmniKassaPFX.secureFilePath)'
+            $password = '$(cert.password)'
+
+            Add-Type -AssemblyName System.Security
+            $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
+            $cert.Import($pfxpath, $password, [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]"PersistKeySet")
+            $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "MY", CurrentUser
+            $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
+            $store.Add($cert)
+            $store.Close()
       - task: NuGetCommand@2
         displayName: NuGet restore
         inputs:
