@@ -43,7 +43,7 @@ jobs:
             $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "MY", CurrentUser
             $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
             foreach($cert in $certCollection) {
-            Write-Host "import certficate: $cert.Subject - $cert.Issuer"  
+            Write-Host "import certficate: $cert.Subject"  
             $store.Add($cert)
             }
             $store.Close()
