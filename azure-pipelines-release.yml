@@ -40,10 +40,9 @@ jobs:
             Add-Type -AssemblyName System.Security
             $certCollection = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2Collection
             $certCollection.Import($pfxpath, $password, [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]"PersistKeySet")
-            $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "MY", CurrentUser
+            $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "My", CurrentUser
             $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
             foreach($cert in $certCollection) {
-            Write-Host "import certficate: $cert.Subject"  
             $store.Add($cert)
             }
             $store.Close()
