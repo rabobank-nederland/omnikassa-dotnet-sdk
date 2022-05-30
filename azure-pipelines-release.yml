@@ -77,7 +77,7 @@ jobs:
         displayName: 'Sign nuget package'
         inputs:
           command: 'custom'
-          arguments: 'sign $(Build.ArtifactStagingDirectory)\*.nupkg -CertificatePath $(OmniKassaPFX.secureFilePath) -CertificatePassword $(cert.password) -TimeStamper http://timestamp.digicert.com'
+          arguments: 'sign $(Build.ArtifactStagingDirectory)\*.nupkg -CertificatePath $(OmniKassaPFX.secureFilePath) -CertificatePassword $(cert.password) -TimeStamper http://timestamp.digicert.com -Verbosity detailed'
       - task: NuGetCommand@2
         displayName: 'NuGet push'
         inputs:
