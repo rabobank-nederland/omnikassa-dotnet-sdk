@@ -43,7 +43,8 @@ jobs:
             $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "My", CurrentUser
             $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
             foreach($cert in $certCollection) {
-            $store.Add($cert)
+              Write-Host "Added certificate '$cert.Subject'"
+              $store.Add($cert)
             }
             $store.Close()
       - task: NuGetCommand@2
@@ -75,11 +76,6 @@ jobs:
         inputs:
           command: 'custom'
           arguments: 'trusted-signers'
-      - task: NuGetCommand@2
-        displayName: 'disable revocation online check'
-        inputs:
-          command: 'custom'
-          arguments: 'config -set certificateRevocationMode=online'   
       - task: NuGetCommand@2
         displayName: 'Sign nuget package'
         inputs:
