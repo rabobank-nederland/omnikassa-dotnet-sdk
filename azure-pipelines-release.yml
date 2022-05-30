@@ -76,6 +76,11 @@ jobs:
           command: 'custom'
           arguments: 'trusted-signers'
       - task: NuGetCommand@2
+        displayName: 'disable revocation online check'
+        inputs:
+          command: 'custom'
+          arguments: 'config -set certificateRevocationMode=offline'   
+      - task: NuGetCommand@2
         displayName: 'Sign nuget package'
         inputs:
           command: 'custom'
