@@ -44,10 +44,6 @@ jobs:
             $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
             $store.Add($cert)
             $store.Close()
-      - task: PowerShell@2
-        displayName: check certificates
-        inputs:
-          script: 'certutil.exe -verify -URLFetch $(OmniKassaPFX.secureFilePath)'
       - task: NuGetCommand@2
         displayName: NuGet restore
         inputs:
