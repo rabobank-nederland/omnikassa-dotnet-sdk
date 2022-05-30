@@ -40,12 +40,9 @@ jobs:
             Add-Type -AssemblyName System.Security
             $certCollection = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2Collection
             $certCollection.Import($pfxpath, $password, [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]"PersistKeySet")
-            $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "My", CurrentUser
+            $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "My", "LocalMachine"
             $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
-            foreach($cert in $certCollection) {
-              Write-Host "Added certificate '$cert.Subject'"
-              $store.Add($cert)
-            }
+            $store.AddRange($certCollection)
             $store.Close()
       - task: NuGetCommand@2
         displayName: NuGet restore
