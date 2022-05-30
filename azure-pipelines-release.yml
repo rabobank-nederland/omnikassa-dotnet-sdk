@@ -18,9 +18,9 @@ jobs:
       - checkout: self
         persistCredentials: True
       - task: NuGetToolInstaller@0
-        displayName: Use NuGet 5.11.0
+        displayName: Use NuGet 6.2.0
         inputs:
-          versionSpec: 5.11.0
+          versionSpec: 6.2.0
       - task: DownloadSecureFile@1
         name: OmniKassaPFX
         displayName: 'Download CA certificate'
