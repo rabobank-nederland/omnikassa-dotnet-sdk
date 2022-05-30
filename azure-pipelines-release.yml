@@ -79,7 +79,7 @@ jobs:
         displayName: 'disable revocation online check'
         inputs:
           command: 'custom'
-          arguments: 'config -set certificateRevocationMode=offline'   
+          arguments: 'config -set certificateRevocationMode=online'   
       - task: NuGetCommand@2
         displayName: 'Sign nuget package'
         inputs:
