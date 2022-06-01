@@ -12,8 +12,11 @@ Detailed developer documentation on how to use the .NET SDK as well as contact i
 
 ## Release notes
 
+### Version 1.3.4
+* First automated pipeline release for NuGet (No changes in code)
+
 ### Version 1.3.2
-* Added correct package information for NuGet
+* Added correct package information for NuGet (No changes in code)
 
 ### Version 1.3.0
 * Extended SDK to support SOFORT as payment brand.
