@@ -1,3 +1,4 @@
+trigger: none
 name: $(date:yyyyMMdd)$(rev:.r)
 resources:
   repositories:
@@ -5,7 +6,9 @@ resources:
       type: git
       ref: master
 variables:
-  buildConfiguration: 'Release'
+  - group: omnikassa-net-sdk-release
+  - name: buildConfiguration
+    value: Release
 jobs:
   - job: NETSDK_Release
     displayName: .NET SDK Release
@@ -15,14 +18,32 @@ jobs:
       - checkout: self
         persistCredentials: True
       - task: NuGetToolInstaller@0
-        displayName: Use NuGet 5.11.0
+        displayName: Use NuGet 6.2.0
         inputs:
-          versionSpec: 5.11.0
+          versionSpec: 6.2.0
       - task: DownloadSecureFile@1
         name: OmniKassaPFX
         displayName: 'Download CA certificate'
         inputs:
           secureFile: 'omnikassa.netsdk.rabobank.nl.pfx'
+
+      - task: PowerShell@2
+        displayName: Add certificates
+        inputs:
+          targetType: 'inline'
+          script: |
+            Write-Host "Start adding the PFX file to the certificate store."
+
+            $pfxpath = '$(OmniKassaPFX.secureFilePath)'
+            $password = '$(cert.password)'
+
+            Add-Type -AssemblyName System.Security
+            $certCollection = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2Collection
+            $certCollection.Import($pfxpath, $password, [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]"PersistKeySet")
+            $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "My", "LocalMachine"
+            $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
+            $store.AddRange($certCollection)
+            $store.Close()
       - task: NuGetCommand@2
         displayName: NuGet restore
         inputs:
@@ -40,17 +61,17 @@ jobs:
           publishTestResults: true
           arguments: '--collect "Code coverage"'
       - task: DotNetCoreCLI@2
-        displayName: 'Create nuget packages'
+        displayName: 'Create nuget package'
         inputs:
           command: 'pack'
           packagesToPack: 'src/OmniKassa/OmniKassa.csproj'
           packDirectory: '$(Build.ArtifactStagingDirectory)'
           nobuild: true
-          versioningScheme: 'byBuildNumber' 
+          versioningScheme: 'off'
       - task: NuGetCommand@2
         displayName: 'NuGet push'
         inputs:
           command: push
-          packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+          packagesToPush: '$(Build.ArtifactStagingDirectory)\*.nupkg'
           nuGetFeedType: external
           publishFeedCredentials: 'nuget-omnikassa-net-sdk-connection'     

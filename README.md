@@ -6,14 +6,15 @@ Rabo Omnikassa offers merchants an all-in-one solution to receive payments on yo
 
 The .NET SDK allows .NET developers to integrate their web shop with Rabo OmniKassa to handle online payments. Note that besides using an SDK Rabo OmniKassa also provides other ways to integrate that may require less effort. More information on this topic can be found on the [Developer Portal](https://developer.rabobank.nl/overview/rabo-omnikassa) of Rabobank.
 
-To download the SDK go the [Releases section](https://github.com/rabobank-nederland/omnikassa-dotnet-sdk/releases). Download the appropriate release. When opening the ZIP file you can find the distributions for various .NET target environments.
-
-Detailed developer documentation on how to use the .NET SDK as well as contact information can be found in the [SDK manual](https://github.com/rabobank-nederland/omnikassa-sdk-doc/blob/main/README.md).
+Installation instructions and detailed developer documentation on how to use the .NET SDK as well as contact information can be found in the [SDK manual](https://github.com/rabobank-nederland/omnikassa-sdk-doc/blob/main/README.md).
 
 ## Release notes
 
+### Version 1.3.4
+* First automated pipeline release for NuGet (No changes in code)
+
 ### Version 1.3.2
-* Added correct package information for NuGet
+* Added correct package information for NuGet (No changes in code)
 
 ### Version 1.3.0
 * Extended SDK to support SOFORT as payment brand.
