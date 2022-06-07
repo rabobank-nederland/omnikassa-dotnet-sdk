@@ -1,4 +1,5 @@
 trigger: none
+pr: none
 name: $(date:yyyyMMdd)$(rev:.r)
 resources:
   repositories:
