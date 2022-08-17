@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OmniKassa;
 using System.Collections.Specialized;
 using OmniKassa.Model.Response;
 using OmniKassa.Exceptions;
@@ -19,19 +22,15 @@ namespace example_dotnet50.Controllers
     public class HomeController : Controller
     {
         // Specify your signing key and the refresh token in the static properties below
-        private readonly string SIGNING_KEY;
-        private readonly string TOKEN;
-        private readonly string RETURN_URL;
+        private static readonly string SIGNING_KEY = "";
+        private static readonly string TOKEN = "";
+        private static readonly string RETURN_URL = "http://localhost:52060/Home/Callback/";
 
         private static Endpoint omniKassa;
         private static ApiNotification notification;
-        
-        public HomeController(ConfigurationParameters configurationParameters)
+
+        public HomeController()
         {
-            SIGNING_KEY = configurationParameters.SigningKey;
-            TOKEN = configurationParameters.RefreshToken;
-            RETURN_URL = configurationParameters.CallbackUrl;
-            
             if (omniKassa == null)
             {
                 omniKassa = Endpoint.Create(OmniKassa.Environment.SANDBOX, SIGNING_KEY, TOKEN);
