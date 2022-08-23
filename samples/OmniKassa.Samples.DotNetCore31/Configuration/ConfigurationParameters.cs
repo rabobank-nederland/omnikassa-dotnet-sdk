@@ -1,4 +1,4 @@
-﻿namespace OmniKassa.Samples.DotNet50.Configuration
+﻿namespace OmniKassa.Samples.DotNetCore31.Configuration
 {
     /// <summary>
     /// Configuration parameters.

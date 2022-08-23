@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OmniKassa.Model;
+using OmniKassa.Samples.DotNet50.Configuration;
 
 namespace example_dotnet50
 {
@@ -31,8 +31,10 @@ namespace example_dotnet50
         {
             var refreshToken = configuration.GetValue<string>("RefreshToken");
             var signingKey = configuration.GetValue<string>("SigningKey");
-            var callbackUrl = configuration.GetValue<string>("BaseUrl", "http://localhost:52060/Home/Callback/");
-            return new ConfigurationParameters(refreshToken, signingKey, callbackUrl);
+            var callbackUrl = configuration.GetValue<string>("CallbackUrl", "http://localhost:52060/Home/Callback/");
+            var baseUrl = configuration.GetValue<string>("BaseUrl");
+
+            return new ConfigurationParameters(refreshToken, signingKey, callbackUrl, baseUrl);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

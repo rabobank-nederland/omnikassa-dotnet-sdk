@@ -12,16 +12,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
 using OmniKassa.Model.Response.Notification;
+using OmniKassa.Samples.DotNet50.Configuration;
 using Endpoint = OmniKassa.Endpoint;
 
 namespace example_dotnet50.Controllers
 {
     public class HomeController : Controller
     {
-        // Specify your signing key and the refresh token in the static properties below
         private readonly string SIGNING_KEY;
         private readonly string TOKEN;
         private readonly string RETURN_URL;
+        private readonly string BASE_URL;
 
         private static Endpoint omniKassa;
         private static ApiNotification notification;
@@ -31,10 +32,17 @@ namespace example_dotnet50.Controllers
             SIGNING_KEY = configurationParameters.SigningKey;
             TOKEN = configurationParameters.RefreshToken;
             RETURN_URL = configurationParameters.CallbackUrl;
-            
+            BASE_URL = configurationParameters.BaseUrl;
             if (omniKassa == null)
             {
-                omniKassa = Endpoint.Create(OmniKassa.Environment.SANDBOX, SIGNING_KEY, TOKEN);
+                if (String.IsNullOrEmpty(BASE_URL))
+                {
+                    omniKassa = Endpoint.Create(OmniKassa.Environment.SANDBOX, SIGNING_KEY, TOKEN);
+                } 
+                else
+                {
+                    omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN);
+                }
             }
         }
 
