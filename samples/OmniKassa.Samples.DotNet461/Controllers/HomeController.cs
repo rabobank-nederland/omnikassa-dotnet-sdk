@@ -6,6 +6,7 @@ using OmniKassa.Model.Order;
 using OmniKassa.Model.Response;
 using System;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.Web.Mvc;
 using System.Net;
 using OmniKassa.Model.Response.Notification;
@@ -14,11 +15,10 @@ namespace OmniKassa.Samples.DotNet461.Controllers
 {
     public class HomeController : Controller
     {
-        // Specify your signing key and the refresh token in the static properties below
-        private static readonly string SIGNING_KEY = "";
-        private static readonly string TOKEN = "";
-
-        private static readonly string RETURN_URL = "http://localhost:52000/Home/Callback/";
+        private readonly string SIGNING_KEY;
+        private readonly string TOKEN;
+        private readonly string RETURN_URL;
+        private readonly string BASE_URL;
 
         private static string SESSION_ORDER = "Order";
 
@@ -32,15 +32,33 @@ namespace OmniKassa.Samples.DotNet461.Controllers
 
         public HomeController()
         {
+            var appSettings = ConfigurationManager.AppSettings;
+            SIGNING_KEY = appSettings["SigningKey"];
+            TOKEN = appSettings["RefreshToken"];
+            RETURN_URL = appSettings["CallbackUrl"];
+            BASE_URL = appSettings["BaseUrl"];
+            
             if (omniKassa == null)
             {
-                omniKassa = Endpoint.Create(Environment.SANDBOX, SIGNING_KEY, TOKEN);
+                InitializeOmniKassaEndpoint();
             }
+
             webShopModel = SessionVar.Get<WebShopModel>(SESSION_ORDER);
-            if(webShopModel != null)
+            if (webShopModel != null)
             {
                 orderId = webShopModel.OrderId;
                 orderItemId = webShopModel.GetLastItemId();
+            }
+        }
+        private void InitializeOmniKassaEndpoint()
+        {
+            if (String.IsNullOrEmpty(BASE_URL))
+            {
+                omniKassa = Endpoint.Create(Environment.SANDBOX, SIGNING_KEY, TOKEN);
+            }
+            else
+            {
+                omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN);
             }
         }
 
@@ -83,7 +101,7 @@ namespace OmniKassa.Samples.DotNet461.Controllers
                 OrderItem item = OrderHelper.CreateOrderItem(collection, ++orderItemId);
                 webShopModel.AddItem(item);
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException ex)
             {
                 webShopModel.Error = ex.Message;
             }
@@ -118,6 +136,7 @@ namespace OmniKassa.Samples.DotNet461.Controllers
             {
                 webShopModel.Error = ex.Message;
             }
+
             return View("Index", webShopModel);
         }
 
@@ -156,11 +175,9 @@ namespace OmniKassa.Samples.DotNet461.Controllers
                     MerchantOrderStatusResponse response = null;
                     do
                     {
-
                         response = omniKassa.RetrieveAnnouncement(notification);
                         webShopModel.Responses.Add(response);
-                    }
-                    while (response.MoreOrderResultsAvailable);
+                    } while (response.MoreOrderResultsAvailable);
                 }
                 catch (RabobankSdkException ex)
                 {
@@ -186,6 +203,7 @@ namespace OmniKassa.Samples.DotNet461.Controllers
             {
                 webShopModel.Error = ex.Message;
             }
+
             return View("Index", webShopModel);
         }
 
@@ -200,51 +218,52 @@ namespace OmniKassa.Samples.DotNet461.Controllers
             {
                 webShopModel.Error = ex.Message;
             }
+
             return View("Index", webShopModel);
         }
 
         public MerchantOrder.Builder GetOrder(int orderId)
         {
             CustomerInformation customerInformation = new CustomerInformation.Builder()
-                    .WithTelephoneNumber("0204971111")
-                    .WithInitials("J.D.")
-                    .WithGender(Gender.M)
-                    .WithEmailAddress("johndoe@rabobank.com")
-                    .WithDateOfBirth("20-03-1987")
-                    .WithFullName("Jan de Ruiter")
-                    .Build();
+                .WithTelephoneNumber("0204971111")
+                .WithInitials("J.D.")
+                .WithGender(Gender.M)
+                .WithEmailAddress("johndoe@rabobank.com")
+                .WithDateOfBirth("20-03-1987")
+                .WithFullName("Jan de Ruiter")
+                .Build();
 
             Address shippingDetails = new Address.Builder()
-                    .WithFirstName("John")
-                    .WithLastName("Doe")
-                    .WithStreet("Street")
-                    .WithHouseNumber("5")
-                    .WithHouseNumberAddition("a")
-                    .WithPostalCode("1234AB")
-                    .WithCity("Haarlem")
-                    .WithCountryCode(CountryCode.NL)
-                    .Build();
+                .WithFirstName("John")
+                .WithLastName("Doe")
+                .WithStreet("Street")
+                .WithHouseNumber("5")
+                .WithHouseNumberAddition("a")
+                .WithPostalCode("1234AB")
+                .WithCity("Haarlem")
+                .WithCountryCode(CountryCode.NL)
+                .Build();
 
             Address billingDetails = new Address.Builder()
-                    .WithFirstName("John")
-                    .WithLastName("Doe")
-                    .WithStreet("Factuurstraat")
-                    .WithHouseNumber("5")
-                    .WithHouseNumberAddition("a")
-                    .WithPostalCode("1234AB")
-                    .WithCity("Haarlem")
-                    .WithCountryCode(CountryCode.NL)
-                    .Build();
+                .WithFirstName("John")
+                .WithLastName("Doe")
+                .WithStreet("Factuurstraat")
+                .WithHouseNumber("5")
+                .WithHouseNumberAddition("a")
+                .WithPostalCode("1234AB")
+                .WithCity("Haarlem")
+                .WithCountryCode(CountryCode.NL)
+                .Build();
 
             MerchantOrder.Builder order = new MerchantOrder.Builder()
-                    .WithMerchantOrderId(Convert.ToString(orderId))
-                    .WithDescription("An example description")
-                    .WithCustomerInformation(customerInformation)
-                    .WithShippingDetail(shippingDetails)
-                    .WithBillingDetail(billingDetails)
-                    .WithLanguage(Language.NL)
-                    .WithMerchantReturnURL(RETURN_URL)
-                    .WithInitiatingParty("LIGHTSPEED");
+                .WithMerchantOrderId(Convert.ToString(orderId))
+                .WithDescription("An example description")
+                .WithCustomerInformation(customerInformation)
+                .WithShippingDetail(shippingDetails)
+                .WithBillingDetail(billingDetails)
+                .WithLanguage(Language.NL)
+                .WithMerchantReturnURL(RETURN_URL)
+                .WithInitiatingParty("LIGHTSPEED");
 
             return order;
         }

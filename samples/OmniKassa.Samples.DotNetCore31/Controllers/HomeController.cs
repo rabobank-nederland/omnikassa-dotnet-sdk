@@ -36,14 +36,19 @@ namespace example_dotnetcore31.Controllers
             
             if (omniKassa == null)
             {
-                if (String.IsNullOrEmpty(BASE_URL))
-                {
-                    omniKassa = Endpoint.Create(OmniKassa.Environment.SANDBOX, SIGNING_KEY, TOKEN);
-                } 
-                else
-                {
-                    omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN);
-                }
+                InitializeOmniKassaEndpoint();
+            }
+        }
+        
+        private void InitializeOmniKassaEndpoint()
+        {
+            if (String.IsNullOrEmpty(BASE_URL))
+            {
+                omniKassa = Endpoint.Create(OmniKassa.Environment.SANDBOX, SIGNING_KEY, TOKEN);
+            }
+            else
+            {
+                omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN);
             }
         }
 
