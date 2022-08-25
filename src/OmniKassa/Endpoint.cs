@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using OmniKassa.Http;
 using OmniKassa.Model.Response;
-using OmniKassa.Model.Response.Notification;
 
 namespace OmniKassa
 {

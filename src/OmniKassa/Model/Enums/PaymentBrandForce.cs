@@ -1,7 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
-using OmniKassa.Model.Enums;
-
+﻿
 namespace OmniKassa.Model.Enums
 {
     /// <summary>

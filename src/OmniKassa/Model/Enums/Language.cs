@@ -1,5 +1,4 @@
-﻿using System;
-namespace OmniKassa.Model.Enums
+﻿namespace OmniKassa.Model.Enums
 {
     /// <summary>
     /// Contains the supported languages

@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace OmniKassa.Exceptions
 {
 	/// <summary>
