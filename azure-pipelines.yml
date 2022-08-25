@@ -73,7 +73,7 @@ jobs:
           applicationId: omnikassa-frontend-sdk-net
           stage: release
           scanTargets: src/**/*.dll
-      - task: FortifySCA@5
+      - task: FortifySCA@7.1.0
         displayName: Run Fortify
         inputs:
           applicationType: other
