@@ -81,6 +81,7 @@ jobs:
           buildToolOptions: -dotnet-version 2.1
           fortifyBuildId: rofe
           runFortifyUpload: true
+          scaVerbose: true
           fortifyServerName: $(fortifyServiceConnection)
           fortifyApplicationName: ps_omnikassa-dotnet-sdk_fortify
           fortifyApplicationVersion: 1.0
