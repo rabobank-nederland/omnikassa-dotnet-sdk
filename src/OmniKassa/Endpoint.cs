@@ -47,6 +47,10 @@ namespace OmniKassa
         /// <returns>OmniKassa instance</returns>
         public static Endpoint Create(String baseURL, String signingKey, String token)
         {
+            if (Enum.TryParse(baseURL, out Environment environment))
+            {
+                return Create(environment, signingKey, token);
+            }
             TokenProvider tokenProvider = new InMemoryTokenProvider(token);
             return Create(baseURL, signingKey, tokenProvider);
         }
