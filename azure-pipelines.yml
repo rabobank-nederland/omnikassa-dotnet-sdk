@@ -78,7 +78,6 @@ jobs:
         inputs:
           applicationType: other
           fortifyProjects: OmniKassa.sln
-          buildToolOptions: -dotnet-version 2.1
           fortifyBuildId: rofe
           runFortifyUpload: true
           runFortifyScan: false
