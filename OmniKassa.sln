@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa", "src\OmniKassa\OmniKassa.csproj", "{9C75CFA0-45A4-4E3D-96DA-750368D75791}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Tests", "tests\OmniKassa.Tests\OmniKassa.Tests.csproj", "{F10344D8-8DA0-4604-85DC-ED619986A463}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
