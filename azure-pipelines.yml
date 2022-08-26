@@ -76,14 +76,12 @@ jobs:
       - task: FortifySCA@7.1.0
         displayName: Run Fortify
         inputs:
-          applicationType: other
-          runFortifyScan: true
-          fortifyScanType: 'LocalScan'
-          buildToolOptions: -dotnet-version 2.1
+          fortifyProjects: OmniKassa.sln
           fortifyBuildId: rofe
-          runFortifyUpload: true
-          runFortifyClean: true
           scaVerbose: true
+          scaDebug: true
+          runFortifyScan: false
+          runFortifyUpload: true
           fortifyServerName: $(fortifyServiceConnection)
           fortifyApplicationName: ps_omnikassa-dotnet-sdk_fortify
           fortifyApplicationVersion: 1.0
