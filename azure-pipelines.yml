@@ -79,6 +79,7 @@ jobs:
           applicationType: other
           fortifyProjects: OmniKassa.sln
           fortifyBuildId: rofe
+          buildToolOptions: -dotnet-version 5
           runFortifyUpload: true
           scaVerbose: true
           scaDebug: true
