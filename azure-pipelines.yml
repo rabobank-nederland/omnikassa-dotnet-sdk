@@ -77,7 +77,8 @@ jobs:
         displayName: Run Fortify
         inputs:
           applicationType: other
-          fortifyProjects: OmniKassa.sln
+          runFortifyScan: true
+          fortifyScanType: 'LocalScan'
           buildToolOptions: -dotnet-version 2.1
           fortifyBuildId: rofe
           runFortifyUpload: true
