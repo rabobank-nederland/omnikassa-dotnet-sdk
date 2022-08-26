@@ -80,7 +80,6 @@ jobs:
           fortifyProjects: OmniKassa.sln
           fortifyBuildId: rofe
           runFortifyUpload: true
-          runFortifyScan: false
           scaVerbose: true
           scaDebug: true
           fortifyServerName: $(fortifyServiceConnection)
