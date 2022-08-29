@@ -73,23 +73,17 @@ jobs:
           applicationId: omnikassa-frontend-sdk-net
           stage: release
           scanTargets: src/**/*.dll
-      - task: FortifySCA@7.1.0
+      - task: FortifySCA@5
         displayName: Run Fortify
         inputs:
-          runBuildTranslate: true
           applicationType: other
-          fortifyProjects: OmniKassa.sln # we want to run fortify on a specific project.
+          fortifyProjects: OmniKassa.sln
+          buildToolOptions: -dotnet-version 2.1
           fortifyBuildId: rofe
+          runFortifyUpload: true
           fortifyServerName: $(fortifyServiceConnection)
           fortifyApplicationName: ps_omnikassa-dotnet-sdk_fortify
           fortifyApplicationVersion: 1.0
-          runFortifyRulepackUpdate: false
-          runFortifyClean: true
-          scaVerbose: true #debug
-          scaDebug: true #debug
-          runFortifyScan: true
-          runFortifyUpload: true
-          fortifyScanType: 'LocalScan'
           additionalScanParams: '-exclude $(System.DefaultWorkingDirectory)/samples/**/* -exclude $(System.DefaultWorkingDirectory)/tests/**/*'
           buildAnalyzerParams: '-exclude $(System.DefaultWorkingDirectory)/samples/**/* -exclude $(System.DefaultWorkingDirectory)/tests/**/*'
       - task: PostAnalysis@1
