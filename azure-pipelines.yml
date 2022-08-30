@@ -78,7 +78,7 @@ jobs:
         inputs:
           runBuildTranslate: true
           applicationType: other
-          fortifyProjects: '**\*.sln' # we want to run fortify on a specific project.
+          fortifyProjects: '**\*.sln'
           fortifyBuildId: rofe
           fortifyServerName: $(fortifyServiceConnection)
           fortifyApplicationName: ps_omnikassa-dotnet-sdk_fortify
