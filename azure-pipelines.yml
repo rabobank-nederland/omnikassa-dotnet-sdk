@@ -85,8 +85,8 @@ jobs:
           fortifyApplicationVersion: 1.0
           runFortifyRulepackUpdate: false
           runFortifyClean: true
-          scaVerbose: true #debug
-          scaDebug: true #debug
+          scaVerbose: false
+          scaDebug: false
           runFortifyScan: true
           runFortifyUpload: true
           fortifyScanType: 'LocalScan'
