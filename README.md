@@ -10,6 +10,9 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
+### Version 1.3.5
+* Fixed and automated pipeline issue (No changes in code)
+
 ### Version 1.3.4
 * First automated pipeline release for NuGet (No changes in code)
 
