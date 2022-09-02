@@ -10,7 +10,7 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
-### Version 1.3.5
+### Version 1.3.6
 * Added support for supplying the RefreshToken, SigningKey, CallbackUrl and BaseUrl values via the configuration files for the sample implementations.
 
 | Samples version | Configuration file                                      |
@@ -18,6 +18,9 @@ Installation instructions and detailed developer documentation on how to use the
 | DotNet50        | samples/OmniKassa.Samples.DotNet50/appsettings.json     |
 | DotNet461       | samples/OmniKassa.Samples.DotNet461/Web.config          |
 | DotNetCore31    | samples/OmniKassa.Samples.DotNetCore31/appsettings.json |
+
+### Version 1.3.5
+* Fixed and automated pipeline issue (No changes in code)
 
 ### Version 1.3.4
 * First automated pipeline release for NuGet (No changes in code)
