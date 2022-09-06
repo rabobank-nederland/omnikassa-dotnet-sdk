@@ -10,7 +10,7 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
-### Version 1.3.6
+### Version 1.3.7
 * Added support for supplying the RefreshToken, SigningKey, CallbackUrl and BaseUrl values via the configuration files for the sample implementations.
 
 | Samples version | Configuration file                                      |
