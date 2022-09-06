@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using Newtonsoft.Json;
-using OmniKassa.Utils;
 
 namespace OmniKassa.Model
 {

@@ -1,5 +1,4 @@
-﻿using System;
-namespace OmniKassa.Model.Enums
+﻿namespace OmniKassa.Model.Enums
 {
     /// <summary>
     /// This enumeration contains the supported itemCategories
