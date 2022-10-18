@@ -20,7 +20,19 @@ namespace OmniKassa.Tests.Model.Response
         [Fact]
         public void GetSignatureData_Should_ReturnCorrectSignatureData()
         {
-            MerchantOrderStatusResponse response = JsonConvert.DeserializeObject<MerchantOrderStatusResponse>("{'orderResults':[{'poiId':'201','totalAmount':{'amount':'100','currency':'EUR'},'errorCode':'NONE','paidAmount':{'amount':'100','currency':'EUR'},'merchantOrderId':'8','orderStatusDateTime':'2016-08-26T13:04:20.304+02:00','orderStatus':'COMPLETED','omnikassaOrderId':'2dbef5cd-f009-461b-b968-57d87000a5b1'}],'signature':'e2051763e4efd43438f70a9df94b161b9c7253919e12ea64983e8789a13b3d5c','moreOrderResultsAvailable':false}");
+            MerchantOrderStatusResponse response = TestHelper.GetObjectFromJsonFile<MerchantOrderStatusResponse>("merchant_order_response_full.json");
+            String expectedSignatureData = "false,SHOP1,ORDER1,1,COMPLETED,2000-01-01T00:00:00.000-0200,NONE,EUR,100,EUR,100," +
+                                       "2dbef5cd-f009-461b-b968-57d87000a5b2,IDEAL,PAYMENT,SUCCESS,EUR,100,EUR,100,2016-07-28T12:51:15.574+02:00,2016-07-28T12:51:15.574+02:00," +
+                                       "2dbef5cd-f009-461b-b968-57d87000a5b3,IDEAL,PAYMENT,SUCCESS,EUR,200,EUR,200,2016-07-28T12:51:15.574+02:00,2016-07-28T12:51:15.574+02:00," +
+                                       "2dbef5cd-f009-461b-b968-57d87000a5b4,IDEAL,PAYMENT,SUCCESS,EUR,300,EUR,300,2016-07-28T12:51:15.574+02:00,2016-07-28T12:51:15.574+02:00";
+            String actualSignatureData = String.Join(",", response.GetSignatureData());
+            Assert.Equal(expectedSignatureData, actualSignatureData);
+        }
+
+        [Fact]
+        public void GetSignatureDataWithoutTransactions_Should_ReturnCorrectSignatureData()
+        {
+            MerchantOrderStatusResponse response = TestHelper.GetObjectFromJsonFile<MerchantOrderStatusResponse>("merchant_order_response_simple.json");
             String expectedSignatureData = "false,8,2dbef5cd-f009-461b-b968-57d87000a5b1,201,COMPLETED,2016-08-26T13:04:20.304+02:00,NONE,EUR,100,EUR,100";
             String actualSignatureData = String.Join(",", response.GetSignatureData());
             Assert.Equal(expectedSignatureData, actualSignatureData);

@@ -218,20 +218,26 @@ namespace OmniKassa.Model.Order
                 hash = (hash * -1521134295) + (CustomerInformation == null ? 0 : CustomerInformation.GetHashCode());
                 hash = (hash * -1521134295) + (PaymentBrand == null ? 0 : PaymentBrand.GetHashCode());
                 hash = (hash * -1521134295) + (PaymentBrandForce == null ? 0 : PaymentBrandForce.GetHashCode());
-                if (PaymentBrandMetaData != null)
-                {
-                    var orderedMetaData = PaymentBrandMetaData.OrderBy(kvp => kvp.Key, StringComparer.Ordinal);
-                    foreach (KeyValuePair<string, string> result in orderedMetaData)
-                    {
-                        hash = (hash * -1521134295) + result.Key.GetHashCode();
-                        hash = (hash * -1521134295) + result.Value.GetHashCode();
-                    }
-                }
+                hash = GetHashCodePaymentBrandMetaData(hash);
                 hash = (hash * -1521134295) + SkipHppResultPage.GetHashCode();
                 hash = (hash * -1521134295) + (Timestamp == null ? 0 : Timestamp.GetHashCode());
                 hash = (hash * -1521134295) + (InitiatingParty == null ? 0 : InitiatingParty.GetHashCode());
                 return hash;
             }
+        }
+
+        private int GetHashCodePaymentBrandMetaData(int hash)
+        {
+            if (PaymentBrandMetaData != null)
+            {
+                var orderedMetaData = PaymentBrandMetaData.OrderBy(kvp => kvp.Key, StringComparer.Ordinal);
+                foreach (KeyValuePair<string, string> result in orderedMetaData)
+                {
+                    hash = (hash * -1521134295) + result.Key.GetHashCode();
+                    hash = (hash * -1521134295) + result.Value.GetHashCode();
+                }
+            }
+            return hash;
         }
 
         /// <summary>

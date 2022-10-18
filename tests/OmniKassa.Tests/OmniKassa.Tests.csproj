@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;net461;net5.0</TargetFrameworks>
+    <TargetFrameworks>net462;net5.0;net6.0</TargetFrameworks>
     <RootNamespace>omnikassa_dotnet_test</RootNamespace>
 
     <IsPackable>false</IsPackable>
@@ -20,15 +20,16 @@
 
   <ItemGroup>
     <None Remove="Resources\issuers_response_single.json" />
+    <None Remove="Resources\merchant_order_response_full.json" />
+    <None Remove="Resources\merchant_order_response_simple.json" />
     <None Remove="Resources\order_item_negative.json" />
+    <None Remove="Resources\refund_details.json" />
+    <None Remove="Resources\refund_initiate_request.json" />
+    <None Remove="Resources\refund_transaction_details.json" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OmniKassa\OmniKassa.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Http\" />
   </ItemGroup>
   
 </Project>

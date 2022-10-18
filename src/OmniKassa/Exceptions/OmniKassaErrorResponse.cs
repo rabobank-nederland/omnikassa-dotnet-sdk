@@ -12,7 +12,7 @@ namespace OmniKassa.Exceptions
         /// <summary>
         /// The field that is present when an error is present in an API response
         /// </summary>
-        public static String ERROR_CODE_FIELD_NAME = "errorCode";
+        public const String ERROR_CODE_FIELD_NAME = "errorCode";
 
         /// <summary>
         /// Error code

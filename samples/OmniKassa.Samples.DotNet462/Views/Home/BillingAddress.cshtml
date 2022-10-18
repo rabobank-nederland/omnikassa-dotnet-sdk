@@ -1,0 +1,93 @@
+﻿@using OmniKassa.Model.Enums;
+
+@{
+    Layout = null;
+
+    var firstName = "";
+    var middleName = "";
+    var lastName = "";
+    var street = "";
+    var houseNumber = "";
+    var houseNumberAddition = "";
+    var postalCode = "";
+    var city = "";
+    var countryCode = CountryCode.AF;
+
+    if (Model != null)
+    {
+        firstName = Model.Order.BillingDetails.FirstName;
+        middleName = Model.Order.BillingDetails.MiddleName;
+        lastName = Model.Order.BillingDetails.LastName;
+        street = Model.Order.BillingDetails.Street;
+        houseNumber = Model.Order.BillingDetails.HouseNumber;
+        houseNumberAddition = Model.Order.BillingDetails.HouseNumberAddition;
+        postalCode = Model.Order.BillingDetails.PostalCode;
+        city = Model.Order.BillingDetails.City;
+        countryCode = Model.Order.BillingDetails.CountryCode;
+    }
+}
+
+<table>
+    <tr>
+        <td>
+            <label for="billing_first_name">First name:</label>
+            <input type="text" name="billingFirstName" id="billing_first_name" value="@firstName">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_middle_name">Middle name:</label>
+            <input type="text" name="billingMiddleName" id="billing_middle_name" value="@middleName">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_last_name">Last name:</label>
+            <input type="text" name="billingLastName" id="billing_last_name" value="@lastName">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_street">Street:</label>
+            <input type="text" name="billingStreet" id="billing_street" value="@street">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_house_number">House number:</label>
+            <input type="text" name="billingHouseNumber" id="billing_house_number" value="@houseNumber">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_house_number_addition">House number addition:</label>
+            <input type="text" name="billingHouseNumberAddition" id="billing_house_number_addition" value="@houseNumberAddition">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_postal_code">Postal code:</label>
+            <input type="text" name="billingPostalCode" id="billing_postal_code" value="@postalCode">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_city">City:</label>
+            <input type="text" name="billingCity" id="billing_city" value="@city">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_country_code">Country code:</label>
+            <select name="billingCountryCode" id="billing_country_code">
+                @{
+                    foreach (CountryCode item in typeof(CountryCode).GetEnumValues())
+                    {
+                        var name = Enum.GetName(typeof(CountryCode), item);
+                        <option value="@item" @if (item == countryCode) { @Html.Raw("selected='selected'") ; }>@item</option>
+                    }
+                }
+            </select>
+        </td>
+    </tr>
+</table>

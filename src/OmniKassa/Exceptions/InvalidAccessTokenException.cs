@@ -10,7 +10,7 @@ namespace OmniKassa.Exceptions
         /// <summary>
         /// Error code for an invalid (authorization) token
         /// </summary>
-        public static int INVALID_AUTHORIZATION_ERROR_CODE = 5001;
+        public const int INVALID_AUTHORIZATION_ERROR_CODE = 5001;
 
         /// <summary>
         /// Initializes an InvalidAccessTokenException

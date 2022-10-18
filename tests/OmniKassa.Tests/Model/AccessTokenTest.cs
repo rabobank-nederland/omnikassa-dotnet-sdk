@@ -64,6 +64,7 @@ namespace OmniKassa.Tests.Model
         public void Constructor()
         {
             AccessToken accessToken = new AccessToken("token", PrepareDateTime(), 123);
+            Assert.NotNull(accessToken);
         }
 
         [Fact]
