@@ -10,6 +10,11 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
+### Version 1.4.0
+* Extended SDK to support refunds.
+* Added support for .NET 6.
+* Removed support for EOL .NET versions.
+
 ### Version 1.3.7
 * Added support for supplying the RefreshToken, SigningKey, CallbackUrl and BaseUrl values via the configuration files for the sample implementations.
 
