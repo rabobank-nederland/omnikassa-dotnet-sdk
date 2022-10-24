@@ -1,0 +1,8 @@
+{
+  "money": {
+    "amount": "10000",
+    "currency": "EUR"
+  },
+  "description": "description",
+  "vatCategory": "1"
+}

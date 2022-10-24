@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using OmniKassa.Model.Enums;
 using OmniKassa.Utils;
@@ -30,7 +31,12 @@ namespace OmniKassa.Model.Response
         [JsonProperty(PropertyName = "omnikassaOrderId")]
         public String OmnikassaOrderId { get; private set; }
 
-        
+        /// <summary>
+        /// List of transactions
+        /// </summary>
+        [JsonProperty(PropertyName = "transactions")]
+        public IReadOnlyList<TransactionInfo> TransactionInfo { get; private set; }
+
         [JsonProperty(PropertyName = "orderStatus")]
         #pragma warning disable 0649
         private String orderStatus;
@@ -87,7 +93,8 @@ namespace OmniKassa.Model.Response
         /// <returns>Signature data</returns>
         public List<String> GetSignatureData()
         {
-            return new List<String>(new String[] {
+            List<String> data = new List<String>
+            {
                 MerchantOrderId,
                 OmnikassaOrderId,
                 Convert.ToString(PointOfInteractionId),
@@ -98,7 +105,15 @@ namespace OmniKassa.Model.Response
                 Convert.ToString(PaidAmount.GetAmountInCents()),
                 TotalAmount.Currency.ToString(),
                 Convert.ToString(TotalAmount.GetAmountInCents())
-            });
+            };
+            if (TransactionInfo != null)
+            {
+                foreach (TransactionInfo info in TransactionInfo)
+                {
+                    data.AddRange(info.GetSignatureData());
+                }
+            }
+            return data;
         }
 
         /// <summary>
@@ -128,7 +143,29 @@ namespace OmniKassa.Model.Response
                 Equals(ErrorCode, order.ErrorCode) &&
                 Equals(OrderStatusDateTime, order.OrderStatusDateTime) &&
                 Equals(PaidAmount, order.PaidAmount) &&
-                Equals(TotalAmount, order.TotalAmount);
+                Equals(TotalAmount, order.TotalAmount) &&
+                EqualsTransactionInfo(TransactionInfo, order.TransactionInfo);
+        }
+
+        private bool EqualsTransactionInfo(
+            IReadOnlyList<TransactionInfo> one,
+            IReadOnlyList<TransactionInfo> two
+        ) {
+            // Handle empty lists as null
+            var tmpOne = one != null && one.Count > 0 ? one : null;
+            var tmpTwo = two != null && two.Count > 0 ? two : null;
+
+            // When both are null, items are the same.
+            if (tmpOne == null && tmpTwo == null)
+            {
+                return true;
+            }
+            // If only one is null, items are not the same.
+            if (tmpOne == null || tmpTwo == null)
+            {
+                return false;
+            }
+            return Enumerable.SequenceEqual(tmpOne, tmpTwo);
         }
 
         /// <summary>
@@ -148,6 +185,13 @@ namespace OmniKassa.Model.Response
                 hash = (hash * -1521134295) + (OrderStatusDateTime == null ? 0 : OrderStatusDateTime.GetHashCode());
                 hash = (hash * -1521134295) + (PaidAmount == null ? 0 : PaidAmount.GetHashCode());
                 hash = (hash * -1521134295) + (TotalAmount == null ? 0 : TotalAmount.GetHashCode());
+                if (TransactionInfo != null)
+                {
+                    foreach (TransactionInfo info in TransactionInfo)
+                    {
+                        hash = (hash * -1521134295) + info.GetHashCode();
+                    }
+                }
                 return hash;
             }
         }

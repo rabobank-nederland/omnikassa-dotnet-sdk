@@ -15,8 +15,10 @@ namespace OmniKassa.Model.Response
         [JsonProperty(PropertyName = "name")]
         public String Name { get; private set; }
 
+#pragma warning disable CS0649 // Assigned by response
         [JsonProperty(PropertyName = "status")]
-        private String Status;
+        private readonly String Status;
+#pragma warning disable CS0649 // Assigned by response
 
         /// <summary>
         /// Whether or not this payment brand is active

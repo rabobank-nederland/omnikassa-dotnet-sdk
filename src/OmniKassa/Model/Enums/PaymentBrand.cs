@@ -14,6 +14,11 @@ namespace OmniKassa.Model.Enums
         IDEAL,
 
         /// <summary>
+        /// iDEAL QR
+        /// </summary>
+        IDEAL_QR,
+
+        /// <summary>
         /// PayPal
         /// </summary>
         PAYPAL,

@@ -1,0 +1,58 @@
+﻿@using OmniKassa.Model.Enums;
+@using OmniKassa.Model.Response;
+
+@{
+    Layout = null;
+}
+
+<form action="" method="get">
+    <table class="table">
+        <tr>
+            <td>Transaction Id:</td>
+            <td><input type="text" name="transactionId" /></td>
+            <td><input type="submit" value="Find Transaction Refundable Amount"></td>
+        </tr>
+    </table>
+</form>
+
+
+@if (Model != null && Model.TransactionRefundableDetailsResponse != null)
+{
+    <p class="h6">Initiate refund:</p>
+    <table class="table">
+        <tr>
+            <td>Refundable Amount</td>
+            <td>@Model.TransactionRefundableDetailsResponse.RefundableMoney.Amount</td>
+        </tr>
+    </table>
+    <form action="SubmitRefund" method="post">
+        <input type="hidden" name="transactionId" value="@Model.TransactionRefundableDetailsResponse.TransactionId" />
+        <table class="table">
+            <tr>
+                <td>Amount to refund:</td>
+                <td><input name="amount" /></td>
+            </tr>
+            <tr>
+                <td>Vat Category:</td>
+                <td>
+                    <label for="refund_vat_category">Vat category:</label>
+                    <select name="vat" id="refund_vat_category">
+                        <option value="HIGH">HIGH</option>
+                        <option value="LOW">LOW</option>
+                        <option value="ZERO">ZERO</option>
+                        <option value="NONE">NONE</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td><input name="description" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <input type="submit" value="Submit a Refund" />
+                </td>
+            </tr>
+        </table>
+    </form>
+}

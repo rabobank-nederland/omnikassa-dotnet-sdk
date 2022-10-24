@@ -21,17 +21,17 @@ namespace OmniKassa.Model.Response
         /// <summary>
         /// Order ID parameter key
         /// </summary>
-        public static String ORDER_ID_KEY = "order_id";
+        public const String ORDER_ID_KEY = "order_id";
 
         /// <summary>
         /// Status parameter key
         /// </summary>
-        public static String STATUS_KEY = "status";
+        public const String STATUS_KEY = "status";
 
         /// <summary>
         /// Signature parameter key
         /// </summary>
-        public static String SIGNATURE_KEY = "signature";
+        public const String SIGNATURE_KEY = "signature";
 
         [JsonProperty(PropertyName = "order_id")]
         private readonly String orderId;

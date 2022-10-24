@@ -1,0 +1,15 @@
+{
+  "refundId": "25da863a-60a5-475d-ae47-c0e4bd1bec31",
+  "refundTransactionId": "25da863a-60a5-475d-ae47-c0e4bd1bec32",
+  "createdAt": "2000-01-01T00:00:00.000-0200",
+  "updatedAt": "2000-01-01T00:00:00.000-0200",
+  "refundMoney": {
+    "amount": "10000",
+    "currency": "EUR"
+  },
+  "vatCategory": "1",
+  "paymentBrand": "IDEAL",
+  "status": "SUCCEEDED",
+  "description": "test description",
+  "transactionId": "25da863a-60a5-475d-ae47-c0e4bd1bec33"
+}

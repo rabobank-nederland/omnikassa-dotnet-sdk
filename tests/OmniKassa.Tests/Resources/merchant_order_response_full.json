@@ -1,0 +1,71 @@
+﻿{
+  "orderResults": [
+    {
+      "poiId": "1",
+      "totalAmount": {
+        "amount": "100",
+        "currency": "EUR"
+      },
+      "errorCode": "NONE",
+      "paidAmount": {
+        "amount": "100",
+        "currency": "EUR"
+      },
+      "merchantOrderId": "SHOP1",
+      "orderStatusDateTime": "2000-01-01T00:00:00.000-0200",
+      "orderStatus": "COMPLETED",
+      "omnikassaOrderId": "ORDER1",
+      "transactions": [
+        {
+          "id": "2dbef5cd-f009-461b-b968-57d87000a5b2",
+          "paymentBrand": "IDEAL",
+          "type": "PAYMENT",
+          "status": "SUCCESS",
+          "amount": {
+            "amount": "100",
+            "currency": "EUR"
+          },
+          "confirmedAmount": {
+            "amount": "100",
+            "currency": "EUR"
+          },
+          "startTime": "2016-07-28T12:51:15.574+02:00",
+          "lastUpdateTime": "2016-07-28T12:51:15.574+02:00"
+        },
+        {
+          "id": "2dbef5cd-f009-461b-b968-57d87000a5b3",
+          "paymentBrand": "IDEAL",
+          "type": "PAYMENT",
+          "status": "SUCCESS",
+          "amount": {
+            "amount": "200",
+            "currency": "EUR"
+          },
+          "confirmedAmount": {
+            "amount": "200",
+            "currency": "EUR"
+          },
+          "startTime": "2016-07-28T12:51:15.574+02:00",
+          "lastUpdateTime": "2016-07-28T12:51:15.574+02:00"
+        },
+        {
+          "id": "2dbef5cd-f009-461b-b968-57d87000a5b4",
+          "paymentBrand": "IDEAL",
+          "type": "PAYMENT",
+          "status": "SUCCESS",
+          "amount": {
+            "amount": "300",
+            "currency": "EUR"
+          },
+          "confirmedAmount": {
+            "amount": "300",
+            "currency": "EUR"
+          },
+          "startTime": "2016-07-28T12:51:15.574+02:00",
+          "lastUpdateTime": "2016-07-28T12:51:15.574+02:00"
+        }
+      ]
+    }
+  ],
+  "moreOrderResultsAvailable": false
+}

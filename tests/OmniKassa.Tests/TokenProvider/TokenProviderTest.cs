@@ -67,6 +67,10 @@ namespace OmniKassa.Tests.Connector
             Set(FieldName.ACCESS_TOKEN, "token");
             Set(FieldName.ACCESS_TOKEN_VALID_UNTIL, validUntilString);
             Set(FieldName.ACCESS_TOKEN_DURATION, "28800000");
+
+            Assert.Equal("token", Get(FieldName.ACCESS_TOKEN));
+            Assert.Equal(validUntilString, Get(FieldName.ACCESS_TOKEN_VALID_UNTIL));
+            Assert.Equal("28800000", Get(FieldName.ACCESS_TOKEN_DURATION));
         }
 
         [Fact]

@@ -1,0 +1,60 @@
+﻿@using OmniKassa.Model.Enums;
+@using OmniKassa.Model.Response;
+
+@{
+    Layout = null;
+}
+
+<form action="FetchRefundDetails" method="get">
+    <table class="table">
+        <tr>
+            <td>Transaction id:</td>
+            <td><input name="transactionId" /></td>
+            <td>Refund id:</td>
+            <td><input name="refundId" /></td>
+            <td><input type="submit" value="Query" /></td>
+        </tr>
+    </table>
+</form>
+
+@if (Model != null && Model.RefundDetailsResponse != null) 
+{
+    <p class="h6">Refund details:</p>
+    <table class="table">
+        <tr>
+            <td>Refund id:</td>
+            <td>@Model.RefundDetailsResponse.RefundId</td>
+        </tr>
+        <tr>
+            <td>Transaction id:</td>
+            <td>@Model.RefundDetailsResponse.TransactionId</td>
+        </tr>
+        <tr>
+            <td>Amount:</td>
+            <td>@Model.RefundDetailsResponse.RefundMoney.Amount</td>
+        </tr>
+        <tr>
+            <td>Vat:</td>
+            <td>@Model.RefundDetailsResponse.VatCategory</td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td>@Model.RefundDetailsResponse.Description</td>
+        </tr>
+        <tr>
+            <td>Status:</td>
+            <td>@Model.RefundDetailsResponse.Status</td>
+        </tr>
+        <tr>
+            <td>Payment Brand:</td>
+            <td>@Model.RefundDetailsResponse.PaymentBrand</td>
+        </tr>
+        @if (Model.TransactionRefundableDetailsResponse != null) 
+        {
+            <tr>
+                <td>Refundable Amount:</td>
+                <td>@Model.TransactionRefundableDetailsResponse.RefundableMoney.Amount</td>
+            </tr>
+        }
+    </table>
+}

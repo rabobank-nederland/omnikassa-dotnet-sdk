@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29311.281
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa", "src\OmniKassa\OmniKassa.csproj", "{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniKassa.Samples.DotNet461", "samples\OmniKassa.Samples.DotNet461\OmniKassa.Samples.DotNet461.csproj", "{13D50ADA-D2C3-43F0-9483-E5EA895C442A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNet50", "samples\OmniKassa.Samples.DotNet50\OmniKassa.Samples.DotNet50.csproj", "{525A6020-B319-4500-8E71-BB4D991F9FEB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNetCore31", "samples\OmniKassa.Samples.DotNetCore31\OmniKassa.Samples.DotNetCore31.csproj", "{77642D65-2943-4E51-83B4-3513F7A41D62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniKassa.Samples.DotNet462", "samples\OmniKassa.Samples.DotNet462\OmniKassa.Samples.DotNet462.csproj", "{13D50ADA-D2C3-43F0-9483-E5EA895C442A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNet60", "samples\OmniKassa.Samples.DotNet60\OmniKassa.Samples.DotNet60.csproj", "{E78289A9-C544-41E9-A7EF-FA7AE8EC6986}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +21,18 @@ Global
 		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{525A6020-B319-4500-8E71-BB4D991F9FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{525A6020-B319-4500-8E71-BB4D991F9FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{525A6020-B319-4500-8E71-BB4D991F9FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{525A6020-B319-4500-8E71-BB4D991F9FEB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{77642D65-2943-4E51-83B4-3513F7A41D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77642D65-2943-4E51-83B4-3513F7A41D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77642D65-2943-4E51-83B4-3513F7A41D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77642D65-2943-4E51-83B4-3513F7A41D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E78289A9-C544-41E9-A7EF-FA7AE8EC6986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E78289A9-C544-41E9-A7EF-FA7AE8EC6986}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E78289A9-C544-41E9-A7EF-FA7AE8EC6986}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E78289A9-C544-41E9-A7EF-FA7AE8EC6986}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
