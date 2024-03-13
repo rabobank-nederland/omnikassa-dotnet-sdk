@@ -152,9 +152,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\OrderHelper.cs" />
-    <Compile Include="Helpers\SessionVar.cs" />
-    <Compile Include="Models\WebShopModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -194,12 +191,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\BillingAddress.cshtml" />
-    <Content Include="Views\Home\OrderDetails.cshtml" />
-    <Content Include="Views\Home\OrderItems.cshtml" />
-    <Content Include="Views\Home\ShippingAddress.cshtml" />
-    <Content Include="Views\Home\InitiateRefund.cshtml" />
-    <Content Include="Views\Home\RefundDetails.cshtml" />
+    <Content Include="Views\Home\Callback.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

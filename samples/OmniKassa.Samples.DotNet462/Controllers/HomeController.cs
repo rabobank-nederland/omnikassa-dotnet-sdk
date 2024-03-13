@@ -1,17 +1,14 @@
-﻿using OmniKassa.Samples.DotNet462.Models;
-using OmniKassa.Samples.DotNet462.Helpers;
-using OmniKassa.Exceptions;
+﻿using OmniKassa.Exceptions;
 using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
 using OmniKassa.Model.Response;
 using System;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.Web.Mvc;
 using System.Net;
 using OmniKassa.Model.Response.Notification;
-using OmniKassa.Model.Request;
 using OmniKassa.Model;
+using System.Collections.Generic;
 
 namespace OmniKassa.Samples.DotNet462.Controllers
 {
@@ -22,15 +19,8 @@ namespace OmniKassa.Samples.DotNet462.Controllers
         private readonly string RETURN_URL;
         private readonly string BASE_URL;
 
-        private static string SESSION_ORDER = "Order";
-
         private static Endpoint omniKassa;
-
-        private int orderId = 0;
-        private WebShopModel webShopModel;
-        private int orderItemId = 0;
-
-        private static ApiNotification notification;
+        private static ApiNotification notification;       
 
         public HomeController()
         {
@@ -39,19 +29,13 @@ namespace OmniKassa.Samples.DotNet462.Controllers
             TOKEN = appSettings["RefreshToken"];
             RETURN_URL = appSettings["CallbackUrl"];
             BASE_URL = appSettings["BaseUrl"];
-            
+
             if (omniKassa == null)
             {
                 InitializeOmniKassaEndpoint();
             }
-
-            webShopModel = SessionVar.Get<WebShopModel>(SESSION_ORDER);
-            if (webShopModel != null)
-            {
-                orderId = webShopModel.OrderId;
-                orderItemId = webShopModel.GetLastItemId();
-            }
         }
+
         private void InitializeOmniKassaEndpoint()
         {
             if (String.IsNullOrEmpty(BASE_URL))
@@ -67,97 +51,46 @@ namespace OmniKassa.Samples.DotNet462.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            SetVersionViewData();
-            CreateOrderIfRequired();
-
-            return View(webShopModel);
-        }
-
-        private void SetVersionViewData()
-        {
-            var mvcName = typeof(Controller).Assembly.GetName();
-            var isMono = Type.GetType("Mono.Runtime") != null;
-
-            ViewData["Version"] = mvcName.Version.Major + "." + mvcName.Version.Minor;
-            ViewData["Runtime"] = isMono ? "Mono" : ".NET";
-        }
-
-        private void CreateOrderIfRequired()
-        {
-            if (Session[SESSION_ORDER] == null)
-            {
-                webShopModel = new WebShopModel(GetOrder(++orderId));
-                SessionVar.Set<WebShopModel>(SESSION_ORDER, webShopModel);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult AddItem()
-        {
-            SetVersionViewData();
-            CreateOrderIfRequired();
-
-            NameValueCollection collection = Request.Form;
-            try
-            {
-                OrderItem item = OrderHelper.CreateOrderItem(collection, ++orderItemId);
-                webShopModel.AddItem(item);
-            }
-            catch (ArgumentException ex)
-            {
-                webShopModel.Error = ex.Message;
-            }
-
-            return View("Index", webShopModel);
+            return View();
         }
 
         [HttpPost]
         public ActionResult PlaceOrder()
         {
-            CreateOrderIfRequired();
-            webShopModel.PaymentCompleted = null;
-
             try
             {
-                MerchantOrder order = OrderHelper.PrepareOrder(Request.Form, webShopModel);
-                if (order != null)
-                {
-                    MerchantOrderResponse response = omniKassa.Announce(order);
-
-                    webShopModel = null;
-                    SessionVar.Set<WebShopModel>(SESSION_ORDER, null);
-
-                    return new RedirectResult(response.RedirectUrl);
-                }
+                MerchantOrder order = GetOrder();
+                MerchantOrderResponse response = omniKassa.Announce(order);
+                return new RedirectResult(response.RedirectUrl);
             }
-            catch (RabobankSdkException ex)
+            catch (RabobankSdkException)
             {
-                webShopModel.Error = ex.Message;
+                return View("Index");
             }
-            catch (ArgumentException ex)
-            {
-                webShopModel.Error = ex.Message;
-            }
-
-            return View("Index", webShopModel);
         }
 
         [HttpGet]
         public ActionResult Callback()
         {
-            SetVersionViewData();
-            CreateOrderIfRequired();
-
             try
             {
-                webShopModel.PaymentCompleted = PaymentCompletedResponse.Create(Request.QueryString, SIGNING_KEY);
+                PaymentCompletedResponse response = PaymentCompletedResponse.Create(Request.QueryString, SIGNING_KEY);
+                String validatedOrderId = response.OrderId;
+                PaymentStatus? validatedStatus = response.Status;
+
+                ViewData["OrderId"] = response.OrderId;
+                ViewData["Status"] = response.Status;
             }
-            catch (RabobankSdkException ex)
+            catch (IllegalSignatureException)
             {
-                webShopModel.Error = ex.Message;
+
+            }
+            catch (RabobankSdkException)
+            {
+
             }
 
-            return View("Index", webShopModel);
+            return View();
         }
 
         [HttpPost]
@@ -178,20 +111,16 @@ namespace OmniKassa.Samples.DotNet462.Controllers
                     do
                     {
                         response = omniKassa.RetrieveAnnouncement(notification);
-                        webShopModel.Responses.Add(response);
-                    } while (response.MoreOrderResultsAvailable);
+                    }
+                    while (response.MoreOrderResultsAvailable);
                 }
-                catch (RabobankSdkException ex)
+                catch (RabobankSdkException)
                 {
-                    webShopModel.Error = ex.Message;
+
                 }
-            }
-            else
-            {
-                webShopModel.Error = "Order status notification not yet received.";
             }
 
-            return View("Index", webShopModel);
+            return View("Index");
         }
 
         [HttpPost]
@@ -199,14 +128,13 @@ namespace OmniKassa.Samples.DotNet462.Controllers
         {
             try
             {
-                webShopModel.PaymentBrandsResponse = omniKassa.RetrievePaymentBrands();
+                PaymentBrandsResponse response = omniKassa.RetrievePaymentBrands();
             }
-            catch (RabobankSdkException ex)
+            catch (RabobankSdkException)
             {
-                webShopModel.Error = ex.Message;
-            }
 
-            return View("Index", webShopModel);
+            }
+            return View("Index");
         }
 
         [HttpPost]
@@ -214,130 +142,72 @@ namespace OmniKassa.Samples.DotNet462.Controllers
         {
             try
             {
-                webShopModel.IdealIssuersResponse = omniKassa.RetrieveIdealIssuers();
+                IdealIssuersResponse response = omniKassa.RetrieveIdealIssuers();
             }
-            catch (RabobankSdkException ex)
+            catch (RabobankSdkException)
             {
-                webShopModel.Error = ex.Message;
-            }
 
-            return View("Index", webShopModel);
+            }
+            return View("Index");
         }
 
-        [HttpGet]
-        public ActionResult InitiateRefund()
+        public MerchantOrder GetOrder()
         {
-            CreateOrderIfRequired();
+            OrderItem orderItem = new OrderItem.Builder()
+                    .WithId("1")
+                    .WithQuantity(1)
+                    .WithName("Test product")
+                    .WithDescription("Description")
+                    .WithAmount(Money.FromDecimal(Currency.EUR, 10m))
+                    .WithTax(Money.FromDecimal(Currency.EUR, 1m))
+                    .WithItemCategory(ItemCategory.PHYSICAL)
+                    .WithVatCategory(VatCategory.LOW)
+                    .Build();
 
-            NameValueCollection collection = Request.Params;
-            var transactionIdStr = collection.Get("transactionId");
-            if (!string.IsNullOrEmpty(transactionIdStr))
-            {
-                var transactionId = Guid.Parse(transactionIdStr);
-                webShopModel.TransactionRefundableDetailsResponse = omniKassa.FetchRefundableTransactionDetails(transactionId);
-            }
-
-            return View(webShopModel);
-        }
-
-        [HttpPost]
-        public ActionResult SubmitRefund()
-        {
-            try
-            {
-                NameValueCollection collection = Request.Form;
-                var amountStr = collection.Get("amount");
-                var description = collection.Get("description");
-                var vatCategoryStr = collection.Get("vat");
-                var transactionId = Guid.Parse(collection.Get("transactionId"));
-
-                decimal amountDecimal = Convert.ToDecimal(amountStr);
-                Money amount = Money.FromDecimal(Currency.EUR, Decimal.Round(amountDecimal, 2));
-                VatCategory vatCategory = (VatCategory)Enum.Parse(typeof(VatCategory), vatCategoryStr);
-
-                var refundRequest = new InitiateRefundRequest(amount, description, vatCategory);
-
-                webShopModel.RefundDetailsResponse = omniKassa.InitiateRefundTransaction(refundRequest, transactionId, Guid.NewGuid());
-            }
-            catch (RabobankSdkException ex)
-            {
-                webShopModel.Error = ex.Message;
-            }
-            return View("RefundDetails", webShopModel);
-        }
-
-        [HttpGet]
-        public ActionResult FetchRefundDetails()
-        {
-            try
-            {
-                NameValueCollection collection = Request.Form;
-                var transactionIdStr = collection.Get("transactionId");
-                var refundIdStr = collection.Get("refundId");
-
-                if (!string.IsNullOrEmpty(transactionIdStr) && string.IsNullOrEmpty(refundIdStr))
-                {
-                    var transactionId = Guid.Parse(transactionIdStr);
-                    var refundId = Guid.Parse(refundIdStr);
-
-                    webShopModel.RefundDetailsResponse = omniKassa.FetchRefundTransaction(transactionId, refundId);
-                }
-            }
-            catch (RabobankSdkException ex)
-            {
-                webShopModel.Error = ex.Message;
-            }
-            return View("RefundDetails", webShopModel);
-        }
-
-        [HttpGet]
-        public ActionResult RefundDetails()
-        {
-            return View(webShopModel);
-        }
-
-        public MerchantOrder.Builder GetOrder(int orderId)
-        {
             CustomerInformation customerInformation = new CustomerInformation.Builder()
-                .WithTelephoneNumber("0204971111")
-                .WithInitials("J.D.")
-                .WithGender(Gender.M)
-                .WithEmailAddress("johndoe@rabobank.com")
-                .WithDateOfBirth("20-03-1987")
-                .WithFullName("Jan de Ruiter")
-                .Build();
+                    .WithTelephoneNumber("0204971111")
+                    .WithInitials("J.D.")
+                    .WithGender(Gender.M)
+                    .WithEmailAddress("johndoe@rabobank.com")
+                    .WithDateOfBirth("20-03-1987")
+                    .Build();
 
             Address shippingDetails = new Address.Builder()
-                .WithFirstName("John")
-                .WithLastName("Doe")
-                .WithStreet("Street")
-                .WithHouseNumber("5")
-                .WithHouseNumberAddition("a")
-                .WithPostalCode("1234AB")
-                .WithCity("Haarlem")
-                .WithCountryCode(CountryCode.NL)
-                .Build();
+                    .WithFirstName("John")
+                    .WithLastName("Doe")
+                    .WithStreet("Street")
+                    .WithHouseNumber("5")
+                    .WithHouseNumberAddition("a")
+                    .WithPostalCode("1234AB")
+                    .WithCity("Haarlem")
+                    .WithCountryCode(CountryCode.NL)
+                    .Build();
 
             Address billingDetails = new Address.Builder()
-                .WithFirstName("John")
-                .WithLastName("Doe")
-                .WithStreet("Factuurstraat")
-                .WithHouseNumber("5")
-                .WithHouseNumberAddition("a")
-                .WithPostalCode("1234AB")
-                .WithCity("Haarlem")
-                .WithCountryCode(CountryCode.NL)
-                .Build();
+                    .WithFirstName("John")
+                    .WithLastName("Doe")
+                    .WithStreet("Factuurstraat")
+                    .WithHouseNumber("5")
+                    .WithHouseNumberAddition("a")
+                    .WithPostalCode("1234AB")
+                    .WithCity("Haarlem")
+                    .WithCountryCode(CountryCode.NL)
+                    .Build();
 
-            MerchantOrder.Builder order = new MerchantOrder.Builder()
-                .WithMerchantOrderId(Convert.ToString(orderId))
-                .WithDescription("An example description")
-                .WithCustomerInformation(customerInformation)
-                .WithShippingDetail(shippingDetails)
-                .WithBillingDetail(billingDetails)
-                .WithLanguage(Language.NL)
-                .WithMerchantReturnURL(RETURN_URL)
-                .WithInitiatingParty("LIGHTSPEED");
+            MerchantOrder order = new MerchantOrder.Builder()
+                    .WithMerchantOrderId("ORDID123")
+                    .WithDescription("An example description")
+                    .WithOrderItems(new List<OrderItem>(new OrderItem[] { orderItem }))
+                    .WithAmount(Money.FromDecimal(Currency.EUR, 99.99m))
+                    .WithCustomerInformation(customerInformation)
+                    .WithShippingDetail(shippingDetails)
+                    .WithBillingDetail(billingDetails)
+                    .WithLanguage(Language.NL)
+                    .WithMerchantReturnURL(RETURN_URL)
+                    .WithPaymentBrand(PaymentBrand.IDEAL)
+                    .WithPaymentBrandForce(PaymentBrandForce.FORCE_ONCE)
+                    .WithInitiatingParty("LIGHTSPEED")
+                    .Build();
 
             return order;
         }

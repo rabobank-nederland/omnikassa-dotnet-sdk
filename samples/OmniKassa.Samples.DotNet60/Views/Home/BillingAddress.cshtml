@@ -1,0 +1,62 @@
+﻿@using OmniKassa.Model.Enums;
+
+@{
+    Layout = null;
+}
+
+<table>
+    <tr>
+        <td>
+            <label for="billing_first_name">First name:</label>
+            <input type="text" name="billingFirstName" id="billing_first_name" value="@Model.Order.BillingDetails.FirstName">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_middle_name">Middle name:</label>
+            <input type="text" name="billingMiddleName" id="billing_middle_name" value="@Model.Order.BillingDetails.MiddleName">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_last_name">Last name:</label>
+            <input type="text" name="billingLastName" id="billing_last_name" value="@Model.Order.BillingDetails.LastName">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_street">Street:</label>
+            <input type="text" name="billingStreet" id="billing_street" value="@Model.Order.BillingDetails.Street">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_house_number">House number:</label>
+            <input type="text" name="billingHouseNumber" id="billing_house_number" value="@Model.Order.BillingDetails.HouseNumber">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_house_number_addition">House number addition:</label>
+            <input type="text" name="billingHouseNumberAddition" id="billing_house_number_addition" value="@Model.Order.BillingDetails.HouseNumberAddition">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_postal_code">Postal code:</label>
+            <input type="text" name="billingPostalCode" id="billing_postal_code" value="@Model.Order.BillingDetails.PostalCode">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_city">City:</label>
+            <input type="text" name="billingCity" id="billing_city" value="@Model.Order.BillingDetails.City">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="billing_country_code">Country code:</label>
+            <select name="billingCountryCode" id="billing_country_code" asp-items="@ViewBag.BillingAddressCountryItems"></select>
+        </td>
+    </tr>
+</table>

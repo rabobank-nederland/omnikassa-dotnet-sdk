@@ -17,7 +17,7 @@
             <td><b>VAT</b></td>
             <td><b>VAT Category</b></td>
         </tr>
-        @if (Model != null)
+        @if (Model != null && Model.Order != null)
         {
             foreach (var item in Model.Order.OrderItems)
             {

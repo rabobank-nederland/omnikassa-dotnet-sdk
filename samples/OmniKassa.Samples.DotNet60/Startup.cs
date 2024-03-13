@@ -25,6 +25,8 @@ namespace example_dotnet60
         {
             services.AddControllersWithViews();
             services.AddSingleton(ConfigurationParameters);
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
         
         private static ConfigurationParameters InitializeConfigurationParameters(IConfiguration configuration)
@@ -53,6 +55,8 @@ namespace example_dotnet60
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
