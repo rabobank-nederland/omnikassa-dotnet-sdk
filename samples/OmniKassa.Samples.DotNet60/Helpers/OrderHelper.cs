@@ -78,6 +78,7 @@ namespace example_dotnet60.Helpers
             Dictionary<string, string> paymentBrandMetaData = CreatePaymentBrandMetaData(collection);
             string initiatingParty = GetInitiatingParty(collection);
             bool skipHppResultPage = GetSkipHppResultPage(collection);
+            string shopperBankstatementReference = GetShopperBankstatementReference(collection);
 
             return model.PrepareMerchantOrder(
                 totalPrice,
@@ -88,7 +89,8 @@ namespace example_dotnet60.Helpers
                 paymentBrandForce,
                 paymentBrandMetaData,
                 initiatingParty,
-                skipHppResultPage
+                skipHppResultPage,
+                shopperBankstatementReference
             );
         }
 
@@ -166,6 +168,11 @@ namespace example_dotnet60.Helpers
         private static bool GetSkipHppResultPage(NameValueCollection collection)
         {
             return collection.Get("skipHppResultPage") == "on";
+        }
+
+        private static string GetShopperBankstatementReference(NameValueCollection collection)
+        {
+            return collection.Get("shopperBankstatementReference");
         }
 
         public static T GetEnum<T>(String value)

@@ -63,6 +63,7 @@ namespace example_dotnet60.Models
                     .WithPaymentBrandMetaData(new Dictionary<string, string>(Order.PaymentBrandMetaData))
                     .WithInitiatingParty(Order.InitiatingParty)
                     .WithSkipHppResultPage(Order.SkipHppResultPage)
+                    .WithShopperBankstatementReference(Order.ShopperBankstatementReference)
                     .WithOrderItems(new List<OrderItem>(Order.OrderItems));
 
             if (Order.Language != null)
@@ -97,7 +98,8 @@ namespace example_dotnet60.Models
                                                   PaymentBrandForce? paymentBrandForce,
                                                   Dictionary<string, string> paymentBrandMetaData,
                                                   string initiatingParty,
-                                                  bool skipHppResultPage)
+                                                  bool skipHppResultPage,
+                                                  string shopperBankstatementReference)
         {
             MerchantOrderBuilder
                 .WithAmount(Money.FromDecimal(Currency.EUR, totalPrice))
@@ -111,6 +113,7 @@ namespace example_dotnet60.Models
                 .WithPaymentBrandMetaData(paymentBrandMetaData)
                 .WithInitiatingParty(initiatingParty)
                 .WithSkipHppResultPage(skipHppResultPage)
+                .WithShopperBankstatementReference(shopperBankstatementReference)
                 .Build();
 
             return MerchantOrderBuilder.Build();
