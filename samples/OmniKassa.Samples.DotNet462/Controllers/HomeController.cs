@@ -18,6 +18,8 @@ namespace OmniKassa.Samples.DotNet462.Controllers
         private readonly string TOKEN;
         private readonly string RETURN_URL;
         private readonly string BASE_URL;
+        private readonly string USER_AGENT;
+        private readonly string PARTNER_REFERENCE;
 
         private static Endpoint omniKassa;
         private static ApiNotification notification;       
@@ -30,6 +32,18 @@ namespace OmniKassa.Samples.DotNet462.Controllers
             RETURN_URL = appSettings["CallbackUrl"];
             BASE_URL = appSettings["BaseUrl"];
 
+            var userAgent = appSettings["UserAgent"];
+            if (!string.IsNullOrEmpty(userAgent))
+            {
+                USER_AGENT = userAgent;
+            }
+
+            var partnerReference = appSettings["PartnerReference"];
+            if (!string.IsNullOrEmpty(partnerReference))
+            {
+                PARTNER_REFERENCE = partnerReference;
+            }
+
             if (omniKassa == null)
             {
                 InitializeOmniKassaEndpoint();
@@ -40,11 +54,11 @@ namespace OmniKassa.Samples.DotNet462.Controllers
         {
             if (String.IsNullOrEmpty(BASE_URL))
             {
-                omniKassa = Endpoint.Create(Environment.SANDBOX, SIGNING_KEY, TOKEN);
+                omniKassa = Endpoint.Create(Environment.SANDBOX, SIGNING_KEY, TOKEN, USER_AGENT, PARTNER_REFERENCE);
             }
             else
             {
-                omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN);
+                omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN, USER_AGENT, PARTNER_REFERENCE);
             }
         }
 

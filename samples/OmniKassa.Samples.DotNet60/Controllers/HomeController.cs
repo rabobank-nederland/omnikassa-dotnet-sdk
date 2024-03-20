@@ -26,6 +26,8 @@ namespace example_dotnet60.Controllers
         private readonly string TOKEN;
         private readonly string RETURN_URL;
         private readonly string BASE_URL;
+        private readonly string USER_AGENT;
+        private readonly string PARTNER_REFERENCE;
 
         private static string SESSION_WEBSHOP_MODEL = "WEBSHOP_MODEL";
 
@@ -44,6 +46,18 @@ namespace example_dotnet60.Controllers
             RETURN_URL = configurationParameters.CallbackUrl;
             BASE_URL = configurationParameters.BaseUrl;
 
+            var userAgent = configurationParameters.UserAgent;
+            if (!string.IsNullOrEmpty(userAgent))
+            {
+                USER_AGENT = userAgent;
+            }
+
+            var partnerReference = configurationParameters.PartnerReference;
+            if (!string.IsNullOrEmpty(partnerReference))
+            {
+                PARTNER_REFERENCE = partnerReference;
+            }
+
             if (omniKassa == null)
             {
                 InitializeOmniKassaEndpoint();
@@ -54,11 +68,11 @@ namespace example_dotnet60.Controllers
         {
             if (String.IsNullOrEmpty(BASE_URL))
             {
-                omniKassa = Endpoint.Create(OmniKassa.Environment.SANDBOX, SIGNING_KEY, TOKEN);
+                omniKassa = Endpoint.Create(OmniKassa.Environment.SANDBOX, SIGNING_KEY, TOKEN, USER_AGENT, PARTNER_REFERENCE);
             }
             else
             {
-                omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN);
+                omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN, USER_AGENT, PARTNER_REFERENCE);
             }
         }
 

@@ -32,7 +32,11 @@ namespace OmniKassa.Http
         {
             DateTime now = DateTime.Now;
             order.Timestamp = now.ToString("s") + now.ToString("zzz");
-            return PostAsync<MerchantOrderResponse>(mClient, PATH_ANNOUNCE_ORDER, null, token, order);
+            var headers = new Dictionary<string, string>()
+            {
+                { HEADER_X_API_USER_AGENT, GetUserAgentHeaderString() }
+            };
+            return PostAsync<MerchantOrderResponse>(mClient, PATH_ANNOUNCE_ORDER, headers, token, order);
         }
 
         /// <summary>
