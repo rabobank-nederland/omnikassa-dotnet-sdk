@@ -10,6 +10,14 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
+### Version 1.5.0
+* Added partner reference support
+* Added UserAgent support
+* Added shopperBankStatementReference support
+* Added .NET 7 and 8 to target frameworks, and removed netstandard targets
+* Migrated .NET 4.6.2 sample to .NET 6.0
+
+
 ### Version 1.4.0
 * Extended SDK to support refunds.
 * Added support for .NET 6.

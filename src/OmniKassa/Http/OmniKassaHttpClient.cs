@@ -27,7 +27,7 @@ namespace OmniKassa.Http
         private static readonly string HEADER_REFUND_REQUEST_ID = "request-id";
         private static readonly string HEADER_X_API_USER_AGENT = "X-Api-User-Agent";
 
-        private static readonly string SMARTPAY_USER_AGENT = "RabobankOmnikassaDotNetSDK/1.4.0";
+        private static readonly string SMARTPAY_USER_AGENT = "RabobankOmnikassaDotNetSDK/1.5.0";
 
         /// <summary>
         /// Signing key
