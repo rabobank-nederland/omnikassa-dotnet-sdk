@@ -62,5 +62,6 @@
   "paymentBrandMetaData": {
     "issuerId": "RABONL2U"
   },
-  "skipHppResultPage": true
+  "skipHppResultPage": true,
+  "shopperBankstatementReference": "bankstatementReference"
 }
