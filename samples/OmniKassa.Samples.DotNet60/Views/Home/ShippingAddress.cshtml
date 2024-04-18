@@ -1,0 +1,62 @@
+﻿@using OmniKassa.Model.Enums;
+
+@{
+    Layout = null;
+}
+
+<table>
+    <tr>
+        <td>
+            <label for="shipping_first_name">First name:</label>
+            <input type="text" name="shippingFirstName" id="shipping_first_name" value="@ViewBag.ShippingDetails.FirstName">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="shipping_middle_name">Middle name:</label>
+            <input type="text" name="shippingMiddleName" id="shipping_middle_name" value="@ViewBag.ShippingDetails.MiddleName">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="shipping_last_name">Last name:</label>
+            <input type="text" name="shippingLastName" id="shipping_last_name" value="@ViewBag.ShippingDetails.LastName">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="shipping_street">Street:</label>
+            <input type="text" name="shippingStreet" id="shipping_street" value="@ViewBag.ShippingDetails.Street">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="shipping_house_number">House number:</label>
+            <input type="text" name="shippingHouseNumber" id="shipping_house_number" value="@ViewBag.ShippingDetails.HouseNumber">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="shipping_house_number_addition">House number addition:</label>
+            <input type="text" name="shippingHouseNumberAddition" id="shipping_house_number_addition" value="@ViewBag.ShippingDetails.HouseNumberAddition">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="shipping_postal_code">Postal code:</label>
+            <input type="text" name="shippingPostalCode" id="shipping_postal_code" value="@ViewBag.ShippingDetails.PostalCode">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="shipping_city">City:</label>
+            <input type="text" name="shippingCity" id="shipping_city" value="@ViewBag.ShippingDetails.City">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="shipping_country_code">Country code:</label>
+            <select name="shippingCountryCode" id="shipping_country_code" asp-items="@ViewBag.ShippingAddressCountryItems"></select>
+        </td>
+    </tr>
+</table>

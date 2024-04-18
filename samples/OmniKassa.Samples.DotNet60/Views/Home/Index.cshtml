@@ -2,6 +2,130 @@
     ViewData["Title"] = "Home Page";
 }
 
-<form>
-    <input type="submit" name="submit" value="Place order" formaction="/Home/PlaceOrder" formmethod="post" />
+<h3>OmniKassa 2.0 Payment SDK Example (MVC @ViewData["Version"] @ViewData["Runtime"])</h3>
+<br />
+@if (Model != null)
+{
+    @if (Model.Error != null)
+    {
+        <div style="color:red"><b>@Model.Error</b></div>
+    }
+}
+<br />
+@if (Model != null)
+{
+    @if (Model.PaymentCompleted != null)
+    {
+        <h4>Payment callback</h4>
+        <b>Order ID: @Model.PaymentCompleted.OrderId</b>
+        <br />
+        <b>Order status: @Model.PaymentCompleted.Status</b>
+        <br />
+        <br />
+    }
+}
+
+@{Html.RenderPartial("OrderItems");}
+@{Html.RenderPartial("OrderDetails");}
+
+<br />
+<table>
+    <colgroup width="00" />
+    <colgroup width="80" />
+    <colgroup width="100" />
+    <colgroup width="100" />
+    <colgroup width="100" />
+    <tr>
+        <td><b>Merchant ID</b></td>
+        <td><b>Order ID</b></td>
+        <td><b>Order status</b></td>
+        <td><b>Paid amound</b></td>
+        <td><b>Total amount</b></td>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var response in Model.Responses)
+        {
+            foreach (var item in response.OrderResults)
+            {
+                <tr>
+                    <td>@item.MerchantOrderId</td>
+                    <td>@item.OmnikassaOrderId</td>
+                    <td>@item.OrderStatus</td>
+                    <td>@item.PaidAmount.Amount</td>
+                    <td>@item.TotalAmount.Amount</td>
+                </tr>
+            }
+        }
+    }
+
+</table>
+<br />
+<form method="post" action="/Home/RetrieveUpdates" name="order">
+    <input type="submit" value="Retrieve updates" id="retrieve_updates">
 </form>
+<br />
+
+<table>
+    <colgroup width="200" />
+    <colgroup width="80" />
+    <tr>
+        <td><b>Name</b></td>
+        <td><b>Active</b></td>
+    </tr>
+    @if (Model != null && Model.PaymentBrandsResponse != null)
+    {
+        foreach (var brand in Model.PaymentBrandsResponse.PaymentBrands)
+        {
+            <tr>
+                <td>@brand.Name</td>
+                <td>@brand.IsActive</td>
+            </tr>
+        }
+    }
+
+</table>
+
+<form method="post" action="/Home/RetrievePaymentBrands" name="payment_brands">
+    <input type="submit" value="Retrieve payment brands" id="retrieve_payment_brands">
+</form>
+<br />
+
+<table>
+    <colgroup width="100" />
+    <colgroup width="160" />
+    <colgroup width="80" />
+    <colgroup width="80" />
+    <colgroup width="200" />
+    <tr>
+        <td><b>Id</b></td>
+        <td><b>Name</b></td>
+        <td><b>Logo</b></td>
+        <td><b>Mime-type</b></td>
+        <td><b>Country names</b></td>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var issuer in Model.GetIdealIssuers())
+        {
+            <tr>
+                <td>@issuer.Id</td>
+                <td>@issuer.Name</td>
+                <td><img src=@issuer.Logos[0].Url alt=@issuer.Name width="50" height="50" /></td>
+                <td>@issuer.Logos[0].MimeType</td>
+                <td>@issuer.CountryNames</td>
+            </tr>
+        }
+    }
+
+</table>
+
+<form method="post" action="/Home/RetrieveIdealIssuers" name="ideal_issuers">
+    <input type="submit" value="Retrieve iDEAL issuers" id="retrieve_ideal_issuers">
+</form>
+<br />
+
+<form method="get" action="/Home/InitiateRefund" name="initiate_refund">
+    <input type="submit" value="Initiate refund" id="initiate_refund_request">
+</form>
+<br />

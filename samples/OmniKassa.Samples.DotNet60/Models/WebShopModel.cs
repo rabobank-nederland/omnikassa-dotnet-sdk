@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using OmniKassa.Model;
 using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
 using OmniKassa.Model.Response;
 
-namespace OmniKassa.Samples.DotNet462.Models
+namespace example_dotnet60.Models
 {
+    [JsonObject]
     public class WebShopModel
     {
-        private MerchantOrder.Builder MerchantOrderBuilder;
+        public MerchantOrder.Builder MerchantOrderBuilder { get; set; }
 
-        public MerchantOrder Order { get; private set; }
-        public int OrderId { get; private set; }
-        public string MerchantReturnUrl { get; private set; }
+        public MerchantOrder Order { get; set; }
+        public int OrderId { get; set; }
+        public string MerchantReturnUrl { get; set; }
 
         public PaymentCompletedResponse PaymentCompleted { get; set; }
-        public List<MerchantOrderStatusResponse> Responses { get; private set; } = new List<MerchantOrderStatusResponse>();
+        public List<MerchantOrderStatusResponse> Responses { get; set; } = new List<MerchantOrderStatusResponse>();
 
         public PaymentBrandsResponse PaymentBrandsResponse { get; set; }
 
@@ -27,7 +29,17 @@ namespace OmniKassa.Samples.DotNet462.Models
 
         public string Error { get; set; }
 
+        public WebShopModel()
+        {
+
+        }
+
         public WebShopModel(MerchantOrder.Builder order)
+        {
+            AssignOrder(order);
+        }
+
+        public void AssignOrder(MerchantOrder.Builder order)
         {
             MerchantOrderBuilder = order;
             this.OrderId = Convert.ToInt32(order.MerchantOrderId);
@@ -35,14 +47,28 @@ namespace OmniKassa.Samples.DotNet462.Models
             BuildOrder();
         }
 
-        public WebShopModel(int orderId, string merchantReturnUrl)
+        public void ReCreateBuilder()
         {
-            this.OrderId = orderId;
-            this.MerchantReturnUrl = merchantReturnUrl;
             MerchantOrderBuilder = new MerchantOrder.Builder()
-                    .WithMerchantOrderId(Convert.ToString(OrderId))
-                    .WithMerchantReturnURL(MerchantReturnUrl);
-            BuildOrder();
+                    .WithMerchantOrderId(Order.MerchantOrderId)
+                    .WithMerchantReturnURL(Order.MerchantReturnURL)
+                    .WithAmount(Order.Amount)
+                    .WithLanguage(Language.NL)
+                    .WithDescription(Order.Description)
+                    .WithShippingDetail(Order.ShippingDetails)
+                    .WithBillingDetail(Order.BillingDetails)
+                    .WithCustomerInformation(Order.CustomerInformation)
+                    .WithPaymentBrand(Order.PaymentBrand)
+                    .WithPaymentBrandForce(Order.PaymentBrandForce)
+                    .WithPaymentBrandMetaData(new Dictionary<string, string>(Order.PaymentBrandMetaData))
+                    .WithInitiatingParty(Order.InitiatingParty)
+                    .WithSkipHppResultPage(Order.SkipHppResultPage)
+                    .WithOrderItems(new List<OrderItem>(Order.OrderItems));
+
+            if (Order.Language != null)
+            {
+                MerchantOrderBuilder.WithLanguage((Language)Order.Language);
+            }
         }
 
         public void AddItem(OrderItem item)
@@ -73,18 +99,19 @@ namespace OmniKassa.Samples.DotNet462.Models
                                                   string initiatingParty,
                                                   bool skipHppResultPage)
         {
-            MerchantOrderBuilder.WithAmount(Money.FromDecimal(Currency.EUR, totalPrice))
-                    .WithLanguage(Language.NL)
-                    .WithDescription("An example description")
-                    .WithShippingDetail(shippingDetails)
-                    .WithBillingDetail(billingDetails)
-                    .WithCustomerInformation(customerInformation)
-                    .WithPaymentBrand(paymentBrand)
-                    .WithPaymentBrandForce(paymentBrandForce)
-                    .WithPaymentBrandMetaData(paymentBrandMetaData)
-                    .WithInitiatingParty(initiatingParty)
-                    .WithSkipHppResultPage(skipHppResultPage)
-                    .Build();
+            MerchantOrderBuilder
+                .WithAmount(Money.FromDecimal(Currency.EUR, totalPrice))
+                .WithLanguage(Language.NL)
+                .WithDescription("An example description")
+                .WithShippingDetail(shippingDetails)
+                .WithBillingDetail(billingDetails)
+                .WithCustomerInformation(customerInformation)
+                .WithPaymentBrand(paymentBrand)
+                .WithPaymentBrandForce(paymentBrandForce)
+                .WithPaymentBrandMetaData(paymentBrandMetaData)
+                .WithInitiatingParty(initiatingParty)
+                .WithSkipHppResultPage(skipHppResultPage)
+                .Build();
 
             return MerchantOrderBuilder.Build();
         }

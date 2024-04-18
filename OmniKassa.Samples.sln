@@ -5,8 +5,6 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa", "src\OmniKassa\OmniKassa.csproj", "{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNetCore31", "samples\OmniKassa.Samples.DotNetCore31\OmniKassa.Samples.DotNetCore31.csproj", "{77642D65-2943-4E51-83B4-3513F7A41D62}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniKassa.Samples.DotNet462", "samples\OmniKassa.Samples.DotNet462\OmniKassa.Samples.DotNet462.csproj", "{13D50ADA-D2C3-43F0-9483-E5EA895C442A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNet60", "samples\OmniKassa.Samples.DotNet60\OmniKassa.Samples.DotNet60.csproj", "{E78289A9-C544-41E9-A7EF-FA7AE8EC6986}"
@@ -21,10 +19,6 @@ Global
 		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23ADAAE8-CB58-4FC9-930F-4102FD4028E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{77642D65-2943-4E51-83B4-3513F7A41D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77642D65-2943-4E51-83B4-3513F7A41D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77642D65-2943-4E51-83B4-3513F7A41D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77642D65-2943-4E51-83B4-3513F7A41D62}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13D50ADA-D2C3-43F0-9483-E5EA895C442A}.Release|Any CPU.ActiveCfg = Release|Any CPU
