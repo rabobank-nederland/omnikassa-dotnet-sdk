@@ -35,8 +35,10 @@ namespace example_dotnet60
             var signingKey = configuration.GetValue<string>("SigningKey");
             var callbackUrl = configuration.GetValue<string>("CallbackUrl", "http://localhost:52060/Home/Callback/");
             var baseUrl = configuration.GetValue<string>("BaseUrl");
+            var userAgent = configuration.GetValue<string>("UserAgent");
+            var partnerReference = configuration.GetValue<string>("PartnerReference");
 
-            return new ConfigurationParameters(refreshToken, signingKey, callbackUrl, baseUrl);
+            return new ConfigurationParameters(refreshToken, signingKey, callbackUrl, baseUrl, userAgent, partnerReference);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
