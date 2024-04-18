@@ -113,13 +113,13 @@ namespace OmniKassa.Http
         private string GetUserAgentHeaderString()
         {
             string userAgentHeader = SMARTPAY_USER_AGENT;
-            if (UserAgent != null)
-            {
-                userAgentHeader += " " + UserAgent;
-            }
             if (PartnerReference != null)
             {
                 userAgentHeader += " (pr: " + PartnerReference + ")";
+            }
+            if (UserAgent != null)
+            {
+                userAgentHeader += " " + UserAgent;
             }
             return userAgentHeader;
         }
