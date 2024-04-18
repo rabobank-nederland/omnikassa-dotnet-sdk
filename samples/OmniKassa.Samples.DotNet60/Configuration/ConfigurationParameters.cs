@@ -25,12 +25,30 @@
         /// </summary>
         public string BaseUrl { get; }
 
-        public ConfigurationParameters(string refreshToken, string signingKey, string callbackUrl, string baseUrl)
-        {
+        /// <summary>
+        /// User-Agent value you want to give your implementation
+        /// </summary>
+        public string UserAgent { get; }
+
+        /// <summary>
+        /// Can be filled with the partner reference, if applicable
+        /// </summary>
+        public string PartnerReference { get; }
+
+        public ConfigurationParameters(
+            string refreshToken, 
+            string signingKey,
+            string callbackUrl, 
+            string baseUrl,
+            string userAgent,
+            string partnerReference
+        ) {
             RefreshToken = refreshToken;
             SigningKey = signingKey;
             CallbackUrl = callbackUrl;
             BaseUrl = baseUrl;
+            UserAgent = userAgent;
+            PartnerReference = partnerReference;
         }
     }
 }

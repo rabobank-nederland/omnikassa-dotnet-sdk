@@ -4,9 +4,9 @@ using System.Collections.Specialized;
 using OmniKassa.Model;
 using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
-using OmniKassa.Samples.DotNet462.Models;
+using example_dotnet60.Models;
 
-namespace OmniKassa.Samples.DotNet462.Helpers
+namespace example_dotnet60.Helpers
 {
     public static class OrderHelper
     {
@@ -58,32 +58,40 @@ namespace OmniKassa.Samples.DotNet462.Helpers
             Decimal totalPrice = model.GetTotalPrice();
             if (totalPrice > 0.0m)
             {
-                Address shippingDetails = CreateShippingDetails(collection);
-                Address billingDetails = CreateBillingDetails(collection);
-                CustomerInformation customerInformation = CreateCustomerInformation(collection);
-                PaymentBrand? paymentBrand = CreatePaymentBrand(collection);
-                PaymentBrandForce? paymentBrandForce = CreatePaymentBrandForce(collection);
-                Dictionary<string, string> paymentBrandMetaData = CreatePaymentBrandMetaData(collection);
-                string initiatingParty = GetInitiatingParty(collection);
-                bool skipHppResultPage = GetSkipHppResultPage(collection);
-
-                return model.PrepareMerchantOrder(
-                    totalPrice,
-                    customerInformation,
-                    shippingDetails,
-                    billingDetails,
-                    paymentBrand,
-                    paymentBrandForce,
-                    paymentBrandMetaData,
-                    initiatingParty,
-                    skipHppResultPage
-                );
+                return CreateOrder(collection, model);
             }
             else
             {
                 model.Error = "Total amount must be greater than zero.";
             }
             return null;
+        }
+
+        public static MerchantOrder CreateOrder(NameValueCollection collection, WebShopModel model)
+        {
+            Decimal totalPrice = model.GetTotalPrice();
+            Address shippingDetails = CreateShippingDetails(collection);
+            Address billingDetails = CreateBillingDetails(collection);
+            CustomerInformation customerInformation = CreateCustomerInformation(collection);
+            PaymentBrand? paymentBrand = CreatePaymentBrand(collection);
+            PaymentBrandForce? paymentBrandForce = CreatePaymentBrandForce(collection);
+            Dictionary<string, string> paymentBrandMetaData = CreatePaymentBrandMetaData(collection);
+            string initiatingParty = GetInitiatingParty(collection);
+            bool skipHppResultPage = GetSkipHppResultPage(collection);
+            string shopperBankstatementReference = GetShopperBankstatementReference(collection);
+
+            return model.PrepareMerchantOrder(
+                totalPrice,
+                customerInformation,
+                shippingDetails,
+                billingDetails,
+                paymentBrand,
+                paymentBrandForce,
+                paymentBrandMetaData,
+                initiatingParty,
+                skipHppResultPage,
+                shopperBankstatementReference
+            );
         }
 
         private static CustomerInformation CreateCustomerInformation(NameValueCollection collection)
@@ -160,6 +168,11 @@ namespace OmniKassa.Samples.DotNet462.Helpers
         private static bool GetSkipHppResultPage(NameValueCollection collection)
         {
             return collection.Get("skipHppResultPage") == "on";
+        }
+
+        private static string GetShopperBankstatementReference(NameValueCollection collection)
+        {
+            return collection.Get("shopperBankstatementReference");
         }
 
         public static T GetEnum<T>(String value)

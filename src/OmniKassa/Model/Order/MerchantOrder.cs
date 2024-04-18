@@ -106,6 +106,12 @@ namespace OmniKassa.Model.Order
         public String InitiatingParty { get; private set; }
 
         /// <summary>
+        /// Shown on the customer's bankstatement reference.
+        /// </summary>
+        [JsonProperty(PropertyName = "shopperBankstatementReference")]
+        public String ShopperBankstatementReference { get; private set; }
+
+        /// <summary>
         /// Initializes an empty MerchantOrder
         /// </summary>
         public MerchantOrder()
@@ -133,6 +139,7 @@ namespace OmniKassa.Model.Order
             this.PaymentBrandMetaData = builder.PaymentBrandMetaData;
             this.SkipHppResultPage = builder.SkipHppResultPage;
             this.InitiatingParty = builder.InitiatingParty;
+            this.ShopperBankstatementReference = builder.ShopperBankstatementReference;
         }
 
         /// <summary>
@@ -169,7 +176,8 @@ namespace OmniKassa.Model.Order
                 EqualsPaymentBrandMetaData(PaymentBrandMetaData, order.PaymentBrandMetaData) &&
                 Equals(SkipHppResultPage, order.SkipHppResultPage) &&
                 Equals(Timestamp, order.Timestamp) &&
-                Equals(InitiatingParty, order.InitiatingParty);
+                Equals(InitiatingParty, order.InitiatingParty) &&
+                Equals(ShopperBankstatementReference, order.ShopperBankstatementReference);
         }
 
         private bool EqualsPaymentBrandMetaData(
@@ -222,6 +230,7 @@ namespace OmniKassa.Model.Order
                 hash = (hash * -1521134295) + SkipHppResultPage.GetHashCode();
                 hash = (hash * -1521134295) + (Timestamp == null ? 0 : Timestamp.GetHashCode());
                 hash = (hash * -1521134295) + (InitiatingParty == null ? 0 : InitiatingParty.GetHashCode());
+                hash = (hash * -1521134295) + (ShopperBankstatementReference == null ? 0 : ShopperBankstatementReference.GetHashCode());
                 return hash;
             }
         }
@@ -260,12 +269,15 @@ namespace OmniKassa.Model.Order
             public Dictionary<string, string> PaymentBrandMetaData { get; private set; } = new Dictionary<string, string>();
             public bool SkipHppResultPage { get; private set; }
             public String InitiatingParty { get; private set; }
+            public String ShopperBankstatementReference { get; private set; }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
             /// <summary>
             /// - Must not be null
-            /// - Must contain only alphanumeric characters
-            /// - Maximum length of 24 characters
+            /// - if shopperBankstatementReference is supplied:
+            ///     Allows all ascii characters up to a length of 255 characters, if the ID contains more than 255 characters, the extra characters are removed after the 255th character.
+            /// - else
+            ///     Must adhere to the pattern: '[A-Za-z0-9]{1,24}', if the ID contains more than 24 characters, the extra characters are removed after the 24th character.
             /// </summary>
             /// <param name="merchantOrderId">Order ID</param>
             /// <returns>Builder</returns>
@@ -432,6 +444,18 @@ namespace OmniKassa.Model.Order
             public Builder WithInitiatingParty(String initiatingParty)
             {
                 this.InitiatingParty = initiatingParty;
+                return this;
+            }
+
+            /// <summary>
+            /// - Optional
+            /// - Must adhere to the pattern: '[A-Za-z0-9]{1,24}', if the ID contains more than 24 characters, the extra characters are removed after the 24th character.
+            /// </summary>
+            /// <param name="shopperBankstatementReference">Shown on the customer's bankstatement reference.</param>
+            /// <returns>Builder</returns>
+            public Builder WithShopperBankstatementReference(String shopperBankstatementReference)
+            {
+                this.ShopperBankstatementReference = shopperBankstatementReference;
                 return this;
             }
 

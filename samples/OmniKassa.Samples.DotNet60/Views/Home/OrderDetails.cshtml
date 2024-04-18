@@ -1,0 +1,106 @@
+﻿@using OmniKassa.Model.Enums;
+@using OmniKassa.Model.Response;
+
+@{
+    Layout = null;
+}
+
+<form method="post" action="/Home/PlaceOrder" name="order">
+    <br />
+    <h4>Customer information</h4>
+    <table class="order">
+        <tr>
+            <td>
+                <label for="customer_information_initials">Initials:</label>
+                <input type="text" name="initials" id="customer_information_initials" value="@ViewBag.CustomerInformation.Initials">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="customer_information_full_name">Full name:</label>
+                <input type="text" name="fullName" id="customer_information_full_name" value="@ViewBag.CustomerInformation.FullName">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="customer_information_birth_date">Birth date:</label>
+                <input type="text" name="birthDate" id="customer_information_birth_date" placeholder="DD-MM-YYYY" value="@ViewBag.CustomerInformation.DateOfBirth">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="customer_information_phone_number">Phone number:</label>
+                <input type="text" name="phoneNumber" id="customer_information_phone_number" value="@ViewBag.CustomerInformation.TelephoneNumber">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="customer_information_email">E-mail address:</label>
+                <input type="text" name="email" id="customer_information_email" value="@ViewBag.CustomerInformation.EmailAddress">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="customer_information_gender">Gender:</label>
+                <select name="gender" id="customer_information_gender" asp-items="@ViewBag.GenderItems">
+                </select>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table>
+        <tr>
+            <td><h4>Shipping address</h4></td>
+            <td><h4>Billing address</h4></td>
+        </tr>
+        <tr>
+            <td>@{Html.RenderPartial("ShippingAddress");}</td>
+            <td>@{Html.RenderPartial("BillingAddress");}</td>
+        </tr>
+    </table>
+    <br />
+    <table>
+        <tr>
+            <td>
+                <label for="payment_brand">Payment brand:</label>
+                <select name="paymentBrand" id="payment_brand" asp-items="@ViewBag.PaymentBrandItems"></select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="payment_brand_force">Payment brand force:</label>
+                <select name="paymentBrandForce" id="payment_brand_force" asp-items="@ViewBag.PaymentBrandForceItems"></select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="ideal_issuer">Issuer ID:</label>
+                <select name="idealIssuer" id="ideal_issuer" asp-items="@ViewBag.IdealIssuerItems"></select>
+                <input type="submit" name="refreshIssuers" value="Refresh" formaction="/Home/RetrieveIdealIssuers" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="initiating_party">initiating Party</label>
+                <input type="text" name="initiatingParty" id="initiating_party" value="@ViewBag.InitiatingParty">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="skip_hpp_result_page">Skip HPP result page?</label>
+                <input type="checkbox" id="skip_hpp_result_page" name="skipHppResultPage">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="shopper_bankstatement_reference">Shopper bankstatement reference</label>
+                <input type="text" name="shopperBankstatementReference" id="shopper_bankstatement_reference" value="@ViewBag.ShopperBankstatementReference">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Place order" id="place_order">
+            </td>
+        </tr>
+    </table>
+</form>

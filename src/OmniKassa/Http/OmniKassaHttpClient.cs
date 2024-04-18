@@ -3,9 +3,9 @@ using Newtonsoft.Json.Linq;
 using OmniKassa.Exceptions;
 using OmniKassa.Model.Response;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-
 using System.Text;
 
 namespace OmniKassa.Http
@@ -25,11 +25,23 @@ namespace OmniKassa.Http
         private static readonly string PATH_GET_REFUNDABLE_DETAILS_REQUEST = "order/server/api/v2/refund/transactions/{0}/refundable-details";
 
         private static readonly string HEADER_REFUND_REQUEST_ID = "request-id";
+        private static readonly string HEADER_X_API_USER_AGENT = "X-Api-User-Agent";
+
+        private static readonly string SMARTPAY_USER_AGENT = "RabobankOmnikassaDotNetSDK/1.5.0";
 
         /// <summary>
         /// Signing key
         /// </summary>
         public byte[] SigningKey { get; private set; }
+        /// <summary>
+        /// User agent
+        /// </summary>
+        public string UserAgent { get; private set; }
+        /// <summary>
+        /// Partner reference
+        /// </summary>
+        public string PartnerReference { get; private set; }
+
         private HttpClient mClient;
 
         /// <summary>
@@ -37,9 +49,13 @@ namespace OmniKassa.Http
         /// </summary>
         /// <param name="baseURL">Base URL for the API</param>
         /// <param name="signingKey">Signing key</param>
-        public OmniKassaHttpClient(String baseURL, byte[] signingKey)
+        /// <param name="userAgent">User-Agent value you want to give your implementation</param>
+        /// <param name="partnerReference">Can be filled with the partner reference, if applicable</param>
+        public OmniKassaHttpClient(String baseURL, byte[] signingKey, string userAgent, string partnerReference)
         {
             SigningKey = signingKey;
+            UserAgent = userAgent;
+            PartnerReference = partnerReference;
 
             mClient = new HttpClient
             {
@@ -92,6 +108,20 @@ namespace OmniKassa.Http
             {
                 throw IllegalApiResponseException.Of(json);
             }
+        }
+
+        private string GetUserAgentHeaderString()
+        {
+            string userAgentHeader = SMARTPAY_USER_AGENT;
+            if (PartnerReference != null)
+            {
+                userAgentHeader += " (pr: " + PartnerReference + ")";
+            }
+            if (UserAgent != null)
+            {
+                userAgentHeader += " " + UserAgent;
+            }
+            return userAgentHeader;
         }
 
         /// <summary>

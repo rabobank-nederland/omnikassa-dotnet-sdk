@@ -26,6 +26,7 @@ namespace OmniKassa.Tests.Model
                     .WithInitiatingParty("LIGHTSPEED")
                     .WithSkipHppResultPage(true)
                     .WithPaymentBrandMetaData(GetPaymentBrandMetaData())
+                    .WithShopperBankstatementReference("bankstatementReference")
                     .Build();
         }
 
