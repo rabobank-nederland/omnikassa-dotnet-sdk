@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using OmniKassa.Model;
 using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
@@ -23,19 +24,13 @@ namespace OmniKassa.Tests.Model
                     .WithCustomerInformation(CustomerInformationFactory.CustomerInformationFull())
                     .WithPaymentBrand(PaymentBrand.IDEAL)
                     .WithPaymentBrandForce(PaymentBrandForce.FORCE_ALWAYS)
+                    .WithPaymentBrandMetaData(new Dictionary<string, Object>{{"issuerId", "RABONL2U"}})
+                    .WithPaymentBrandFastCheckout(new FastCheckout(new List<RequiredCheckoutFields> { RequiredCheckoutFields.BILLING_ADDRESS }))
+                    .WithShippingCost(Money.FromDecimal(Currency.EUR, 12.34m))
                     .WithInitiatingParty("LIGHTSPEED")
                     .WithSkipHppResultPage(true)
-                    .WithPaymentBrandMetaData(GetPaymentBrandMetaData())
                     .WithShopperBankstatementReference("bankstatementReference")
                     .Build();
-        }
-
-        private static Dictionary<string, string> GetPaymentBrandMetaData()
-        {
-            return new Dictionary<string, string>()
-            {
-                { "issuerId", "RABONL2U" }
-            };
         }
 
         private static MerchantOrder.Builder DefaultBuilder()

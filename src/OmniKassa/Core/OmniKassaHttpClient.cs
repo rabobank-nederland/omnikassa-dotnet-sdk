@@ -124,6 +124,57 @@ namespace OmniKassa.Http
             return GetAsync<AccessToken>(mClient, PATH_GET_ACCESS_TOKEN, refreshToken);
         }
 
+        /// <summary>
+        /// Retrieves all payment details for a shopper
+        /// </summary>
+        /// <param name="shopperRef">The shopper reference</param>
+        /// <param name="token">Access token</param>
+        /// <returns>Shopper payment details</returns>
+        public Task<ShopperPaymentDetailsResponse> GetShopperPaymentDetails(String shopperRef, String token)
+        {
+            var uriBuilder = new UriBuilder(mClient.BaseAddress)
+            {
+                Path = PATH_GET_SHOPPER_PAYMENT_DETAILS,
+                Query = $"shopper-ref={Uri.EscapeDataString(shopperRef)}"
+            };
+            string path = uriBuilder.Uri.PathAndQuery;
+            return GetAsync<ShopperPaymentDetailsResponse>(mClient, path, token);
+        }
+
+        /// <summary>
+        /// Deletes a specific shopper payment detail
+        /// </summary>
+        /// <param name="id">The payment detail ID to delete</param>
+        /// <param name="shopperRef">The shopper reference</param>
+        /// <param name="token">Access token</param>
+        /// <returns>Task representing the delete operation</returns>
+        public Task DeleteShopperPaymentDetail(String id, String shopperRef, String token)
+        {
+            var uriBuilder = new UriBuilder(mClient.BaseAddress)
+            {
+                Path = string.Format(PATH_DELETE_SHOPPER_PAYMENT_DETAILS, Uri.EscapeDataString(id)),
+                Query = $"shopper-ref={Uri.EscapeDataString(shopperRef)}"
+            };
+            string path = uriBuilder.Uri.PathAndQuery;
+            return DeleteAsync(mClient, path, token);
+		}
+
+        /// <summary>
+        /// Retrieves the order status by order ID
+        /// </summary>
+        /// <param name="orderId">Order ID</param>
+        /// <param name="token">Access token</param>
+        /// <returns>Order status response</returns>
+        public Task<OrderStatusResponse> GetOrderById(String orderId, String token)
+        {
+            var uriBuilder = new UriBuilder(mClient.BaseAddress)
+            {
+                Path = string.Format(PATH_GET_ORDER_BY_ID, Uri.EscapeDataString(orderId)),
+            };
+            string path = uriBuilder.Uri.PathAndQuery;
+            return GetAsync<OrderStatusResponse>(mClient, path, token);
+        }
+
         private async Task<T> PostAsync<T>(HttpClient client, string path, Dictionary<string, string> headers, string token, object input) where T : class
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, path);
@@ -155,11 +206,25 @@ namespace OmniKassa.Http
             return await ProcessResponse<T>(response);
         }
 
+        private async Task DeleteAsync(HttpClient client, string path, string token)
+        {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, path);
+            request.Headers.ExpectContinue = false;
+
+            UpdateHttpClientAuth(client, token);
+
+            HttpResponseMessage response = await client.SendAsync(request);
+            // For DELETE operations, we don't need to process a response body
+            response.EnsureSuccessStatusCode();
+        }
+
         private async Task<T> ProcessResponse<T>(HttpResponseMessage response) where T : class
         {
             String result = await response.Content.ReadAsStringAsync();
             return ProcessResult<T>(result);
         }
+
+
     }
 }
 

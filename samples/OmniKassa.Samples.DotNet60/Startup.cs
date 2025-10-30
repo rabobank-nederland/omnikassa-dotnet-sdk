@@ -33,12 +33,23 @@ namespace example_dotnet60
         {
             var refreshToken = configuration.GetValue<string>("RefreshToken");
             var signingKey = configuration.GetValue<string>("SigningKey");
-            var callbackUrl = configuration.GetValue<string>("CallbackUrl", "http://localhost:52060/Home/Callback/");
+            var callbackUrl = configuration.GetValue<string>("CallbackUrl", "http://localhost:5000/Home/Callback/");
             var baseUrl = configuration.GetValue<string>("BaseUrl");
             var userAgent = configuration.GetValue<string>("UserAgent");
             var partnerReference = configuration.GetValue<string>("PartnerReference");
+            var fastCheckoutReturnUrl = configuration.GetValue<string>("FastCheckoutReturnUrl");
+            var shopperReference = configuration.GetValue<string>("ShopperReference");
 
-            return new ConfigurationParameters(refreshToken, signingKey, callbackUrl, baseUrl, userAgent, partnerReference);
+            return new ConfigurationParameters(
+                refreshToken, 
+                signingKey, 
+                callbackUrl, 
+                baseUrl, 
+                userAgent, 
+                partnerReference, 
+                fastCheckoutReturnUrl,
+                shopperReference
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

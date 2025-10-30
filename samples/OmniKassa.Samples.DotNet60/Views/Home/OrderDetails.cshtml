@@ -59,6 +59,24 @@
         </tr>
     </table>
     <br />
+    <h4>Shipping costs</h4>
+    <table>
+        <tr>
+            <td>
+                <label for="shipping_cost_amount">Shipping cost amount:</label>
+                <input type="text" name="shippingCostAmount" id="shipping_cost_amount" value="@ViewBag.ShippingCostAmount">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="shipping_cost_currency">Shipping cost currency</label>
+                <select name="shippingCostCurrency" id="shipping_cost_currency" asp-items="@ViewBag.ShippingCostCurrencyItems">
+                </select>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <h4>Payment information</h4>
     <table>
         <tr>
             <td>
@@ -81,14 +99,20 @@
         </tr>
         <tr>
             <td>
-                <label for="initiating_party">initiating Party</label>
-                <input type="text" name="initiatingParty" id="initiating_party" value="@ViewBag.InitiatingParty">
+                <label for="initiating_party">Initiating Party</label>
+                <input type="text" name="initiatingParty" id="initiating_party" value="@ViewBag.InitiatingParty" />
             </td>
         </tr>
         <tr>
             <td>
-                <label for="skip_hpp_result_page">Skip HPP result page?</label>
-                <input type="checkbox" id="skip_hpp_result_page" name="skipHppResultPage">
+                <label for="enable_card_on_file">Enable Card on File</label>
+                <input type="checkbox" name="enableCardOnFile" id="enable_card_on_file" checked="@ViewBag.EnableCardOnFile" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="shopper_reference">Shopper Reference</label>
+                <input type="text" name="shopperReference" id="shopper_reference" value="@ViewBag.ShopperReference" />
             </td>
         </tr>
         <tr>
@@ -99,7 +123,35 @@
         </tr>
         <tr>
             <td>
-                <input type="submit" value="Place order" id="place_order">
+                <label for="required_checkout_fields_customer_information">Required checkout field: @RequiredCheckoutFields.CUSTOMER_INFORMATION.ToString()</label>
+                <input type="checkbox" name="requiredCheckoutFieldsCustomerInformation" id="required_checkout_fields_customer_information"
+                       ( @ViewBag.RequiredCheckoutFieldsCustomerInformation ? "checked='checked'" : "" ) />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="required_checkout_fields_billing_address">Required checkout field: @RequiredCheckoutFields.BILLING_ADDRESS.ToString()</label>
+                <input type="checkbox" name="requiredCheckoutFieldsBillingAddress" id="required_checkout_fields_billing_address"
+                       ( @ViewBag.RequiredCheckoutFieldsBillingAddress ? "checked='checked'" : "" ) />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="required_checkout_fields_shipping_address">Required checkout field: @RequiredCheckoutFields.SHIPPING_ADDRESS.ToString()</label>
+                <input type="checkbox" name="requiredCheckoutFieldsShippingAddress" id="required_checkout_fields_shipping_address"
+                    (@ViewBag.RequiredCheckoutFieldsShippingAddress ? "checked='checked'" : "") />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="skip_hpp_result_page">Skip HPP result page?</label>
+                <input type="checkbox" id="skip_hpp_result_page" name="skipHppResultPage">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" name="submitPlaceOrder" value="Place Order" id="place_order">
+                <input type="submit" name="submitFastCheckout" value="Fast Checkout" id="fast_checkout">
             </td>
         </tr>
     </table>

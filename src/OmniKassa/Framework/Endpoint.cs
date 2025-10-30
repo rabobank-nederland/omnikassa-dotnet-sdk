@@ -1,4 +1,4 @@
-﻿#if NET462
+﻿#if NETFRAMEWORK
 
 using OmniKassa.Exceptions;
 using OmniKassa.Model;
@@ -164,12 +164,67 @@ namespace OmniKassa
         }
 
         /// <summary>
+        /// Retrieves the order status by order ID
+        /// </summary>
+        /// <param name="orderId">Order ID</param>
+        /// <returns>Order status response</returns>
+        public OrderStatusResponse RetrieveOrder(String orderId)
+        {
+            ValidateAccessToken();
+            return httpClient.GetOrderById(orderId, tokenProvider.GetAccessToken());
+        }
+
+        /// <summary>
         /// Retrieves a new access token
         /// </summary>
         public void RetrieveNewToken()
         {
             AccessToken retrievedToken = httpClient.RetrieveNewToken(tokenProvider.GetRefreshToken());
             tokenProvider.SetAccessToken(retrievedToken);
+        }
+
+        /// <summary>
+        /// Retrieves all payment details for a shopper
+        /// </summary>
+        /// <param name="shopperRef">The shopper reference</param>
+        /// <returns>Shopper payment details</returns>
+        public ShopperPaymentDetailsResponse RetrieveShopperPaymentDetails(string shopperRef)
+        {
+            ValidateAccessToken();
+
+            try
+            {
+                return httpClient.GetShopperPaymentDetails(shopperRef, tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                // We might have mistakenly assumed the token was still valid
+                RetrieveNewToken();
+
+                return httpClient.GetShopperPaymentDetails(shopperRef, tokenProvider.GetAccessToken());
+            }
+        }
+
+        /// <summary>
+        /// Deletes a specific shopper payment detail
+        /// </summary>
+        /// <param name="id">The payment detail ID to delete</param>
+        /// <param name="shopperRef">The shopper reference</param>
+        public void DeleteShopperPaymentDetail(string id, string shopperRef)
+        {
+            ValidateAccessToken();
+
+            try
+            {
+                httpClient.DeleteShopperPaymentDetail(id, shopperRef, tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                // We might have mistakenly assumed the token was still valid
+                RetrieveNewToken();
+
+                httpClient.DeleteShopperPaymentDetail(id, shopperRef, tokenProvider.GetAccessToken());
+            }
         }
 
         private void ValidateAccessToken()

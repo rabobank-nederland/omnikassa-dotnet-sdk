@@ -1,0 +1,25 @@
+ARG CONTAINER_TAG=6.0-focal
+
+FROM mcr.microsoft.com/dotnet/sdk:${CONTAINER_TAG} AS dev
+
+# Configure NuGet to use shorter paths and clear cache
+RUN dotnet nuget locals all --clear; \
+    export NUGET_PACKAGES=/pkg; \
+    export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# Set working directory
+WORKDIR /app
+
+FROM dev AS test
+
+ARG TARGET_FRAMEWORK=net6.0
+ENV TARGET_FRAMEWORK=${TARGET_FRAMEWORK}
+
+COPY . .
+
+# Restore dependencies with explicit package directory
+RUN dotnet restore tests/OmniKassa.Tests/OmniKassa.Tests.csproj --packages /pkg --verbosity normal
+
+RUN dotnet build tests/OmniKassa.Tests/OmniKassa.Tests.csproj --framework $TARGET_FRAMEWORK --no-restore
+
+RUN dotnet test tests/OmniKassa.Tests/OmniKassa.Tests.csproj --framework $TARGET_FRAMEWORK --logger trx --results-directory TestResults --verbosity normal --no-restore

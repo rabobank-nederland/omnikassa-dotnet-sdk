@@ -1,0 +1,57 @@
+name: Tests
+
+on:
+  pull_request: ~
+
+jobs:
+  test:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        framework: 
+          - net462
+          - net48
+          - net6.0
+        include:
+          - framework: net462
+            name: ".NET Framework 4.6.2"
+          - framework: net48
+            name: ".NET Framework 4.8"
+          - framework: net6.0
+            name: ".NET 6.0"
+    
+    name: Test ${{ matrix.name }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 6.0 SDK
+      if: matrix.framework == 'net6.0'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.0.x'
+    
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ matrix.framework }}-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-${{ matrix.framework }}
+    
+    - name: Restore dependencies
+      run: dotnet restore -p:TargetFramework=${{ matrix.framework }} tests/OmniKassa.Tests/OmniKassa.Tests.csproj
+    
+    - name: Build
+      run: dotnet build tests/OmniKassa.Tests/OmniKassa.Tests.csproj --framework ${{ matrix.framework }} --no-restore --configuration Release
+    
+    - name: Test
+      run: dotnet test tests/OmniKassa.Tests/OmniKassa.Tests.csproj --framework ${{ matrix.framework }} --no-build --configuration Release --logger trx --results-directory TestResults/${{ matrix.framework }}
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ matrix.framework }}
+        path: TestResults/${{ matrix.framework }}/*.trx

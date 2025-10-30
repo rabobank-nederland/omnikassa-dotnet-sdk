@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;net6.0;net7.0;net8.0</TargetFrameworks>
-    <Version>1.5.0</Version>
+    <TargetFrameworks>netstandard2.0;net462;net48;net6.0</TargetFrameworks>
+    <Version>1.6.0</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageId>OmniKassa_Rabobank</PackageId>
     <Company>Rabobank</Company>
     <PackageTags>Omnikassa, Rabobank</PackageTags>
-    <Copyright>Rabobank 2022</Copyright>
+    <Copyright>Rabobank 2025</Copyright>
     <Description>The .NET library for Rabobank OmniKassa</Description>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -44,7 +44,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
   </ItemGroup>
 

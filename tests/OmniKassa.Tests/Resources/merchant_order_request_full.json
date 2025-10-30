@@ -1,67 +1,77 @@
 {
-  "timestamp": "2017-08-07T16:28:51.504+02:00",
+  "merchantOrderId": "ORDID123",
   "amount": {
-    "amount": "495",
-    "currency": "EUR"
+    "currency": "EUR",
+    "amount": "495"
   },
-  "description": "An example description",
   "language": "NL",
+  "description": "An example description",
+  "merchantReturnURL": "http://localhost/",
   "orderItems": [
     {
+      "quantity": 1,
       "id": "1",
+      "name": "Test product",
+      "description": "Description",
       "amount": {
-        "amount": "1000",
-        "currency": "EUR"
+        "currency": "EUR",
+        "amount": "1000"
+      },
+      "tax": {
+        "currency": "EUR",
+        "amount": "100"
       },
       "category": "PHYSICAL",
-      "tax": {
-        "amount": "100",
-        "currency": "EUR"
-      },
-      "description": "Description",
-      "name": "Test product",
-      "quantity": 1,
       "vatCategory": "2"
     }
   ],
-  "merchantOrderId": "ORDID123",
-  "merchantReturnURL": "http://localhost/",
   "shippingDetail": {
+    "firstName": "Developer",
     "middleName": "van",
     "lastName": "Doe",
-    "postalCode": "1234AB",
     "street": "DeveloperStreet",
     "houseNumber": "1",
     "houseNumberAddition": "a",
-    "countryCode": "NL",
-    "firstName": "Developer",
-    "city": "Utrecht"
+    "postalCode": "1234AB",
+    "city": "Utrecht",
+    "countryCode": "NL"
   },
+  "shopperRef": null,
   "billingDetail": {
+    "firstName": "Developer",
     "middleName": "van",
     "lastName": "Doe",
-    "postalCode": "1234AB",
     "street": "DeveloperStreet",
     "houseNumber": "1",
     "houseNumberAddition": "a",
-    "countryCode": "NL",
-    "firstName": "Developer",
-    "city": "Utrecht"
+    "postalCode": "1234AB",
+    "city": "Utrecht",
+    "countryCode": "NL"
   },
   "customerInformation": {
-    "dateOfBirth": "01-01-1999",
     "emailAddress": "developer@example.com",
-    "gender": "M",
+    "dateOfBirth": "01-01-1999",
     "initials": "d.",
     "telephoneNumber": "0031204111111",
+    "gender": "M",
     "fullName": "Jan de Ruiter"
   },
   "paymentBrand": "IDEAL",
   "paymentBrandForce": "FORCE_ALWAYS",
+  "skipHppResultPage": true,
+  "timestamp": "2017-08-07T16:28:51.504+02:00",
+  "shippingCost": {
+    "currency": "EUR",
+    "amount": "1234"
+  },
   "initiatingParty": "LIGHTSPEED",
   "paymentBrandMetaData": {
-    "issuerId": "RABONL2U"
+    "issuerId": "RABONL2U",
+    "fastCheckout": {
+      "requiredCheckoutFields": [
+        "BILLING_ADDRESS"
+      ]
+    }
   },
-  "skipHppResultPage": true,
   "shopperBankstatementReference": "bankstatementReference"
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Net;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 namespace example_dotnet60
@@ -14,6 +15,10 @@ namespace example_dotnet60
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureKestrel((_, serverOptions) =>
+                    {
+                        serverOptions.Listen(IPAddress.Parse("0.0.0.0"), 5000);
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }

@@ -14,20 +14,32 @@ namespace example_dotnet60.Models
         public MerchantOrder.Builder MerchantOrderBuilder { get; set; }
 
         public MerchantOrder Order { get; set; }
+        
         public int OrderId { get; set; }
+        
         public string MerchantReturnUrl { get; set; }
 
         public PaymentCompletedResponse PaymentCompleted { get; set; }
+        
         public List<MerchantOrderStatusResponse> Responses { get; set; } = new List<MerchantOrderStatusResponse>();
+
+        public OrderStatusResult OrderStatusResult { get; set; }
 
         public PaymentBrandsResponse PaymentBrandsResponse { get; set; }
 
         public IdealIssuersResponse IdealIssuersResponse { get; set; }
 
         public RefundDetailsResponse RefundDetailsResponse { get; set; }
+        
         public TransactionRefundableDetailsResponse TransactionRefundableDetailsResponse { get; set; }
 
+        public List<CardOnFile> CardsOnFile { get; set; } = new List<CardOnFile>();
+
+        public string ShopperReference { get; set; } = "";
+
         public string Error { get; set; }
+
+        public string OmniKassaOrderId { get; set; } = "";
 
         public WebShopModel()
         {
@@ -50,21 +62,24 @@ namespace example_dotnet60.Models
         public void ReCreateBuilder()
         {
             MerchantOrderBuilder = new MerchantOrder.Builder()
-                    .WithMerchantOrderId(Order.MerchantOrderId)
-                    .WithMerchantReturnURL(Order.MerchantReturnURL)
-                    .WithAmount(Order.Amount)
-                    .WithLanguage(Language.NL)
-                    .WithDescription(Order.Description)
-                    .WithShippingDetail(Order.ShippingDetails)
-                    .WithBillingDetail(Order.BillingDetails)
-                    .WithCustomerInformation(Order.CustomerInformation)
-                    .WithPaymentBrand(Order.PaymentBrand)
-                    .WithPaymentBrandForce(Order.PaymentBrandForce)
-                    .WithPaymentBrandMetaData(new Dictionary<string, string>(Order.PaymentBrandMetaData))
-                    .WithInitiatingParty(Order.InitiatingParty)
-                    .WithSkipHppResultPage(Order.SkipHppResultPage)
-                    .WithShopperBankstatementReference(Order.ShopperBankstatementReference)
-                    .WithOrderItems(new List<OrderItem>(Order.OrderItems));
+                .WithMerchantOrderId(Order.MerchantOrderId)
+                .WithMerchantReturnURL(Order.MerchantReturnURL)
+                .WithAmount(Order.Amount)
+                .WithLanguage(Language.NL)
+                .WithDescription(Order.Description)
+                .WithShippingDetail(Order.ShippingDetails)
+                .WithBillingDetail(Order.BillingDetails)
+                .WithCustomerInformation(Order.CustomerInformation)
+                .WithPaymentBrand(Order.PaymentBrand)
+                .WithPaymentBrandForce(Order.PaymentBrandForce)
+                .WithPaymentBrandMetaData(Order.PaymentBrandMetaDataObject)
+                .WithInitiatingParty(Order.InitiatingParty)
+                .WithSkipHppResultPage(Order.SkipHppResultPage)
+                .WithShopperBankstatementReference(Order.ShopperBankstatementReference)
+                .WithOrderItems(new List<OrderItem>(Order.OrderItems))
+                .WithPaymentBrandMetaData(Order.PaymentBrandMetaData)
+                .WithShopperReference(Order.ShopperReference)
+                .WithShippingCost(Order.ShippingCost);
 
             if (Order.Language != null)
             {
@@ -90,18 +105,23 @@ namespace example_dotnet60.Models
             return Order;
         }
 
-        public MerchantOrder PrepareMerchantOrder(Decimal totalPrice,
-                                                  CustomerInformation customerInformation,
-                                                  Address shippingDetails,
-                                                  Address billingDetails,
-                                                  PaymentBrand? paymentBrand,
-                                                  PaymentBrandForce? paymentBrandForce,
-                                                  Dictionary<string, string> paymentBrandMetaData,
-                                                  string initiatingParty,
-                                                  bool skipHppResultPage,
-                                                  string shopperBankstatementReference)
-        {
-            MerchantOrderBuilder
+        public MerchantOrder PrepareMerchantOrder(
+            Decimal totalPrice,
+            CustomerInformation customerInformation,
+            Address shippingDetails,
+            Address billingDetails,
+            PaymentBrand? paymentBrand,
+            PaymentBrandForce? paymentBrandForce,
+            PaymentBrandMetaData? paymentBrandMetaData,
+            string initiatingParty,
+            bool skipHppResultPage,
+            string shopperBankstatementReference,
+            bool enableCardOnFile,
+            string shopperReference,
+            Decimal? shippingCostAmount,
+            Currency? shippingCostCurrency
+        ) {
+            var builder = MerchantOrderBuilder
                 .WithAmount(Money.FromDecimal(Currency.EUR, totalPrice))
                 .WithLanguage(Language.NL)
                 .WithDescription("An example description")
@@ -114,9 +134,10 @@ namespace example_dotnet60.Models
                 .WithInitiatingParty(initiatingParty)
                 .WithSkipHppResultPage(skipHppResultPage)
                 .WithShopperBankstatementReference(shopperBankstatementReference)
-                .Build();
+                .WithShopperReference(shopperReference)
+                .WithShippingCost(shippingCostCurrency, shippingCostAmount);
 
-            return MerchantOrderBuilder.Build();
+            return builder.Build();
         }
 
         public Decimal GetTotalPrice()
@@ -147,6 +168,25 @@ namespace example_dotnet60.Models
                 return IdealIssuersResponse.IdealIssuers;
             }
             return new List<IdealIssuer>();
+        }
+
+        public List<CardOnFile> GetCardsOnFile()
+        {
+            if (CardsOnFile != null)
+            {
+                return CardsOnFile;
+            }
+            return new List<CardOnFile>();
+        }
+
+        public Decimal GetShippingCostAmount()
+        {
+            return MerchantOrderBuilder.ShippingCost.Amount; 
+        }
+
+        public Currency GetShippingCostCurrency()
+        {
+            return MerchantOrderBuilder.ShippingCost.Currency;
         }
     }
 }

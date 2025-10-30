@@ -1,0 +1,86 @@
+# See readme for usage instructions.
+#
+# .NET Framework Container tag listing:
+# https://github.com/microsoft/dotnet-framework-docker/blob/main/README.sdk.md
+# .NET (Core) Container tag listing:
+# https://github.com/dotnet/dotnet-docker/blob/main/README.sdk.md#full-tag-listing
+# Framework version listing:
+# https://learn.microsoft.com/en-us/dotnet/standard/frameworks
+
+services:
+  # SAMPLE PROJECTS
+  netcore6-linux-sample:
+    build:
+      context: .
+      dockerfile: Containers/NetCore/Linux/Containerfile
+      target: test
+      args:
+        CONTAINER_TAG: 6.0-focal
+        TARGET_FRAMEWORK: net6.0
+    ports:
+      - "5000:5000"
+    command: >
+      sh -c "cd /app/samples/OmniKassa.Samples.DotNet60 &&
+      dotnet run --framework net6.0 OmniKassa.Samples.DotNet60.csproj"
+        
+  # TEST SERVICES
+  netframework46-windows-test:
+    build:
+      context: .
+      dockerfile: Containers/NetFramework/Windows/Containerfile
+      target: test
+      args:
+        CONTAINER_TAG: 4.8-windowsservercore-ltsc2022
+        TARGET_FRAMEWORK: net462
+
+  netcore6-windows-test:
+    build:
+      context: .
+      dockerfile: Containers/NetCore/Windows/Containerfile
+      target: test
+      args:
+        CONTAINER_TAG: 6.0-windowsservercore-ltsc2022
+        TARGET_FRAMEWORK: net6.0
+        
+  netcore6-linux-test:
+    build:
+      context: .
+      dockerfile: Containers/NetCore/Linux/Containerfile
+      target: test
+      args:
+        CONTAINER_TAG: 6.0-focal
+        TARGET_FRAMEWORK: net6.0
+  
+  # DEV SERVICES
+  netframework46-windows-dev:
+    build:
+      context: .
+      dockerfile: Containers/NetFramework/Windows/Containerfile
+      target: dev
+      args:
+        CONTAINER_TAG: 4.8-windowsservercore-ltsc2022
+        TARGET_FRAMEWORK: net462
+    volumes:
+      - ./:/app:rw,cached,z
+        
+  netcore6-windows-dev:
+    build:
+      context: .
+      dockerfile: Containers/NetCore/Windows/Containerfile
+      target: dev
+      args:
+        CONTAINER_TAG: 6.0-windowsservercore-ltsc2022
+        TARGET_FRAMEWORK: net6.0
+    volumes:
+      - ./:/app:rw,cached,z
+        
+  netcore6-linux-dev:
+    build:
+      context: .
+      dockerfile: Containers/NetCore/Linux/Containerfile
+      target: dev
+      args:
+        CONTAINER_TAG: 6.0-focal
+        TARGET_FRAMEWORK: net6.0
+    volumes:
+      - ./:/app:rw,cached,z

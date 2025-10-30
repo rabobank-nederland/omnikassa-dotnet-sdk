@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Text;
-using OmniKassa.Model;
+using System.IO;
+using Newtonsoft.Json;
 using OmniKassa.Model.Order;
-using OmniKassa.Utils;
 using Xunit;
 
 namespace OmniKassa.Tests.Model.Request
@@ -52,6 +51,32 @@ namespace OmniKassa.Tests.Model.Request
             actual.Timestamp = "2017-08-07T16:28:51.504+" + TestHelper.GetLocalTimeZone("\\:");
 
             Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void Json_Should_Serialize_Back_Full()
+        {
+            var expectedStr = TestHelper.GetStringFromResourceFile("merchant_order_request_full.json");
+            expectedStr = JsonPrettify(expectedStr);
+
+            MerchantOrder actual = MerchantOrderFactory.IncludingOptionalFields();
+            actual.Timestamp = "2017-08-07T16:28:51.504+" + TestHelper.GetLocalTimeZone("\\:");
+
+            var actualStr = JsonPrettify(JsonConvert.SerializeObject(actual));
+
+            Assert.Equal(expectedStr, actualStr);
+        }
+        
+        private static string JsonPrettify(string json)
+        {
+            using (var stringReader = new StringReader(json))
+            using (var stringWriter = new StringWriter())
+            {
+                var jsonReader = new JsonTextReader(stringReader);
+                var jsonWriter = new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented };
+                jsonWriter.WriteToken(jsonReader);
+                return stringWriter.ToString();
+            }
         }
     }
 }

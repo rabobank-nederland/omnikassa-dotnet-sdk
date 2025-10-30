@@ -27,7 +27,7 @@ namespace OmniKassa
         /// Creates an instance of OmniKassa
         /// </summary>
         /// <param name="environment">Environment to use</param>
-        /// <param name="signingKey">Signing key from the OmniKassa Dashboar</param>
+        /// <param name="signingKey">Signing key from the OmniKassa Dashboard</param>
         /// <param name="token">Refresh token from the OmniKassa Dashboard</param>
         /// <returns></returns>
         public static Endpoint Create(Environment environment, String signingKey, String token)

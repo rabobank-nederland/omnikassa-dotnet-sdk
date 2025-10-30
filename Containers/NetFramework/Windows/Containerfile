@@ -1,0 +1,36 @@
+ARG CONTAINER_TAG=4.8-windowsservercore-ltsc2022
+
+FROM mcr.microsoft.com/dotnet/framework/sdk:${CONTAINER_TAG} AS dev
+
+# Set PowerShell as the default shell
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# Install .NET Core SDK for multi-targeting support
+RUN Invoke-WebRequest -OutFile dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1; \
+    ./dotnet-install.ps1 -Channel 6.0 -InstallDir C:/dotnet; \
+    Remove-Item dotnet-install.ps1
+
+# Add .NET Core to PATH
+RUN setx /M PATH $($Env:PATH + ';C:\dotnet')
+
+# Configure NuGet to use shorter paths and clear cache
+RUN dotnet nuget locals all --clear; \
+    setx NUGET_PACKAGES C:\pkg; \
+    setx DOTNET_CLI_TELEMETRY_OPTOUT 1
+
+# Set working directory
+WORKDIR /app
+
+FROM dev AS test
+
+ARG TARGET_FRAMEWORK=net462
+ENV TARGET_FRAMEWORK=${TARGET_FRAMEWORK} 
+
+COPY . .
+
+# Restore dependencies with explicit package directory
+RUN dotnet restore tests/OmniKassa.Tests/OmniKassa.Tests.csproj --packages C:\pkg --verbosity normal
+
+RUN dotnet build tests/OmniKassa.Tests/OmniKassa.Tests.csproj --framework $ENV:TARGET_FRAMEWORK --no-restore
+
+CMD powershell -Command "dotnet test tests/OmniKassa.Tests/OmniKassa.Tests.csproj --framework $ENV:TARGET_FRAMEWORK --logger trx --results-directory TestResults --verbosity normal"

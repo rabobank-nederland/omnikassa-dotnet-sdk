@@ -4,6 +4,7 @@ using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
 using OmniKassa.Model.Response;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace example_dotnet60.Controllers
 {
@@ -80,6 +81,23 @@ namespace example_dotnet60.Controllers
             return items;
         }
 
+        public static List<SelectListItem> GetCardOnFileItems(WebShopModel model)
+        {
+            var items = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "", Value = "" }
+            };
+            foreach (CardOnFile item in model.GetCardsOnFile())
+            {
+                items.Add(new SelectListItem()
+                {
+                    Value = item.Id,
+                    Text = item.ToString()
+                });
+            }
+            return items;
+        }
+
         public static List<SelectListItem> GetShippingAddressCountryItems(MerchantOrder order)
         {
             return GetCountryItems(order.ShippingDetails.CountryCode);
@@ -100,6 +118,34 @@ namespace example_dotnet60.Controllers
                     Value = item.ToString(),
                     Text = item.ToString(),
                     Selected = (item == selected)
+                });
+            }
+            return items;
+        }
+
+        public static List<SelectListItem> GetShippingCostCurrencyItems(MerchantOrder order)
+        {
+            var items = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "", Value = "" }
+            };
+            var currency = order.ShippingCost?.Currency;
+            foreach (Currency item in typeof(Currency).GetEnumValues())
+            {
+                var isSelected = false;
+                if (currency != null)
+                {
+                    isSelected = item == currency;
+                }
+                else
+                {
+                    isSelected = item == Currency.EUR;
+                }
+                items.Add(new SelectListItem()
+                {
+                    Value = item.ToString(),
+                    Text = item.ToString(),
+                    Selected = isSelected
                 });
             }
             return items;

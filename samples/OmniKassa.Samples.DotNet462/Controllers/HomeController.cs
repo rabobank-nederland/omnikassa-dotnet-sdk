@@ -20,6 +20,8 @@ namespace OmniKassa.Samples.DotNet462.Controllers
         private readonly string BASE_URL;
         private readonly string USER_AGENT;
         private readonly string PARTNER_REFERENCE;
+        private readonly string FAST_CHECKOUT_RETURN_URL;
+        private readonly string SHOPPER_REFERENCE;
 
         private static Endpoint omniKassa;
         private static ApiNotification notification;       
@@ -44,6 +46,18 @@ namespace OmniKassa.Samples.DotNet462.Controllers
                 PARTNER_REFERENCE = partnerReference;
             }
 
+            var fastCheckoutReturnUrl = appSettings["FastCheckoutReturnUrl"];
+            if (!string.IsNullOrEmpty(fastCheckoutReturnUrl))
+            {
+                FAST_CHECKOUT_RETURN_URL = fastCheckoutReturnUrl;
+            }
+
+            var shopperReference = appSettings["ShopperReference"];
+            if (!string.IsNullOrEmpty(shopperReference))
+            {
+                SHOPPER_REFERENCE = shopperReference;
+            }
+
             if (omniKassa == null)
             {
                 InitializeOmniKassaEndpoint();
@@ -52,14 +66,12 @@ namespace OmniKassa.Samples.DotNet462.Controllers
 
         private void InitializeOmniKassaEndpoint()
         {
-            if (String.IsNullOrEmpty(BASE_URL))
-            {
-                omniKassa = Endpoint.Create(Environment.SANDBOX, SIGNING_KEY, TOKEN, USER_AGENT, PARTNER_REFERENCE);
-            }
-            else
-            {
-                omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN, USER_AGENT, PARTNER_REFERENCE);
-            }
+            // The base URL can be one of the following:
+            // "https://betalen.rabobank.nl/omnikassa-api/";
+            // "https://api.pay.rabobank.nl/omnikassa-api/";
+            // "https://betalen.rabobank.nl/omnikassa-api-sandbox/";
+            // "https://api.pay-acpt.rabobank.nl/omnikassa-api/";
+            omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN, USER_AGENT, PARTNER_REFERENCE);
         }
 
         [HttpGet]

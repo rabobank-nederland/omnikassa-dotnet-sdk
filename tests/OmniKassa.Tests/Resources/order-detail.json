@@ -1,0 +1,56 @@
+{
+  "order": {
+    "id": "1d0a95f4-2589-439b-9562-c50aa19f9caf",
+    "merchantOrderId": "ORDER3559",
+    "status": "COMPLETED",
+    "totalAmount": {
+      "currency": "EUR",
+      "amount": 10997
+    },
+    "transactions": [
+      {
+        "id": "22b36073-57a3-4c3d-9585-87f2e55275a5",
+        "paymentBrand": "IDEAL",
+        "type": "PAYMENT",
+        "status": "SUCCESS",
+        "amount": {
+          "currency": "EUR",
+          "amount": 10997
+        },
+        "createdAt": "2018-03-20T09:12:28Z",
+        "lastUpdatedAt": "2018-03-20T09:12:28Z"
+      }
+    ],
+    "checkoutDetails": {
+      "customerInformation": {
+        "firstName": "Minerva",
+        "lastName": "Kuijpers",
+        "emailAddress": "jan@example.org",
+        "telephoneNumber": "+31612345678",
+        "company": {
+          "name": "Winnie Reyes"
+        }
+      },
+      "billingAddress": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "street": "Keizersgracht",
+        "houseNumber": "123",
+        "houseNumberAddition": "A",
+        "postalCode": "1015 CJ",
+        "city": "Amsterdam",
+        "countryCode": "NL"
+      },
+      "shippingAddress": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "street": "Keizersgracht",
+        "houseNumber": "123",
+        "houseNumberAddition": "A",
+        "postalCode": "1015 CJ",
+        "city": "Amsterdam",
+        "countryCode": "NL"
+      }
+    }
+  }
+}

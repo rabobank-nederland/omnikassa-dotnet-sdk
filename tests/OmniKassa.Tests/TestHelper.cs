@@ -23,6 +23,23 @@ namespace OmniKassa.Tests
             }
             return expected;
         }
+        
+        public static string GetStringFromResourceFile(String file)
+        {
+            String fullName = "omnikassa_dotnet_test.Resources." + file;
+            var assembly = typeof(TestHelper).Assembly;
+            Stream stream = assembly.GetManifestResourceStream(fullName);
+            
+            if (null == stream)
+            {
+                throw new FileNotFoundException($"Resource file '{fullName}' not found.");
+            }
+
+            using (StreamReader sr = new StreamReader(stream))
+            {
+                return sr.ReadToEnd();
+            }
+        }
 
         public static String GetLocalTimeZone(String separator)
         {

@@ -1,0 +1,28 @@
+{
+  "cardOnFileList": [
+    {
+      "id": "a2d4f4d8-32fa-468c-9d14-f996ec4a8bb7",
+      "last4Digits": "1234",
+      "brand": "MASTERCARD",
+      "cardExpiry": "2029-12",
+      "tokenExpiry": "2027-01",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "b3e5g5e9-43gb-579d-a673-d107fd5b9cc8",
+      "last4Digits": "5678",
+      "brand": "VISA",
+      "cardExpiry": "2028-06",
+      "tokenExpiry": "2026-06",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "c4f6h6f0-54hc-680e-b784-e218ge6c0dd9",
+      "last4Digits": "9012",
+      "brand": "MAESTRO",
+      "cardExpiry": "2030-03",
+      "tokenExpiry": "2028-03",
+      "status": "INACTIVE"
+    }
+  ]
+}

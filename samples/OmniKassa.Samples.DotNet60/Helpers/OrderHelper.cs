@@ -42,15 +42,15 @@ namespace example_dotnet60.Helpers
             Money tax = Money.FromDecimal(Currency.EUR, Decimal.Round(taxDecimal, 2));
 
             return new OrderItem.Builder()
-                    .WithId(Convert.ToString(orderItemId))
-                    .WithQuantity(Convert.ToInt32(quantity))
-                    .WithName(name)
-                    .WithDescription(name)
-                    .WithAmount(amount)
-                    .WithTax(tax)
-                    .WithItemCategory(itemCategory)
-                    .WithVatCategory(vatCategory)
-                    .Build();
+                .WithId(Convert.ToString(orderItemId))
+                .WithQuantity(Convert.ToInt32(quantity))
+                .WithName(name)
+                .WithDescription(name)
+                .WithAmount(amount)
+                .WithTax(tax)
+                .WithItemCategory(itemCategory)
+                .WithVatCategory(vatCategory)
+                .Build();
         }
 
         public static MerchantOrder PrepareOrder(NameValueCollection collection, WebShopModel model)
@@ -75,12 +75,16 @@ namespace example_dotnet60.Helpers
             CustomerInformation customerInformation = CreateCustomerInformation(collection);
             PaymentBrand? paymentBrand = CreatePaymentBrand(collection);
             PaymentBrandForce? paymentBrandForce = CreatePaymentBrandForce(collection);
-            Dictionary<string, string> paymentBrandMetaData = CreatePaymentBrandMetaData(collection);
+            PaymentBrandMetaData? paymentBrandMetaData = CreatePaymentBrandMetaData(collection);
             string initiatingParty = GetInitiatingParty(collection);
             bool skipHppResultPage = GetSkipHppResultPage(collection);
             string shopperBankstatementReference = GetShopperBankstatementReference(collection);
+            bool enableCardOnFile = GetEnableCardOnFile(collection);
+            string shopperReference = GetShopperReference(collection);
+            Decimal? shippingCostAmount = GetShippingCostAmount(collection);
+            Currency? shippingCostCurrency = GetShippingCostCurrency(collection);
 
-            return model.PrepareMerchantOrder(
+            var merchantOrder = model.PrepareMerchantOrder(
                 totalPrice,
                 customerInformation,
                 shippingDetails,
@@ -90,20 +94,26 @@ namespace example_dotnet60.Helpers
                 paymentBrandMetaData,
                 initiatingParty,
                 skipHppResultPage,
-                shopperBankstatementReference
+                shopperBankstatementReference,
+                enableCardOnFile,
+                shopperReference,
+                shippingCostAmount,
+                shippingCostCurrency
             );
+
+            return merchantOrder;
         }
 
         private static CustomerInformation CreateCustomerInformation(NameValueCollection collection)
         {
             return new CustomerInformation.Builder()
-                        .WithTelephoneNumber(collection.Get("phoneNumber"))
-                        .WithInitials(collection.Get("initials"))
-                        .WithGender(GetEnum<Gender>(collection.Get("gender")))
-                        .WithEmailAddress(collection.Get("email"))
-                        .WithDateOfBirth(collection.Get("birthDate"))
-                        .WithFullName(collection.Get("fullName"))
-                        .Build();
+                .WithTelephoneNumber(collection.Get("phoneNumber"))
+                .WithInitials(collection.Get("initials"))
+                .WithGender(GetEnum<Gender>(collection.Get("gender")))
+                .WithEmailAddress(collection.Get("email"))
+                .WithDateOfBirth(collection.Get("birthDate"))
+                .WithFullName(collection.Get("fullName"))
+                .Build();
         }
 
         private static Address CreateBillingDetails(NameValueCollection collection)
@@ -120,16 +130,16 @@ namespace example_dotnet60.Helpers
         {
             String countryCode = collection.Get(addressType + "CountryCode");
             return new Address.Builder()
-                    .WithFirstName(collection.Get(addressType + "FirstName"))
-                    .WithMiddleName(collection.Get(addressType + "MiddleName"))
-                    .WithLastName(collection.Get(addressType + "LastName"))
-                    .WithStreet(collection.Get(addressType + "Street"))
-                    .WithHouseNumber(collection.Get(addressType + "HouseNumber"))
-                    .WithHouseNumberAddition(collection.Get(addressType + "HouseNumberAddition"))
-                    .WithPostalCode(collection.Get(addressType + "PostalCode"))
-                    .WithCity(collection.Get(addressType + "City"))
-                    .WithCountryCode(GetEnum<CountryCode>(countryCode))
-                    .Build();
+                .WithFirstName(collection.Get(addressType + "FirstName"))
+                .WithMiddleName(collection.Get(addressType + "MiddleName"))
+                .WithLastName(collection.Get(addressType + "LastName"))
+                .WithStreet(collection.Get(addressType + "Street"))
+                .WithHouseNumber(collection.Get(addressType + "HouseNumber"))
+                .WithHouseNumberAddition(collection.Get(addressType + "HouseNumberAddition"))
+                .WithPostalCode(collection.Get(addressType + "PostalCode"))
+                .WithCity(collection.Get(addressType + "City"))
+                .WithCountryCode(GetEnum<CountryCode>(countryCode))
+                .Build();
         }
 
         private static PaymentBrand? CreatePaymentBrand(NameValueCollection collection)
@@ -146,23 +156,65 @@ namespace example_dotnet60.Helpers
         {
             String paymentBrandForce = collection.Get("paymentBrandForce");
             if (String.IsNullOrEmpty(paymentBrandForce))
+            {
                 return null;
+            }
             return GetEnum<PaymentBrandForce>(paymentBrandForce);
         }
 
-        private static Dictionary<string, string> CreatePaymentBrandMetaData(NameValueCollection collection)
+        private static PaymentBrandMetaData? CreatePaymentBrandMetaData(NameValueCollection collection)
         {
+            var createdPaymentBrandMetaData = false;
+            var paymentBrandMetaData = new PaymentBrandMetaData();
+           
             String idealIssuer = collection.Get("idealIssuer");
-            if (String.IsNullOrEmpty(idealIssuer))
-                return null;
-            return new Dictionary<string, string>() {
-                { ISSUER_ID, idealIssuer }
-            };
+            if (!String.IsNullOrEmpty(idealIssuer))
+            {
+                paymentBrandMetaData.IssuerId = idealIssuer;
+                createdPaymentBrandMetaData = true;
+            }
+
+            bool requiredCheckoutFieldsCustomerInformation = collection.Get("requiredCheckoutFieldsCustomerInformation") == "on";
+            bool requiredCheckoutFieldsBillingAddress = collection.Get("requiredCheckoutFieldsBillingAddress") == "on";
+            bool requiredCheckoutFieldsShippingAddress = collection.Get("requiredCheckoutFieldsShippingAddress") == "on";
+            if (requiredCheckoutFieldsCustomerInformation || requiredCheckoutFieldsBillingAddress || requiredCheckoutFieldsShippingAddress)
+            {
+                var requiredCheckoutFields = new List<RequiredCheckoutFields>();
+                if (requiredCheckoutFieldsCustomerInformation)
+                {
+                    requiredCheckoutFields.Add(RequiredCheckoutFields.CUSTOMER_INFORMATION);
+                }
+                if (requiredCheckoutFieldsBillingAddress)
+                {
+                    requiredCheckoutFields.Add(RequiredCheckoutFields.BILLING_ADDRESS);
+                }
+                if (requiredCheckoutFieldsShippingAddress)
+                {
+                    requiredCheckoutFields.Add(RequiredCheckoutFields.SHIPPING_ADDRESS);
+                }
+                var fastCheckout = new FastCheckout(requiredCheckoutFields.AsReadOnly());
+                paymentBrandMetaData.FastCheckout = fastCheckout;
+                createdPaymentBrandMetaData = true;
+            }
+
+            bool enableCardOnFile = GetEnableCardOnFile(collection);
+            if (enableCardOnFile)
+            {
+                paymentBrandMetaData.EnableCardOnFile = true;
+                createdPaymentBrandMetaData = true;
+            }
+
+            return createdPaymentBrandMetaData ? paymentBrandMetaData : null;
         }
 
         private static string GetInitiatingParty(NameValueCollection collection)
         {
             return collection.Get("initiatingParty");
+        }
+
+        private static bool GetEnableCardOnFile(NameValueCollection collection)
+        {
+            return collection.Get("enableCardOnFile") == "on";
         }
 
         private static bool GetSkipHppResultPage(NameValueCollection collection)
@@ -173,6 +225,31 @@ namespace example_dotnet60.Helpers
         private static string GetShopperBankstatementReference(NameValueCollection collection)
         {
             return collection.Get("shopperBankstatementReference");
+        }
+
+        public static string GetShopperReference(NameValueCollection collection)
+        {
+            return collection.Get("shopperReference");
+        }
+
+        public static Decimal? GetShippingCostAmount(NameValueCollection collection)
+        {
+            var amount = collection.Get("shippingCostAmount");
+            if (String.IsNullOrEmpty(amount))
+            {
+                return null;
+            }
+            return Convert.ToDecimal(amount);
+        }
+
+        public static Currency? GetShippingCostCurrency(NameValueCollection collection)
+        {
+            var currency = collection.Get("shippingCostCurrency");
+            if (String.IsNullOrEmpty(currency))
+            {
+                return null;
+            }
+            return GetEnum<Currency>(currency);
         }
 
         public static T GetEnum<T>(String value)
