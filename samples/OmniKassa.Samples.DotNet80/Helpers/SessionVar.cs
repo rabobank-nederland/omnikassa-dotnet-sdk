@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace example_dotnet60.Helpers
+namespace example_dotnet80.Helpers
 {
     public abstract class SessionVar
     {

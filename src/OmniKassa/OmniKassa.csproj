@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462;net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net462;net48;net8.0</TargetFrameworks>
     <Version>1.6.0</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageId>OmniKassa_Rabobank</PackageId>
@@ -14,8 +14,8 @@
     <RuntimeIdentifier Condition="$([MSBuild]::IsOSPlatform('OSX'))">osx-x64</RuntimeIdentifier>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
-    <DocumentationFile>bin\Debug\net6.0\OmniKassa.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'">
+    <DocumentationFile>bin\Debug\net8.0\OmniKassa.xml</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 

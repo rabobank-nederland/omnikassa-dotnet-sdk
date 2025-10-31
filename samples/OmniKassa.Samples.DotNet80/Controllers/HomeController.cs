@@ -14,12 +14,12 @@ using Microsoft.Extensions.Primitives;
 using OmniKassa.Model.Response.Notification;
 using OmniKassa.Samples.DotNet50.Configuration;
 using Endpoint = OmniKassa.Endpoint;
-using example_dotnet60.Models;
-using example_dotnet60.Helpers;
+using example_dotnet80.Models;
+using example_dotnet80.Helpers;
 using OmniKassa.Model.Request;
 using System.Linq;
 
-namespace example_dotnet60.Controllers
+namespace example_dotnet80.Controllers
 {
     public class HomeController : Controller
     {

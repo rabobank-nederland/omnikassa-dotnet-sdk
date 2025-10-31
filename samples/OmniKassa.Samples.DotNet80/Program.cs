@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace example_dotnet60
+namespace example_dotnet80
 {
     public class Program
     {

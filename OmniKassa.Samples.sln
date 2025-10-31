@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa", "src\OmniKassa\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniKassa.Samples.DotNet462", "samples\OmniKassa.Samples.DotNet462\OmniKassa.Samples.DotNet462.csproj", "{13D50ADA-D2C3-43F0-9483-E5EA895C442A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNet60", "samples\OmniKassa.Samples.DotNet60\OmniKassa.Samples.DotNet60.csproj", "{E78289A9-C544-41E9-A7EF-FA7AE8EC6986}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniKassa.Samples.DotNet80", "samples\OmniKassa.Samples.DotNet80\OmniKassa.Samples.DotNet80.csproj", "{E78289A9-C544-41E9-A7EF-FA7AE8EC6986}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

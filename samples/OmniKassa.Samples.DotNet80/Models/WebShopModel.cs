@@ -6,7 +6,7 @@ using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
 using OmniKassa.Model.Response;
 
-namespace example_dotnet60.Models
+namespace example_dotnet80.Models
 {
     [JsonObject]
     public class WebShopModel

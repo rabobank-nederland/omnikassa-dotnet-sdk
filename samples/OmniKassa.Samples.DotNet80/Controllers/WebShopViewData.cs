@@ -1,4 +1,4 @@
-﻿using example_dotnet60.Models;
+﻿using example_dotnet80.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
@@ -6,7 +6,7 @@ using OmniKassa.Model.Response;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace example_dotnet60.Controllers
+namespace example_dotnet80.Controllers
 {
     public class WebShopViewData
     {
