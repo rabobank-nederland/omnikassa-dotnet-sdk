@@ -4,9 +4,9 @@ using System.Collections.Specialized;
 using OmniKassa.Model;
 using OmniKassa.Model.Enums;
 using OmniKassa.Model.Order;
-using example_dotnet60.Models;
+using example_dotnet80.Models;
 
-namespace example_dotnet60.Helpers
+namespace example_dotnet80.Helpers
 {
     public static class OrderHelper
     {

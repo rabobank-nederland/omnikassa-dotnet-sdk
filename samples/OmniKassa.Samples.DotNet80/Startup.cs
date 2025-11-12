@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OmniKassa.Samples.DotNet50.Configuration;
 
-namespace example_dotnet60
+namespace example_dotnet80
 {
     public class Startup
     {
