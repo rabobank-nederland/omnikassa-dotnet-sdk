@@ -10,7 +10,7 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
-### Version 1.6.2
+### Version 1.6.3
 * Updated URLs from betalen to use pay domain 
 
 ### Version 1.6.1
