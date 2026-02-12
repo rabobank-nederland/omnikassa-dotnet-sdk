@@ -10,6 +10,9 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
+### Version 1.6.2
+* Updated URLs from betalen to use pay domain 
+
 ### Version 1.6.1
 * Add Docker configuration for development and testing.
 * Add GitHub workflow for PR testing.
