@@ -33,9 +33,9 @@ namespace OmniKassa
             switch (environment)
             {
                 case Environment.PRODUCTION:
-                    return "https://betalen.rabobank.nl/omnikassa-api/";
+                    return "https://api.pay.rabobank.nl/";
                 case Environment.SANDBOX:
-                    return "https://betalen.rabobank.nl/omnikassa-api-sandbox/";
+                    return "https://api.pay-sandbox.rabobank.nl/";
             }
             return null;
         }
