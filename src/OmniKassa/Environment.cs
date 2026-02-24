@@ -35,7 +35,22 @@ namespace OmniKassa
                 case Environment.PRODUCTION:
                     return "https://api.pay.rabobank.nl/";
                 case Environment.SANDBOX:
-                    return "https://api.pay-sandbox.rabobank.nl/";
+                    return "https://betalen.rabobank.nl/";
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the API suffix for the chosen environment
+        /// </summary>
+        public static string GetSuffix(Environment environment)
+        {
+            switch (environment)
+            {
+                case Environment.PRODUCTION:
+                    return "omnikassa-api/";
+                case Environment.SANDBOX:
+                    return "omnikassa-api-sandbox/";
             }
             return null;
         }

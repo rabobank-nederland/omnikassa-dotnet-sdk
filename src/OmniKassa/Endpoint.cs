@@ -34,7 +34,8 @@ namespace OmniKassa
         {
             TokenProvider tokenProvider = new InMemoryTokenProvider(token);
             String baseUrl = EnvironmentHelper.GetUrl(environment);
-            return Create(baseUrl, signingKey, tokenProvider);
+            String suffix = EnvironmentHelper.GetSuffix(environment);
+            return Create(baseUrl, suffix, signingKey, tokenProvider);
         }
 
         /// <summary>
@@ -53,7 +54,8 @@ namespace OmniKassa
         ) {
             TokenProvider tokenProvider = new InMemoryTokenProvider(token);
             String baseUrl = EnvironmentHelper.GetUrl(environment);
-            return Create(baseUrl, signingKey, tokenProvider, userAgent, null);
+            String suffix = EnvironmentHelper.GetSuffix(environment);
+            return Create(baseUrl, suffix, signingKey, tokenProvider, userAgent, null);
         }
 
         /// <summary>
@@ -74,18 +76,21 @@ namespace OmniKassa
         ) {
             TokenProvider tokenProvider = new InMemoryTokenProvider(token);
             String baseUrl = EnvironmentHelper.GetUrl(environment);
-            return Create(baseUrl, signingKey, tokenProvider, userAgent, partnerReference);
+            string suffix = EnvironmentHelper.GetSuffix(environment);
+            return Create(baseUrl, suffix, signingKey, tokenProvider, userAgent, partnerReference);
         }
 
         /// <summary>
         /// Creates an instance of OmniKassa
         /// </summary>
         /// <param name="baseURL">Base URL for the API</param>
+        /// <param name="suffix">Environment specific API suffix</param>
         /// <param name="signingKey">Signing key from the OmniKassa Dashboard</param>
         /// <param name="token">Refresh token from the OmniKassa Dashboard</param>
         /// <returns>OmniKassa instance</returns>
         public static Endpoint Create(
             String baseURL,
+            String suffix,
             String signingKey,
             String token
         ) {
@@ -94,13 +99,14 @@ namespace OmniKassa
                 return Create(environment, signingKey, token, null, null);
             }
             TokenProvider tokenProvider = new InMemoryTokenProvider(token);
-            return Create(baseURL, signingKey, tokenProvider, null, null);
+            return Create(baseURL, suffix, signingKey, tokenProvider, null, null);
         }
 
         /// <summary>
         /// Creates an instance of OmniKassa
         /// </summary>
         /// <param name="baseURL">Base URL for the API</param>
+        /// <param name="suffix">Environment specific API suffix</param>
         /// <param name="signingKey">Signing key from the OmniKassa Dashboard</param>
         /// <param name="token">Refresh token from the OmniKassa Dashboard</param>
         /// <param name="userAgent">User-Agent value you want to give your implementation</param>
@@ -108,6 +114,7 @@ namespace OmniKassa
         /// <returns>OmniKassa instance</returns>
         public static Endpoint Create(
             String baseURL, 
+            String suffix,
             String signingKey, 
             String token, 
             String userAgent,
@@ -118,26 +125,28 @@ namespace OmniKassa
                 return Create(environment, signingKey, token, userAgent, partnerReference);
             }
             TokenProvider tokenProvider = new InMemoryTokenProvider(token);
-            return Create(baseURL, signingKey, tokenProvider, userAgent, partnerReference);
+            return Create(baseURL, suffix, signingKey, tokenProvider, userAgent, partnerReference);
         }
 
         /// <summary>
         /// Creates an instance of OmniKassa
         /// </summary>
         /// <param name="baseURL">Base URL for the API</param>
+        /// <param name="suffix">Environment specific API suffix</param>
         /// <param name="signingKey">Signing key from the OmniKassa Dashboard</param>
         /// <param name="tokenProvider">Token provider storing token info</param>
         /// <returns>OmniKassa instance</returns>
-        public static Endpoint Create(String baseURL, String signingKey, TokenProvider tokenProvider)
+        public static Endpoint Create(String baseURL, String suffix, String signingKey, TokenProvider tokenProvider)
         {
             byte[] signingKeyBytes = Convert.FromBase64String(signingKey);
-            return Create(baseURL, signingKeyBytes, tokenProvider, null, null);
+            return Create(baseURL, suffix, signingKeyBytes, tokenProvider, null, null);
         }
 
         /// <summary>
         /// Creates an instance of OmniKassa
         /// </summary>
         /// <param name="baseURL">Base URL for the API</param>
+        /// <param name="suffix">Environment specific API suffix</param>
         /// <param name="signingKey">Signing key from the OmniKassa Dashboard</param>
         /// <param name="tokenProvider">Token provider storing token info</param>
         /// <param name="userAgent">User-Agent value you want to give your implementation</param>
@@ -145,13 +154,14 @@ namespace OmniKassa
         /// <returns>OmniKassa instance</returns>
         public static Endpoint Create(
             String baseURL, 
+            String suffix,
             String signingKey, 
             TokenProvider tokenProvider,
             String userAgent,
             String partnerReference
         ) {
             byte[] signingKeyBytes = Convert.FromBase64String(signingKey);
-            return Create(baseURL, signingKeyBytes, tokenProvider, userAgent, partnerReference);
+            return Create(baseURL, suffix, signingKeyBytes, tokenProvider, userAgent, partnerReference);
         }
 
         /// <summary>
@@ -175,6 +185,7 @@ namespace OmniKassa
         /// Creates an instance of OmniKassa
         /// </summary>
         /// <param name="baseURL">Base URL for the API</param>
+        /// <param name="suffix">Environment specific API suffix</param>
         /// <param name="signingKey">Signing key from the OmniKassa Dashboard</param>
         /// <param name="tokenProvider">Token provider storing token info</param>
         /// <param name="userAgent">User-Agent value you want to give your implementation</param>
@@ -182,12 +193,13 @@ namespace OmniKassa
         /// <returns>OmniKassa instance</returns>
         public static Endpoint Create(
             String baseURL, 
+            String suffix,
             byte[] signingKey, 
             TokenProvider tokenProvider, 
             String userAgent,
             String partnerReference
         ) {
-            OmniKassaHttpClient httpClient = new OmniKassaHttpClient(baseURL, signingKey, userAgent, partnerReference);
+            OmniKassaHttpClient httpClient = new OmniKassaHttpClient(baseURL, suffix, signingKey, userAgent, partnerReference);
             return new Endpoint(httpClient, tokenProvider);
         }
 

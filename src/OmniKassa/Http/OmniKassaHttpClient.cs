@@ -15,18 +15,18 @@ namespace OmniKassa.Http
     /// </summary>
     public sealed partial class OmniKassaHttpClient : IDisposable
     {
-        private static readonly string SUFFIX = "omnikassa-api/";
-        private static readonly string PATH_ANNOUNCE_ORDER = SUFFIX + "order/server/api/v2/order";
-        private static readonly string PATH_GET_ORDER_STATUS = SUFFIX + "order/server/api/v2/events/results/";
-        private static readonly string PATH_GET_ORDER_BY_ID = "v2/orders/{0}";
-        private static readonly string PATH_GET_PAYMENT_BRANDS = SUFFIX + "order/server/api/payment-brands";
-        private static readonly string PATH_GET_IDEAL_ISSUERS = SUFFIX + "ideal/server/api/v2/issuers";
-        private static readonly string PATH_GET_ACCESS_TOKEN = SUFFIX + "gatekeeper/refresh";
-        private static readonly string PATH_POST_REFUND_REQUEST = SUFFIX + "order/server/api/v2/refund/transactions/{0}/refunds";
-        private static readonly string PATH_GET_REFUND_REQUEST = SUFFIX + "order/server/api/v2/refund/transactions/{0}/refunds/{1}";
-        private static readonly string PATH_GET_REFUNDABLE_DETAILS_REQUEST = SUFFIX + "order/server/api/v2/refund/transactions/{0}/refundable-details";
-        private static readonly string PATH_GET_SHOPPER_PAYMENT_DETAILS = "v1/shopper-payment-details";
-        private static readonly string PATH_DELETE_SHOPPER_PAYMENT_DETAILS = "v1/shopper-payment-details/{0}";
+        private readonly string _suffix;
+        private string PATH_ANNOUNCE_ORDER => _suffix + "order/server/api/v2/order";
+        private string PATH_GET_ORDER_STATUS => _suffix + "order/server/api/v2/events/results/";
+        private string PATH_GET_ORDER_BY_ID => "v2/orders/{0}";
+        private string PATH_GET_PAYMENT_BRANDS => _suffix + "order/server/api/payment-brands";
+        private string PATH_GET_IDEAL_ISSUERS => _suffix + "ideal/server/api/v2/issuers";
+        private string PATH_GET_ACCESS_TOKEN => _suffix + "gatekeeper/refresh";
+        private string PATH_POST_REFUND_REQUEST => _suffix + "order/server/api/v2/refund/transactions/{0}/refunds";
+        private string PATH_GET_REFUND_REQUEST => _suffix + "order/server/api/v2/refund/transactions/{0}/refunds/{1}";
+        private string PATH_GET_REFUNDABLE_DETAILS_REQUEST => _suffix + "order/server/api/v2/refund/transactions/{0}/refundable-details";
+        private string PATH_GET_SHOPPER_PAYMENT_DETAILS => "v1/shopper-payment-details";
+        private string PATH_DELETE_SHOPPER_PAYMENT_DETAILS => "v1/shopper-payment-details/{0}";
 
         private static readonly string HEADER_REFUND_REQUEST_ID = "request-id";
         private static readonly string HEADER_X_API_USER_AGENT = "X-Api-User-Agent";
@@ -52,18 +52,20 @@ namespace OmniKassa.Http
         /// Initializes an ApiConnector with given base URL and signing key
         /// </summary>
         /// <param name="baseURL">Base URL for the API</param>
+        /// <param name="suffix">Environment specific API suffix</param>
         /// <param name="signingKey">Signing key</param>
         /// <param name="userAgent">User-Agent value you want to give your implementation</param>
         /// <param name="partnerReference">Can be filled with the partner reference, if applicable</param>
-        public OmniKassaHttpClient(String baseURL, byte[] signingKey, string userAgent, string partnerReference)
+        public OmniKassaHttpClient(String baseURL, String suffix, byte[] signingKey, string userAgent, string partnerReference)
         {
             SigningKey = signingKey;
             UserAgent = userAgent;
             PartnerReference = partnerReference;
+            _suffix = suffix;
 
             mClient = new HttpClient
             {
-                BaseAddress = new Uri(baseURL)
+                BaseAddress = new Uri(baseURL + _suffix)
             };
             mClient.DefaultRequestHeaders
                   .Accept

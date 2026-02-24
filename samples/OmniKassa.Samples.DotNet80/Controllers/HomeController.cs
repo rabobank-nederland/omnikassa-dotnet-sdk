@@ -27,6 +27,7 @@ namespace example_dotnet80.Controllers
         private readonly string TOKEN;
         private readonly string RETURN_URL;
         private readonly string BASE_URL;
+        private readonly string SUFFIX;
         private readonly string USER_AGENT;
         private readonly string PARTNER_REFERENCE;
         private readonly string FAST_CHECKOUT_RETURN_URL;
@@ -80,7 +81,7 @@ namespace example_dotnet80.Controllers
             // "https://api.pay.rabobank.nl/omnikassa-api/";
             // "https://betalen.rabobank.nl/omnikassa-api-sandbox/";
             // "https://api.pay-acpt.rabobank.nl/omnikassa-api/";
-            omniKassa = Endpoint.Create(BASE_URL, SIGNING_KEY, TOKEN, USER_AGENT, PARTNER_REFERENCE);
+            omniKassa = Endpoint.Create(BASE_URL, SUFFIX, SIGNING_KEY, TOKEN, USER_AGENT, PARTNER_REFERENCE);
         }
 
         [HttpGet]

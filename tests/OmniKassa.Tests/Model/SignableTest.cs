@@ -47,7 +47,7 @@ namespace OmniKassa.Tests.Model
 
         private byte[] GetSigningKey(String base64EncodedSigningKey)
         {
-            Endpoint endpoint = Endpoint.Create("http://localhost/", base64EncodedSigningKey, "");
+            Endpoint endpoint = Endpoint.Create("http://localhost/", "", base64EncodedSigningKey, "");
             return endpoint.SigningKey;
         }
     }
