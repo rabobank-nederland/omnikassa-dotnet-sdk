@@ -10,6 +10,10 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
+### Version 1.6.4
+* Simplified BaseUrl in configuration files: the `omnikassa-api/` path segment no longer needs to be included.  
+  The SDK now automatically appends the required API path.
+
 ### Version 1.6.3
 * Updated URLs from betalen to use pay domain 
 
