@@ -10,8 +10,23 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
+### Version 1.6.4
+* Improved release notes
+
 ### Version 1.6.3
-* Updated URLs from betalen to use pay domain 
+Version 1.6.3 updates the SDK to use the new `api.pay.rabobank.nl` domain and now appends the required `omnikassa-api` path internally. If you manually configure the base URL (not using the `Environment` enum), update your configuration to remove any path segments—see below for correct usage.
+
+**Manual base URL configuration required**
+If you set the base URL yourself, ensure it contains only the domain (no path segments). See the examples below for the correct format.
+
+## Correct vs. Incorrect Configuration Examples
+
+| Environment |  Incorrect URL                                             |  Correct URL                         |
+|-------------|------------------------------------------------------------|--------------------------------------|
+| Production  | https://api.pay.rabobank.nl/omnikassa-api/                 | https://api.pay.rabobank.nl/         |
+| Sandbox     | https://api.pay-sandbox.rabobank.nl/omnikassa-api-sandbox/ | https://api.pay-sandbox.rabobank.nl/ |
+
+Using the old paths will result in invalid URLs and failed API calls.
 
 ### Version 1.6.1
 * Add Docker configuration for development and testing.
