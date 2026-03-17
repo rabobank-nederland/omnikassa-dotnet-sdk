@@ -14,7 +14,7 @@ Installation instructions and detailed developer documentation on how to use the
 * Improved release notes
 
 ### Version 1.6.3
-Version 1.6.3 updates the SDK to use the new `pay.rabobank.nl` domain and now appends the required `omnikassa-api` path internally. If you manually configure the base URL (not using the `Environment` enum), update your configuration to remove any path segments—see below for correct usage.
+Version 1.6.3 updates the SDK to use the new `api.pay.rabobank.nl` domain and now appends the required `omnikassa-api` path internally. If you manually configure the base URL (not using the `Environment` enum), update your configuration to remove any path segments—see below for correct usage.
 
 **Manual base URL configuration required**
 If you set the base URL yourself, ensure it contains only the domain (no path segments). See the examples below for the correct format.
