@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using OmniKassa.Model;
 using OmniKassa.Model.Response;
 using OmniKassa.Exceptions;
+using OmniKassa.Model.Request;
 
 namespace omnikassa_dotnet_test.Mocks
 {
@@ -51,6 +52,98 @@ namespace omnikassa_dotnet_test.Mocks
             if (tokenProvider.HasNoValidAccessToken())
             {
                 await RetrieveNewToken();
+            }
+        }
+
+        public RefundDetailsResponse InitiateRefundTransaction(
+            InitiateRefundRequest refundRequest,
+            Guid transactionId,
+            Guid requestId)
+        {
+            ValidateAccessTokenSync();
+
+            try
+            {
+                return httpClient.PostRefundRequest(
+                    refundRequest,
+                    transactionId,
+                    requestId,
+                    tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                RetrieveNewTokenSync();
+
+                return httpClient.PostRefundRequest(
+                    refundRequest,
+                    transactionId,
+                    requestId,
+                    tokenProvider.GetAccessToken());
+            }
+        }
+
+        public RefundDetailsResponse FetchRefundTransaction(
+            Guid transactionId,
+            Guid refundId)
+        {
+            ValidateAccessTokenSync();
+
+            try
+            {
+                return httpClient.GetRefundRequest(
+                    transactionId,
+                    refundId,
+                    tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                RetrieveNewTokenSync();
+
+                return httpClient.GetRefundRequest(
+                    transactionId,
+                    refundId,
+                    tokenProvider.GetAccessToken());
+            }
+        }
+
+        public TransactionRefundableDetailsResponse FetchRefundableTransactionDetails(
+            Guid transactionId)
+        {
+            ValidateAccessTokenSync();
+
+            try
+            {
+                return httpClient.GetRefundableDetails(
+                    transactionId,
+                    tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                RetrieveNewTokenSync();
+
+                return httpClient.GetRefundableDetails(
+                    transactionId,
+                    tokenProvider.GetAccessToken());
+            }
+        }
+
+
+        private void RetrieveNewTokenSync()
+        {
+            AccessToken retrievedToken =
+                httpClient.RetrieveNewToken(tokenProvider.GetRefreshToken())
+                          .GetAwaiter()
+                          .GetResult();
+
+            tokenProvider.SetAccessToken(retrievedToken);
+        }
+
+
+        private void ValidateAccessTokenSync()
+        {
+            if (tokenProvider.HasNoValidAccessToken())
+            {
+                RetrieveNewTokenSync();
             }
         }
     }
