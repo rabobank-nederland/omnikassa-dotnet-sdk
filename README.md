@@ -10,6 +10,9 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
+### Version 1.6.5
+* Added access-token validation in refund methods
+
 ### Version 1.6.4
 * Improved release notes
 
