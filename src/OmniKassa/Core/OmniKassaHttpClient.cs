@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using OmniKassa.Model;
+using OmniKassa.Exceptions;
 using OmniKassa.Model.Order;
 using OmniKassa.Model.Request;
 using OmniKassa.Model.Response;
@@ -177,51 +178,95 @@ namespace OmniKassa.Http
 
         private async Task<T> PostAsync<T>(HttpClient client, string path, Dictionary<string, string> headers, string token, object input) where T : class
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, path);
-            request.Headers.ExpectContinue = false;
-            if (headers != null)
+            using (var request = new HttpRequestMessage(HttpMethod.Post, path))
             {
-                foreach (var header in headers)
+                request.Headers.ExpectContinue = false;
+                if (headers != null)
                 {
-                    request.Headers.Add(header.Key, header.Value);
+                    foreach (var header in headers)
+                    {
+                        request.Headers.Add(header.Key, header.Value);
+                    }
+                }
+
+                request.Content = GetHttpContentForPost(input);
+
+                UpdateHttpClientAuth(client, token);
+
+                using (HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false))
+                {
+                    return await ProcessResponse<T>(response).ConfigureAwait(false);
                 }
             }
-
-            request.Content = GetHttpContentForPost(input);
-
-            UpdateHttpClientAuth(client, token);
-
-            HttpResponseMessage response = await client.SendAsync(request);
-            return await ProcessResponse<T>(response);
         }
 
         private async Task<T> GetAsync<T>(HttpClient client, string path, string token) where T : class
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, path);
-            request.Headers.ExpectContinue = false;
+            using (var request = new HttpRequestMessage(HttpMethod.Get, path))
+            {
+                request.Headers.ExpectContinue = false;
 
-            UpdateHttpClientAuth(client, token);
+                UpdateHttpClientAuth(client, token);
 
-            HttpResponseMessage response = await client.SendAsync(request);
-            return await ProcessResponse<T>(response);
+                using (HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false))
+                {
+                    return await ProcessResponse<T>(response).ConfigureAwait(false);
+                }
+            }
         }
 
         private async Task DeleteAsync(HttpClient client, string path, string token)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, path);
-            request.Headers.ExpectContinue = false;
+            using (var request = new HttpRequestMessage(HttpMethod.Delete, path))
+            {
+                request.Headers.ExpectContinue = false;
 
-            UpdateHttpClientAuth(client, token);
+                UpdateHttpClientAuth(client, token);
 
-            HttpResponseMessage response = await client.SendAsync(request);
-            // For DELETE operations, we don't need to process a response body
-            response.EnsureSuccessStatusCode();
+                using (HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false))
+                {
+                    string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        try
+                        {
+                            CheckForErrorsInResponse(body);
+                        }
+                        catch (IllegalApiResponseException)
+                        {
+                            throw;
+                        }
+
+                        throw new Exceptions.RabobankSdkException($"HTTP {(int)response.StatusCode} ({response.StatusCode}). Response: {body}");
+                    }
+                }
+            }
         }
 
         private async Task<T> ProcessResponse<T>(HttpResponseMessage response) where T : class
         {
-            String result = await response.Content.ReadAsStringAsync();
-            return ProcessResult<T>(result);
+            // Read body first so we can parse OmniKassa error payloads even when
+            // the HTTP status is non-success.
+            string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    // If the body contains OmniKassa error information, this will
+                    // throw IllegalApiResponseException which we want to propagate.
+                    CheckForErrorsInResponse(body);
+                }
+                catch (IllegalApiResponseException)
+                {
+                    throw;
+                }
+
+                throw new Exceptions.RabobankSdkException($"HTTP {(int)response.StatusCode} ({response.StatusCode}). Response: {body}");
+            }
+
+            return ProcessResult<T>(body);
         }
 
 

@@ -46,7 +46,7 @@ namespace OmniKassa.Http
         /// </summary>
         public string PartnerReference { get; private set; }
 
-        private HttpClient mClient;
+        private readonly HttpClient mClient;
 
         /// <summary>
         /// Initializes an ApiConnector with given base URL and signing key
@@ -61,7 +61,8 @@ namespace OmniKassa.Http
             UserAgent = userAgent;
             PartnerReference = partnerReference;
 
-            mClient = new HttpClient
+            var handler = GetPlatformHttpHandler();
+            mClient = new HttpClient(handler)
             {
                 BaseAddress = new Uri(baseURL)
             };
@@ -69,8 +70,23 @@ namespace OmniKassa.Http
                   .Accept
                   .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            InitCertificate();
         }
+
+        // Try to obtain a platform-specific HttpMessageHandler from the other partial.
+        // The framework partial may implement `CreatePlatformHandler`; otherwise the
+        // core default returns null.
+        private HttpMessageHandler GetPlatformHttpHandler()
+        {
+            return CreatePlatformHandler();
+        }
+
+#if !NETFRAMEWORK
+        // Default implementation for non-framework targets: return default handler.
+        private HttpMessageHandler CreatePlatformHandler()
+        {
+            return new HttpClientHandler();
+        }
+#endif
 
         private HttpContent GetHttpContentForPost(object input)
         {
@@ -106,11 +122,18 @@ namespace OmniKassa.Http
 
         private void CheckForErrorsInResponse(String json)
         {
-            JObject jsonObject = JObject.Parse(json);
-
-            if (jsonObject.ContainsKey(OmniKassaErrorResponse.ERROR_CODE_FIELD_NAME))
+            try
             {
-                throw IllegalApiResponseException.Of(json);
+                JObject jsonObject = JObject.Parse(json);
+
+                if (jsonObject.ContainsKey(OmniKassaErrorResponse.ERROR_CODE_FIELD_NAME))
+                {
+                    throw IllegalApiResponseException.Of(json);
+                }
+            }
+            catch (JsonReaderException)
+            {
+                // Response body is not valid JSON — ignore and let callers handle it.
             }
         }
 
