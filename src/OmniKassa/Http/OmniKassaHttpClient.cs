@@ -14,7 +14,7 @@ namespace OmniKassa.Http
     /// </summary>
     public sealed partial class OmniKassaHttpClient : IDisposable
     {
-        private static readonly string SUFFIX = "omnikassa-api/";
+        private static readonly string SUFFIX = "/omnikassa-api/";
         private static readonly string PATH_ANNOUNCE_ORDER = SUFFIX + "order/server/api/v2/order";
         private static readonly string PATH_GET_ORDER_STATUS = SUFFIX + "order/server/api/v2/events/results/";
         private static readonly string PATH_GET_ORDER_BY_ID = "v2/orders/{0}";
