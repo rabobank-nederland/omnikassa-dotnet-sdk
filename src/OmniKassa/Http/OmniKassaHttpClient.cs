@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using OmniKassa.Exceptions;
 using OmniKassa.Model.Response;
 using System;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -100,12 +99,11 @@ namespace OmniKassa.Http
 
         }
 
-        /// <summary>
-        /// Processes the API response JSON result 
-        /// </summary>
-        /// <typeparam name="T">Object type to deserialize the result to</typeparam>
-        /// <param name="result">JSON result</param>
-        /// <returns>Deserialized object</returns>
+        /// Processes the API response JSON result.
+        /// Validates API-level errors and, if the deserialized object implements
+        /// <typeparam name="T">Type to deserialize the JSON result to.</typeparam>
+        /// <param name="result">JSON result string returned by the API.</param>
+        /// <returns>Deserialized object of type <typeparamref name="T"/>.</returns>
         public T ProcessResult<T>(String result)
         {
             CheckForErrorsInResponse(result);

@@ -2,13 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OmniKassa.Exceptions;
 using OmniKassa.Model;
 using OmniKassa.Model.Order;
@@ -58,7 +52,7 @@ namespace OmniKassa.Http
         /// <summary>
         /// Retrieves the order status data from OmniKassa
         /// </summary>
-        /// <param name="notification">Notification received from the webhook</param>
+        /// <param name="apiNotification">Notification received from the webhook</param>
         /// <returns>Order status info</returns>
         public MerchantOrderStatusResponse GetOrderStatusData(ApiNotification apiNotification)
         {
