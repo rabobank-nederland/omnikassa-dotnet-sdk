@@ -2,15 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OmniKassa.Exceptions;
 using OmniKassa.Model;
 using OmniKassa.Model.Order;
@@ -25,24 +17,19 @@ namespace OmniKassa.Http
     /// </summary>
     public sealed partial class OmniKassaHttpClient
     {
+        // No-op placeholder kept for compatibility with older builds.
+        // Certificate handling is performed per-HttpClient by CreateHttpHandler.
         private void InitCertificate()
         {
-            ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            // Intentionally left blank. Per-client certificate validation is used instead of
+            // modifying ServicePointManager.ServerCertificateValidationCallback and SecurityProtocol.
         }
 
-        /// <summary>
-        /// Certificate validation callback.
-        /// </summary>
-        private static bool ValidateRemoteCertificate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
+        // Provide a per-client HttpMessageHandler for the framework build. Keep it
+        // simple and rely on the default HttpClientHandler certificate validation.
+        private HttpMessageHandler CreatePlatformHandler()
         {
-            // If the certificate is a valid, signed certificate, return true.
-            if (error == System.Net.Security.SslPolicyErrors.None)
-            {
-                return true;
-            }
-
-            throw new RabobankSdkException(String.Format("X509Certificate [{0}] Policy Error: '{1}'", cert.Subject, error.ToString()));
+            return new HttpClientHandler();
         }
 
         /// <summary>
@@ -65,7 +52,7 @@ namespace OmniKassa.Http
         /// <summary>
         /// Retrieves the order status data from OmniKassa
         /// </summary>
-        /// <param name="notification">Notification received from the webhook</param>
+        /// <param name="apiNotification">Notification received from the webhook</param>
         /// <returns>Order status info</returns>
         public MerchantOrderStatusResponse GetOrderStatusData(ApiNotification apiNotification)
         {
@@ -198,56 +185,120 @@ namespace OmniKassa.Http
 
         private T PostAsync<T>(HttpClient client, string path, Dictionary<string, string> headers, string token, object input) where T : class
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, path);
-            request.Headers.ExpectContinue = false;
-            if (headers != null)
+            using (var request = new HttpRequestMessage(HttpMethod.Post, path))
             {
-                foreach (var header in headers)
+                request.Headers.ExpectContinue = false;
+                if (headers != null)
                 {
-                    request.Headers.Add(header.Key, header.Value);
+                    foreach (var header in headers)
+                    {
+                        request.Headers.Add(header.Key, header.Value);
+                    }
+                }
+                request.Content = GetHttpContentForPost(input);
+
+                UpdateHttpClientAuth(client, token);
+
+                try
+                {
+                    var respMsg = client.SendAsync(request).GetAwaiter().GetResult();
+                    using (var resp = respMsg)
+                    {
+                        return ProcessResponse<T>(resp);
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    throw new RabobankSdkException(ex);
                 }
             }
-            request.Content = GetHttpContentForPost(input);
-
-            UpdateHttpClientAuth(client, token);
-
-            Task<HttpResponseMessage> response = client.SendAsync(request);
-            response.Wait();
-
-            return ProcessResponse<T>(response.Result);
         }
 
         private T GetAsync<T>(HttpClient client, string path, string token) where T : class
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, path);
-            request.Headers.ExpectContinue = false;
+            using (var request = new HttpRequestMessage(HttpMethod.Get, path))
+            {
+                request.Headers.ExpectContinue = false;
 
-            UpdateHttpClientAuth(client, token);
+                UpdateHttpClientAuth(client, token);
 
-            Task<HttpResponseMessage> response = client.SendAsync(request);
-            response.Wait();
-
-            return ProcessResponse<T>(response.Result);
+                try
+                {
+                    var respMsg = client.SendAsync(request).GetAwaiter().GetResult();
+                    using (var resp = respMsg)
+                    {
+                        return ProcessResponse<T>(resp);
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    throw new RabobankSdkException(ex);
+                }
+            }
         }
 
         private void DeleteAsync(HttpClient client, string path, string token)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, path);
-            request.Headers.ExpectContinue = false;
+            using (var request = new HttpRequestMessage(HttpMethod.Delete, path))
+            {
+                request.Headers.ExpectContinue = false;
 
-            UpdateHttpClientAuth(client, token);
+                UpdateHttpClientAuth(client, token);
 
-            Task<HttpResponseMessage> response = client.SendAsync(request);
-            response.Wait();
-            
-            // For DELETE operations, ensure success but don't process response body
-            response.Result.EnsureSuccessStatusCode();
+                try
+                {
+                    var respMsg = client.SendAsync(request).GetAwaiter().GetResult();
+                    using (var resp = respMsg)
+                    {
+                        // Read body so we can parse OmniKassa error payloads for non-success
+                        string body = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                        if (!resp.IsSuccessStatusCode)
+                        {
+                            try
+                            {
+                                CheckForErrorsInResponse(body);
+                            }
+                            catch (IllegalApiResponseException)
+                            {
+                                throw;
+                            }
+
+                            throw new RabobankSdkException($"HTTP {(int)resp.StatusCode} ({resp.StatusCode}). Response: {body}");
+                        }
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    throw new RabobankSdkException(ex);
+                }
+            }
         }
 
         private T ProcessResponse<T>(HttpResponseMessage response) where T : class
         {
-            Task<String> result = response.Content.ReadAsStringAsync();
-            return ProcessResult<T>(result.Result);
+            // Read body first so we can parse OmniKassa error payloads even when
+            // the HTTP status is non-success.
+            string body = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    // If the body contains OmniKassa error information, this will
+                    // throw IllegalApiResponseException which we want to propagate.
+                    CheckForErrorsInResponse(body);
+                }
+                catch (IllegalApiResponseException)
+                {
+                    throw;
+                }
+
+                // Otherwise surface a generic SDK exception with status and body.
+                throw new RabobankSdkException($"HTTP {(int)response.StatusCode} ({response.StatusCode}). Response: {body}");
+            }
+
+            return ProcessResult<T>(body);
         }
     }
 }

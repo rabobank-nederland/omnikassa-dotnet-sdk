@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using OmniKassa.Exceptions;
 using OmniKassa.Model.Response;
 using System;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -15,7 +14,7 @@ namespace OmniKassa.Http
     /// </summary>
     public sealed partial class OmniKassaHttpClient : IDisposable
     {
-        private static readonly string SUFFIX = "omnikassa-api/";
+        private static readonly string SUFFIX = "/omnikassa-api/";
         private static readonly string PATH_ANNOUNCE_ORDER = SUFFIX + "order/server/api/v2/order";
         private static readonly string PATH_GET_ORDER_STATUS = SUFFIX + "order/server/api/v2/events/results/";
         private static readonly string PATH_GET_ORDER_BY_ID = "v2/orders/{0}";
@@ -46,7 +45,7 @@ namespace OmniKassa.Http
         /// </summary>
         public string PartnerReference { get; private set; }
 
-        private HttpClient mClient;
+        private readonly HttpClient mClient;
 
         /// <summary>
         /// Initializes an ApiConnector with given base URL and signing key
@@ -61,7 +60,8 @@ namespace OmniKassa.Http
             UserAgent = userAgent;
             PartnerReference = partnerReference;
 
-            mClient = new HttpClient
+            var handler = GetPlatformHttpHandler();
+            mClient = new HttpClient(handler)
             {
                 BaseAddress = new Uri(baseURL)
             };
@@ -69,8 +69,23 @@ namespace OmniKassa.Http
                   .Accept
                   .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            InitCertificate();
         }
+
+        // Try to obtain a platform-specific HttpMessageHandler from the other partial.
+        // The framework partial may implement `CreatePlatformHandler`; otherwise the
+        // core default returns null.
+        private HttpMessageHandler GetPlatformHttpHandler()
+        {
+            return CreatePlatformHandler();
+        }
+
+#if !NETFRAMEWORK
+        // Default implementation for non-framework targets: return default handler.
+        private HttpMessageHandler CreatePlatformHandler()
+        {
+            return new HttpClientHandler();
+        }
+#endif
 
         private HttpContent GetHttpContentForPost(object input)
         {
@@ -84,12 +99,11 @@ namespace OmniKassa.Http
 
         }
 
-        /// <summary>
-        /// Processes the API response JSON result 
-        /// </summary>
-        /// <typeparam name="T">Object type to deserialize the result to</typeparam>
-        /// <param name="result">JSON result</param>
-        /// <returns>Deserialized object</returns>
+        /// Processes the API response JSON result.
+        /// Validates API-level errors and, if the deserialized object implements
+        /// <typeparam name="T">Type to deserialize the JSON result to.</typeparam>
+        /// <param name="result">JSON result string returned by the API.</param>
+        /// <returns>Deserialized object of type <typeparamref name="T"/>.</returns>
         public T ProcessResult<T>(String result)
         {
             CheckForErrorsInResponse(result);
@@ -106,11 +120,18 @@ namespace OmniKassa.Http
 
         private void CheckForErrorsInResponse(String json)
         {
-            JObject jsonObject = JObject.Parse(json);
-
-            if (jsonObject.ContainsKey(OmniKassaErrorResponse.ERROR_CODE_FIELD_NAME))
+            try
             {
-                throw IllegalApiResponseException.Of(json);
+                JObject jsonObject = JObject.Parse(json);
+
+                if (jsonObject.ContainsKey(OmniKassaErrorResponse.ERROR_CODE_FIELD_NAME))
+                {
+                    throw IllegalApiResponseException.Of(json);
+                }
+            }
+            catch (JsonReaderException)
+            {
+                // Response body is not valid JSON — ignore and let callers handle it.
             }
         }
 
