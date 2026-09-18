@@ -80,6 +80,19 @@ namespace omnikassa_dotnet_test.Mocks
             return PostRefundRequestResponse;
         }
 
+        public async Task<RefundDetailsResponse> PostRefundRequestAsync(InitiateRefundRequest refundRequest, Guid transactionId, Guid requestId, string token)
+        {
+            LastAccessTokenForPost = token;
+            PostRefundRequestCallCount++;
+
+            if (ShouldThrowInvalidTokenOnFirstCallForPost && PostRefundRequestCallCount == 1)
+            {
+                throw new InvalidAccessTokenException();
+            }
+
+            return await Task.FromResult(PostRefundRequestResponse);
+        }
+
         public RefundDetailsResponse GetRefundRequest(Guid transactionId, Guid refundId, string token)
         {
             LastAccessTokenForGet = token;
@@ -93,6 +106,19 @@ namespace omnikassa_dotnet_test.Mocks
             return GetRefundRequestResponse;
         }
 
+        public async Task<RefundDetailsResponse> GetRefundRequestAsync(Guid transactionId, Guid refundId, string token)
+        {
+            LastAccessTokenForGet = token;
+            GetRefundRequestCallCount++;
+
+            if (ShouldThrowInvalidTokenOnFirstCallForGet && GetRefundRequestCallCount == 1)
+            {
+                throw new InvalidAccessTokenException();
+            }
+
+            return await Task.FromResult(GetRefundRequestResponse);
+        }
+
         public TransactionRefundableDetailsResponse GetRefundableDetails(Guid transactionId, string token)
         {
             LastAccessTokenForGetRefundable = token;
@@ -104,6 +130,19 @@ namespace omnikassa_dotnet_test.Mocks
             }
 
             return GetRefundableDetailsResponse;
+        }
+
+        public async Task<TransactionRefundableDetailsResponse> GetRefundableDetailsAsync(Guid transactionId, string token)
+        {
+            LastAccessTokenForGetRefundable = token;
+            GetRefundableDetailsCallCount++;
+
+            if (ShouldThrowInvalidTokenOnFirstCallForGetRefundable && GetRefundableDetailsCallCount == 1)
+            {
+                throw new InvalidAccessTokenException();
+            }
+
+            return await Task.FromResult(GetRefundableDetailsResponse);
         }
     }
 }

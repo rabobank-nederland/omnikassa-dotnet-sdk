@@ -10,6 +10,9 @@ Installation instructions and detailed developer documentation on how to use the
 
 ## Release notes
 
+### Version 1.6.7
+* Added access-token validation in refund methods in Core
+
 ### Version 1.6.6
 * Removed use of global ServicePointManager TLS and certificate validation settings in OmniKassaHttpClient.
 * Prevented unintended side effects on other network components running in the same application process.

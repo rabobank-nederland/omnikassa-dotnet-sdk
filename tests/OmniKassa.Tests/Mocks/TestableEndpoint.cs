@@ -82,6 +82,33 @@ namespace omnikassa_dotnet_test.Mocks
             }
         }
 
+        public async Task<RefundDetailsResponse> InitiateRefundTransactionAsync(
+            InitiateRefundRequest refundRequest,
+            Guid transactionId,
+            Guid requestId)
+        {
+            await ValidateAccessToken();
+
+            try
+            {
+                return await httpClient.PostRefundRequestAsync(
+                    refundRequest,
+                    transactionId,
+                    requestId,
+                    tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                await RetrieveNewToken();
+
+                return await httpClient.PostRefundRequestAsync(
+                    refundRequest,
+                    transactionId,
+                    requestId,
+                    tokenProvider.GetAccessToken());
+            }
+        }
+
         public RefundDetailsResponse FetchRefundTransaction(
             Guid transactionId,
             Guid refundId)
@@ -106,6 +133,30 @@ namespace omnikassa_dotnet_test.Mocks
             }
         }
 
+        public async Task<RefundDetailsResponse> FetchRefundTransactionAsync(
+            Guid transactionId,
+            Guid refundId)
+        {
+            await ValidateAccessToken();
+
+            try
+            {
+                return await httpClient.GetRefundRequestAsync(
+                    transactionId,
+                    refundId,
+                    tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                await RetrieveNewToken();
+
+                return await httpClient.GetRefundRequestAsync(
+                    transactionId,
+                    refundId,
+                    tokenProvider.GetAccessToken());
+            }
+        }
+
         public TransactionRefundableDetailsResponse FetchRefundableTransactionDetails(
             Guid transactionId)
         {
@@ -122,6 +173,27 @@ namespace omnikassa_dotnet_test.Mocks
                 RetrieveNewTokenSync();
 
                 return httpClient.GetRefundableDetails(
+                    transactionId,
+                    tokenProvider.GetAccessToken());
+            }
+        }
+
+        public async Task<TransactionRefundableDetailsResponse> FetchRefundableTransactionDetailsAsync(
+            Guid transactionId)
+        {
+            await ValidateAccessToken();
+
+            try
+            {
+                return await httpClient.GetRefundableDetailsAsync(
+                    transactionId,
+                    tokenProvider.GetAccessToken());
+            }
+            catch (InvalidAccessTokenException)
+            {
+                await RetrieveNewToken();
+
+                return await httpClient.GetRefundableDetailsAsync(
                     transactionId,
                     tokenProvider.GetAccessToken());
             }
