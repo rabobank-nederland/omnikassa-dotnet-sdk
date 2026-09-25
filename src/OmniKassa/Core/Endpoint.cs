@@ -67,6 +67,8 @@ namespace OmniKassa
         /// <returns>The response contains refund details, which can be used to update the refund with the latest status.</returns>
         public async Task<RefundDetailsResponse> InitiateRefundTransaction(InitiateRefundRequest refundRequest, Guid transactionId, Guid requestId)
         {
+            await ValidateAccessToken();
+
             try
             {
                 return await httpClient.PostRefundRequest(refundRequest, transactionId, requestId, tokenProvider.GetAccessToken());
@@ -88,6 +90,8 @@ namespace OmniKassa
         /// <returns>The response contains refund details, which can be used to update the refund with the latest status.</returns>
         public async Task<RefundDetailsResponse> FetchRefundTransaction(Guid transactionId, Guid refundId)
         {
+            await ValidateAccessToken();
+
             try
             {
                 return await httpClient.GetRefundRequest(transactionId, refundId, tokenProvider.GetAccessToken());
@@ -108,6 +112,8 @@ namespace OmniKassa
         /// <returns>The response contains refund details, which can be used to update the refund with the latest status.</returns>
         public async Task<TransactionRefundableDetailsResponse> FetchRefundableTransactionDetails(Guid transactionId)
         {
+            await ValidateAccessToken();
+
             try
             {
                 return await httpClient.GetRefundableDetails(transactionId, tokenProvider.GetAccessToken());
